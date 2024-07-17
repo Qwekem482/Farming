@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b5037820-45b9-44cb-9627-5dbafad2e3f7" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/18f04182ff5f47179986b2c2f96de79da200/1d/4033a1ce/Tilemap.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6f7018b8b8c149e68c4a65a05ac289be175400/94/6dff2f83/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d08d097905344c54afd96d9e44e5355b20a00/bb/75a855f9/Rigidbody2D.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://D:/Download/GStudio-Sticker-Book-Puzzle-Duong/Assets/StickerBook/Scripts/Controller/SpawnerController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://D:/Download/GStudio-Sticker-Book-Puzzle-Duong/Assets/StickerBook/Scripts/Controller/UIController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://D:/Download/GStudio-Sticker-Book-Puzzle-Duong/Assets/StickerBook/Scripts/Gameplay/Slot.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://D:/Download/GStudio-Sticker-Book-Puzzle-Duong/Assets/StickerBook/Scripts/Gameplay/Sticker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://D:/Download/GStudio-Sticker-Book-Puzzle-Duong/Assets/StickerBook/Scripts/SwipeMovement.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Plugins/UnlimitedScrollUI/Runtime/RegularCell.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Plugins/UnlimitedScrollUI/Samples/ScrollerSamples/Scripts/ScrollerTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Building/BuildableBuilding.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Building/MovableBuilding.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Farming/CropData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Farming/CropUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Farming/Field.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Farming/Sickle.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/Factory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/ProductData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/UI/CompletedSlot.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/UI/FactoryUIHolder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/UI/ProcessingSlot.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/UI/ProductInfoCell.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Production/UI/ProductScroller.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Storage/StorageBuilding.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Storage/StorageCell.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SubSystems/GameEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SubSystems/GameObjectData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SubSystems/PanZoom.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventData/PointerEventData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/RaycastResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/AbstractProduct.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/CropData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/CropUI.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/Factory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/Field.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/HarvestTool.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/Material.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/ProductData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/ProductUI.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Produc/ProductUIHolder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Storage/StorageBuilding.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Storage/StorageSystem.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2eRxUwmfp6y9yfno2ik96XGwYL3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;SpellingScopeSettingsId&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Qwekem\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Qwekem\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Qwekem\\AppData\\Local\\Symbols\\src&quot;
+    ]
+  }
+}</component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="E:\Unity\2022.3.20f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;E:\Final Assignment\Repository\Farming&quot; -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="E:\Final Assignment\Repository\Farming" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="E:\Unity\2022.3.20f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;E:\Final Assignment\Repository\Farming&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="E:\Final Assignment\Repository\Farming" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5037820-45b9-44cb-9627-5dbafad2e3f7" name="Changes" comment="" />
+      <created>1711881211430</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1711881211430</updated>
+      <workItem from="1711881217874" duration="3146000" />
+      <workItem from="1711963984392" duration="9359000" />
+      <workItem from="1712042698675" duration="8253000" />
+      <workItem from="1712075170278" duration="7883000" />
+      <workItem from="1712154232241" duration="5757000" />
+      <workItem from="1712300453370" duration="4073000" />
+      <workItem from="1712649681790" duration="14578000" />
+      <workItem from="1712735926124" duration="1478000" />
+      <workItem from="1712765157488" duration="607000" />
+      <workItem from="1712928288592" duration="2570000" />
+      <workItem from="1713459012643" duration="2863000" />
+      <workItem from="1713509336282" duration="884000" />
+      <workItem from="1713514052126" duration="795000" />
+      <workItem from="1713534134769" duration="3573000" />
+      <workItem from="1713606310087" duration="4297000" />
+      <workItem from="1713642739408" duration="3492000" />
+      <workItem from="1714371306236" duration="23957000" />
+      <workItem from="1714447488723" duration="24202000" />
+      <workItem from="1714534398338" duration="7920000" />
+      <workItem from="1714554403592" duration="2538000" />
+      <workItem from="1714560667439" duration="132000" />
+      <workItem from="1714582191093" duration="4985000" />
+      <workItem from="1714801425667" duration="9065000" />
+      <workItem from="1714838854209" duration="8447000" />
+      <workItem from="1714849313467" duration="4698000" />
+      <workItem from="1714988923048" duration="11408000" />
+      <workItem from="1715076496683" duration="15551000" />
+      <workItem from="1715591578445" duration="979000" />
+      <workItem from="1716197710786" duration="1005000" />
+      <workItem from="1716216052969" duration="12100000" />
+      <workItem from="1716643377801" duration="7880000" />
+      <workItem from="1716711301818" duration="8705000" />
+      <workItem from="1716824669559" duration="10976000" />
+      <workItem from="1717261191501" duration="6573000" />
+      <workItem from="1717402926121" duration="9783000" />
+      <workItem from="1717436394903" duration="1195000" />
+      <workItem from="1717442555601" duration="36000" />
+      <workItem from="1717481369254" duration="5518000" />
+      <workItem from="1717515199749" duration="19054000" />
+      <workItem from="1717610447214" duration="2101000" />
+      <workItem from="1717666079040" duration="32316000" />
+      <workItem from="1718307968180" duration="13323000" />
+      <workItem from="1718873899809" duration="47406000" />
+      <workItem from="1719156258361" duration="42884000" />
+      <workItem from="1719327425360" duration="7096000" />
+      <workItem from="1719414075401" duration="31431000" />
+      <workItem from="1720139047567" duration="18378000" />
+      <workItem from="1720349653774" duration="5720000" />
+      <workItem from="1720630107413" duration="31162000" />
+      <workItem from="1720791576615" duration="358000" />
+      <workItem from="1720840062698" duration="15526000" />
+      <workItem from="1721037541750" duration="3357000" />
+      <workItem from="1721056640266" duration="136000" />
+      <workItem from="1721122493171" duration="7338000" />
+      <workItem from="1721220564809" duration="3828000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

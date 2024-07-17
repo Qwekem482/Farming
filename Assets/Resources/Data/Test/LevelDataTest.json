@@ -1,0 +1,43 @@
+{
+	"levels": [
+		{
+			"levelCount": 0,
+			"expNeeded": 10,
+			"itemsUnlocked": [
+				0,
+				1,
+				2
+			],
+			"rewards": {
+				"gold": 0,
+				"silver": 0
+			}
+		},
+		{
+			"levelCount": 1,
+			"expNeeded": 100,
+			"itemsUnlocked": [
+				3,
+				4,
+				5
+			],
+			"rewards": {
+				"gold": 10,
+				"silver": 10
+			}
+		},
+		{
+			"levelCount": 2,
+			"expNeeded": 200,
+			"itemsUnlocked": [
+				6,
+				7,
+				8
+			],
+			"rewards": {
+				"gold": 20,
+				"silver": 20
+			}
+		}
+	]
+}
