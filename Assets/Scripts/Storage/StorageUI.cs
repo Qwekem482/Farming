@@ -23,13 +23,12 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     [SerializeField] TextMeshProUGUI[] upgradeToolTexts = new TextMeshProUGUI[3];
     [SerializeField] Button upgradeButton;
     [SerializeField] TextMeshProUGUI newCapacityText;
-    [SerializeField] UICurtain curtain;
     
     protected override void Awake()
     {
         base.Awake();
         
-        closeButton.onClick.AddListener(() => gameObject.SetActive(false));
+        closeButton.onClick.AddListener(CloseStorageUI);
         changeView.onClick.AddListener(() => SetStorageViewState(!storageView.gameObject.activeSelf));
         upgradeButton.onClick.AddListener(StorageSystem.Instance.IncreaseCapacity);
 
@@ -41,14 +40,19 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         gameObject.SetActive(false);
     }
 
-    void OnEnable()
+    public void OpenStorageUI()
     {
-        curtain.DarkFade();
+        UICurtain.Instance.DarkFade();
+        UICurtain.Instance.AssignOnClickOnce(CloseStorageUI);
+        
+        gameObject.SetActive(true);
     }
 
-    void OnDisable()
+
+    void CloseStorageUI()
     {
-        curtain.TurnOff();
+        gameObject.SetActive(false);
+        UICurtain.Instance.TurnOff();
     }
 
     public void LoadStoringData(int currentCap, int maxCap, Dictionary<Collectible, int> items)

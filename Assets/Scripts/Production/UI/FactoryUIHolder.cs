@@ -14,7 +14,6 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
     [SerializeField] TextMeshProUGUI price;
 
     [SerializeField] RectTransform rectTrans;
-    [SerializeField] UICurtain curtain;
     
     public Factory currentFactory;
 
@@ -36,7 +35,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         
         currentFactory = factory;
 
-        rectTrans.anchoredPosition = Camera.main.WorldToViewportPoint(factory.transform.position);
+        rectTrans.anchoredPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
         for (int i = 0; i < factory.queueCapacity; i++)
         {
@@ -52,16 +51,17 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         if (currentFactory.queueCapacity < 9) addButton.gameObject.SetActive(true);
         price.text = (3 + currentFactory.queueCapacity * 2).ToString();
         
+        OpenCurtain();
         gameObject.SetActive(true);
     }
 
-    void OnEnable()
+    void OpenCurtain()
     {
-        curtain.Transparent();
-        curtain.AssignOnClickOnce(() =>
+        UICurtain.Instance.Transparent();
+        UICurtain.Instance.AssignOnClickOnce(() =>
         {
             gameObject.SetActive(false);
-            curtain.TurnOff();
+            UICurtain.Instance.TurnOff();
         });
     }
 

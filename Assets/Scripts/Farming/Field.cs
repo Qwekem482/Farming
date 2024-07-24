@@ -14,7 +14,7 @@ public class Field : Factory
 
     void Awake()
     {
-        type = FactoryType.Field;
+        type = BuildingType.Field;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -31,7 +31,7 @@ public class Field : Factory
                 TimerSystem.Instance.ShowTimer(gameObject);
                 break;
             case FactoryState.Complete:
-                Sickle.Instance.ShowSickle();
+                HorizontalUIHolder.Instance.OpenUI(true);
                 break;
             default:
                 Debug.Log("OutOfRange");

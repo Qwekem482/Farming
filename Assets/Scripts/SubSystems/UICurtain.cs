@@ -6,10 +6,10 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UICurtain : MonoBehaviour, IPointerClickHandler
+public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
 {
     [SerializeField] Image curtain;
-    readonly Color transparent = new Color(255, 255, 255, 0);
+    readonly  Color transparent = new Color(255, 255, 255, 0);
     readonly Color darkFade = new Color(0, 0, 0, 128);
     UnityAction onClick;
 
@@ -28,7 +28,7 @@ public class UICurtain : MonoBehaviour, IPointerClickHandler
     public void DarkFade()
     {
         TurnOn();
-        curtain.color = darkFade;
+        curtain.color = new Color(0, 0, 0, 0.5f);
     }
 
     void TurnOn()

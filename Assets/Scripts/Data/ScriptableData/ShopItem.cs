@@ -13,13 +13,7 @@ public class ShopItem : ScriptableObject
     public int price;
     public CurrencyType currencyType;
     public Sprite icon;
-    
-    //Init Item Data
-    public BoundsInt area;
-    public TimePeriod constructionTime;
-    public Sprite buildingSprite;
-    public FactoryType factoryType;
-    
+    public BuildingData building;
 }
 
 public enum ItemType

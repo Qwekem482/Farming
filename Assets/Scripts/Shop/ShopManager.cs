@@ -21,7 +21,6 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>
     [SerializedDictionary("Type", "Button")] 
     public SerializedDictionary<ItemType, TabButton> typeButtons;
     
-    [SerializeField] UICurtain curtain;
 
     public Sprite coin;
 
@@ -52,20 +51,23 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>
         }
     }
 
-    void OnEnable()
+    void OpenCurtain()
     {
-        curtain.Transparent();
-        curtain.AssignOnClickOnce(() =>
+        
+        UICurtain.Instance.Transparent();
+        UICurtain.Instance.AssignOnClickOnce(() =>
         {
             CloseShop();
-            curtain.TurnOff();
+            UICurtain.Instance.TurnOff();
         });
     }
 
     void OpenShop()
     {
+        if (isOpen) return;
         gameObject.SetActive(true);
         typeButtons[ItemType.AnimalHouses].thisButton.onClick.Invoke();
+        OpenCurtain();
         shop.DOAnchorPosX(shop.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         isOpen = true;
@@ -73,6 +75,7 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>
 
     public void CloseShop()
     {
+        if (!isOpen) return;
         shop.DOAnchorPosX(shop.anchoredPosition.x - shop.sizeDelta.x, 0.2f)
             .OnComplete(() => gameObject.SetActive(false));
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x - shop.sizeDelta.x, 0.2f);

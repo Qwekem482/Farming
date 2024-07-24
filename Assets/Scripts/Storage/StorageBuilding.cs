@@ -6,6 +6,6 @@ public class StorageBuilding : MovableBuilding
     {
         base.OnMouseUp();
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        StorageUI.Instance.gameObject.SetActive(true);
+        StorageUI.Instance.OpenStorageUI();
     }
 }

@@ -41,13 +41,13 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         {
             SetupBuild();
         }
-        else if (Input.GetKeyDown(KeyCode.Space))   //Confirm placement
+        /*else if (Input.GetKeyDown(KeyCode.Space))   //Confirm placement
         {
             ConfirmBuild();         
         } else if (Input.GetKeyDown(KeyCode.Escape)) //Cancel placement
         {
             CancelBuild();
-        }
+        }*/
     }
 
     void OnMouseDrag()
@@ -61,7 +61,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
 
     void SetupBuild()
     {
-        if (EventSystem.current.IsPointerOverGameObject(0)) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (tempBuilding.IsPlaced) return;
             
         Vector2 touchPosition = mainCam.ScreenToWorldPoint(Input.mousePosition);
@@ -75,14 +75,14 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         TileFollowBuilding();
     }
 
-    void CancelBuild()
+    public void CancelBuild()
     {
         ClearArea();
         Destroy(tempBuilding.gameObject);
         CloseBuildingMode();
     }
 
-    void ConfirmBuild()
+    public void ConfirmBuild()
     {
         if (!tempBuilding.Placeable()) return;
         
@@ -99,11 +99,13 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
 
     void OpenBuildingMode()
     {
+        HorizontalUIHolder.Instance.OpenUI(false);
         tempMap.gameObject.SetActive(true);
     }
 
     void CloseBuildingMode()
     {
+        HorizontalUIHolder.Instance.CloseUI();
         tempMap.gameObject.SetActive(false);
     }
 
@@ -125,13 +127,13 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         };
 
         SpriteRenderer sRenderer = emptyBuilding.AddComponent<SpriteRenderer>();
-        sRenderer.sprite = data.buildingSprite;
+        sRenderer.sprite = data.building.sprite;
         sRenderer.material = grayscale;
         sRenderer.color = new Color(255, 255, 255, 128);
         
         tempBuilding = emptyBuilding.AddComponent<BuildableBuilding>();
         BuildableBuilding construction = (BuildableBuilding) tempBuilding;
-        construction.Init(data.area, data.factoryType, data.constructionTime, data.itemName);
+        construction.Init(data.building.area, data.building.type, data.building.constructionTime, data.itemName);
         
         TileFollowBuilding();
         

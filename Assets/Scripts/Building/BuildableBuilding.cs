@@ -11,7 +11,7 @@ public class BuildableBuilding : MovableBuilding
     TimePeriod buildingPeriod;
     readonly static int Greyscale = Shader.PropertyToID("_Greyscale");
 
-    public void Init(BoundsInt buildingArea, FactoryType factoryType, TimePeriod constructionTime, string constructionName)
+    public void Init(BoundsInt buildingArea, BuildingType factoryType, TimePeriod constructionTime, string constructionName)
     {
         area = buildingArea;
         type = factoryType;
@@ -55,12 +55,12 @@ public class BuildableBuilding : MovableBuilding
         StartCoroutine(ChangeSpriteColor(1, 0));
         switch (type)
         {
-            case FactoryType.Field:
+            case BuildingType.Field:
                 Field field = gameObject.AddComponent<Field>();
                 field.freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
                 break;
-            case FactoryType.Grinder:
-            case FactoryType.SteamStation:
+            case BuildingType.Grinder:
+            case BuildingType.SteamStation:
             default:
                 Factory factory = gameObject.AddComponent<Factory>();
                 factory.type = type;

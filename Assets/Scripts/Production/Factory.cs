@@ -10,7 +10,7 @@ public class Factory : MonoBehaviour
     Queue<ProductData> processingQueue;
     Queue<ProductData> completeQueue;
     
-    public FactoryType type;
+    public BuildingType type;
     public FactoryState state;
     public int queueCapacity = 3;
 
@@ -110,9 +110,3 @@ public enum FactoryState
     Complete,
 }
 
-public enum FactoryType
-{
-    Grinder,
-    SteamStation,
-    Field,
-}

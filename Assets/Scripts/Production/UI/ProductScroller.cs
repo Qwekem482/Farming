@@ -10,13 +10,12 @@ using UnlimitedScrollUI;
 
 public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 {
-    [SerializeField] SerializedDictionary<FactoryType, ProductData[]> products;
+    [SerializeField] SerializedDictionary<BuildingType, ProductData[]> products;
     [SerializeField] VerticalUnlimitedScroller scroller;
     [SerializeField] GameObject cell;
     [SerializeField] RectTransform rectTrans;
     [SerializeField] Canvas canvas;
     [SerializeField] Sprite coin;
-    [SerializeField] UICurtain curtain;
 
     Factory factory;
     public bool isOpen;
@@ -26,13 +25,13 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         gameObject.SetActive(false);
     }
 
-    void OnEnable()
+    void OpenCurtain()
     {
-        curtain.Transparent();
-        curtain.AssignOnClickOnce(() =>
+        UICurtain.Instance.Transparent();
+        UICurtain.Instance.AssignOnClickOnce(() =>
         {
             CloseScroller();
-            curtain.TurnOff();
+            UICurtain.Instance.TurnOff();
         });
     }
 
@@ -42,6 +41,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         factory = currentFactory;
         gameObject.SetActive(true);
         Generate(currentFactory);
+        OpenCurtain();
         rectTrans.DOAnchorPosX(rectTrans.anchoredPosition.x + rectTrans.sizeDelta.x, 0.2f);
     }
 
@@ -50,6 +50,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         isOpen = true;
         Generate();
         gameObject.SetActive(true);
+        OpenCurtain();
         rectTrans.DOAnchorPosX(rectTrans.anchoredPosition.x + rectTrans.sizeDelta.x, 0.2f);
     }
 
@@ -76,10 +77,10 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 
     void Generate()
     {
-        scroller.Generate(cell, products[FactoryType.Field].Length, (index, iCell) =>
+        scroller.Generate(cell, products[BuildingType.Field].Length, (index, iCell) =>
         {
             ProductInfoCell infoCell = iCell as ProductInfoCell;
-            if (infoCell != null) infoCell.AssignData(products[FactoryType.Field][index] as CropData, canvas, coin);
+            if (infoCell != null) infoCell.AssignData(products[BuildingType.Field][index] as CropData, canvas, coin);
         });
     }
 

@@ -9,9 +9,9 @@ public class MovableBuilding : MonoBehaviour
     public bool IsPlaced { get; private set; }
 
     public BoundsInt area;
-    protected FactoryType type;
+    protected BuildingType type;
 
-    public void Init(BoundsInt buildingArea, FactoryType factoryType)
+    public void Init(BoundsInt buildingArea, BuildingType factoryType)
     {
         area = buildingArea;
         type = factoryType;

@@ -50,6 +50,7 @@ public class ShopCell : RegularCell
     {
         AllowBuy();
         EventManager.Instance.RemoveListener<InsufficientCurrencyEvent>(OnInsufficientCurrency);
+        UICurtain.Instance.TurnOff();
     }
 
     void OnInsufficientCurrency(InsufficientCurrencyEvent info)
