@@ -14,6 +14,11 @@ public class ShopItem : ScriptableObject
     public CurrencyType currencyType;
     public Sprite icon;
     public BuildingData building;
+
+    void OnValidate()
+    {
+        itemName = building.buildingName;
+    }
 }
 
 public enum ItemType

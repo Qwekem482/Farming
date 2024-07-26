@@ -6,15 +6,16 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(PolygonCollider2D))]
 public class MovableBuilding : MonoBehaviour
 {
-    public bool IsPlaced { get; private set; }
-
+    public string uniqueID;
     public BoundsInt area;
     protected BuildingType type;
+    
+    public bool IsPlaced { get; private set; }
 
-    public void Init(BoundsInt buildingArea, BuildingType factoryType)
+    public virtual void Init(BuildingData data)
     {
-        area = buildingArea;
-        type = factoryType;
+        area = data.area;
+        type = data.type;
     }
 
     public bool Placeable()

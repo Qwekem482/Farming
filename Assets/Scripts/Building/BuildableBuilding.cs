@@ -11,17 +11,16 @@ public class BuildableBuilding : MovableBuilding
     TimePeriod buildingPeriod;
     readonly static int Greyscale = Shader.PropertyToID("_Greyscale");
 
-    public void Init(BoundsInt buildingArea, BuildingType factoryType, TimePeriod constructionTime, string constructionName)
+    public override void Init(BuildingData data)
     {
-        area = buildingArea;
-        type = factoryType;
-        buildingPeriod = constructionTime;
-        buildingName = constructionName;
+        base.Init(data);
+        buildingPeriod = data.constructionTime;
+        buildingName = data.buildingName;
     }
+    
     public override void Place()
     {
         base.Place();
-        
         Timer.CreateTimer(gameObject, buildingName, buildingPeriod, OnCompleteConstruction);
         gameObject.TryGetComponent(out timer);
         StartCoroutine(ChangeSpriteColor(0, 1));
@@ -34,6 +33,12 @@ public class BuildableBuilding : MovableBuilding
         {
             TimerSystem.Instance.ShowTimer(gameObject);
         }
+    }
+
+    void SaveBuilding()
+    {
+        uniqueID = SaveData.GenerateUniqueID();
+        
     }
 
     IEnumerator ChangeSpriteColor(float start, float end)
@@ -66,8 +71,6 @@ public class BuildableBuilding : MovableBuilding
                 factory.type = type;
                 break;
         }
-
-        gameObject.AddComponent<MovableBuilding>().enabled = false;
         enabled = false;
     }
 }

@@ -42,7 +42,7 @@ public class ShopCell : RegularCell
 
     void AllowBuy()
     {
-        BuildingSystem.Instance.InstantiateConstruction(itemData);
+        BuildingSystem.Instance.InstantiateConstruction(itemData.building);
         ShopManager.Instance.CloseShop();
     }
 

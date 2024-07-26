@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 public class BuildingData : ScriptableObject
 {
+    public string buildingName;
     public BuildingType type;
     public Sprite sprite;
     public BoundsInt area;

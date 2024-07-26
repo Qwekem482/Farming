@@ -41,13 +41,6 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         {
             SetupBuild();
         }
-        /*else if (Input.GetKeyDown(KeyCode.Space))   //Confirm placement
-        {
-            ConfirmBuild();         
-        } else if (Input.GetKeyDown(KeyCode.Escape)) //Cancel placement
-        {
-            CancelBuild();
-        }*/
     }
 
     void OnMouseDrag()
@@ -113,7 +106,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
 
     #region Placement
 
-    public void InstantiateConstruction(ShopItem data)
+    public void InstantiateConstruction(BuildingData data)
     {
         OpenBuildingMode();
 
@@ -123,17 +116,17 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
             {
                 parent = buildingParent,
             },
-            name = data.itemName,
+            name = data.buildingName,
         };
 
         SpriteRenderer sRenderer = emptyBuilding.AddComponent<SpriteRenderer>();
-        sRenderer.sprite = data.building.sprite;
+        sRenderer.sprite = data.sprite;
         sRenderer.material = grayscale;
         sRenderer.color = new Color(255, 255, 255, 128);
         
-        tempBuilding = emptyBuilding.AddComponent<BuildableBuilding>();
-        BuildableBuilding construction = (BuildableBuilding) tempBuilding;
-        construction.Init(data.building.area, data.building.type, data.building.constructionTime, data.itemName);
+        BuildableBuilding construction = emptyBuilding.AddComponent<BuildableBuilding>();
+        construction.Init(data);
+        tempBuilding = construction;
         
         TileFollowBuilding();
         
