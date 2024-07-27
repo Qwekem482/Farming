@@ -12,6 +12,7 @@ public class ShopItem : ScriptableObject
     public int level;
     public int price;
     public CurrencyType currencyType;
+    public ItemType itemType;
     public Sprite icon;
     public BuildingData building;
 

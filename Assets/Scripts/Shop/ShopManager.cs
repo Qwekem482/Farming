@@ -9,14 +9,11 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
-public class ShopManager : SingletonMonoBehavior<ShopManager>
+public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
 {
     [SerializeField] RectTransform shop;
     [SerializeField] RectTransform shopButtonRect;
     [SerializeField] Button shopButton;
-    
-    [SerializedDictionary("Type", "List")] 
-    public SerializedDictionary<ItemType, List<ShopItem>> shopItems;
 
     [SerializedDictionary("Type", "Button")] 
     public SerializedDictionary<ItemType, TabButton> typeButtons;
@@ -30,12 +27,14 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>
     protected override void Awake()
     {
         base.Awake();
-        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelChanged);
+        
         shopButton.onClick.AddListener(OnClickShopButton);
     }
     
-    void Start()
+    public void StartingSystem()
     {
+        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelChanged);
+        
         InitShopItem();
         gameObject.SetActive(false);
     }
@@ -84,20 +83,21 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>
 
     void InitShopItem()
     {
-        foreach(ItemType type in shopItems.Keys)
+        foreach(ItemType type in ResourceManager.Instance.shopItems.Keys)
         {
-            typeButtons[type].SetUp(shopItems[type]);
+            typeButtons[type].SetUp(ResourceManager.Instance.shopItems[type]);
         }
     }
 
+    //Dirty Code
     void OnLevelChanged(LevelUpEvent info)
     {
-        for (int i = 0; i < shopItems.Keys.Count; i++)
+        for (int i = 0; i < ResourceManager.Instance.shopItems.Keys.Count; i++)
         {
-            ItemType key = shopItems.Keys.ToArray()[i];
-            for (int j = 0; j < shopItems[key].Count; j++)
+            ItemType key = ResourceManager.Instance.shopItems.Keys.ToArray()[i];
+            for (int j = 0; j < ResourceManager.Instance.shopItems[key].Count; j++)
             {
-                ShopItem item = shopItems[key][j];
+                ShopItem item = ResourceManager.Instance.shopItems[key][j];
 
                 if (item.level == info.nextLv)
                 {

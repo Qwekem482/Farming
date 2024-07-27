@@ -16,5 +16,6 @@ MonoBehaviour:
   level: 0
   price: 1
   currencyType: 0
+  itemType: 1
   icon: {fileID: 21300000, guid: 8b20fe2eba30121489f57b9c4b5201f2, type: 3}
-  building: {fileID: 0}
+  building: {fileID: 11400000, guid: e4c85ba05ac946c40b19511aa0d4ee43, type: 2}

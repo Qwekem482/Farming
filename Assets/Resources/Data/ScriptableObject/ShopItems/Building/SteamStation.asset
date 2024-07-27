@@ -16,14 +16,6 @@ MonoBehaviour:
   level: 0
   price: 1
   currencyType: 0
+  itemType: 1
   icon: {fileID: 21300000, guid: 1a8ae830e6c30a74bab9742020d6033d, type: 3}
-  area:
-    m_Position: {x: -6, y: -6, z: 0}
-    m_Size: {x: 3, y: 3, z: 1}
-  constructionTime:
-    days: 0
-    hours: 0
-    minutes: 1
-    seconds: 30
-  buildingSprite: {fileID: 21300000, guid: 1a8ae830e6c30a74bab9742020d6033d, type: 3}
-  factoryType: 1
+  building: {fileID: 11400000, guid: f0cb2006a3074aa4988d248bae5754a1, type: 2}

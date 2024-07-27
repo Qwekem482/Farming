@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelSystem : SingletonMonoBehavior<LevelSystem>
+public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
 {
     int currentExp;
     int currentLevel;
@@ -32,16 +32,20 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>
     {
         base.Awake();
         levelList ??= GetLevels();
-        
-        currentExp = 0; //read from player's save
-        currentLevel = 0;  //read from player's save
-        if (levelList != null) expNeeded = levelList.levels[currentLevel].expNeeded;
     }
 
-    void Start()
+    public void StartingSystem()
     {
         EventManager.Instance.AddListener<ExpAddedEvent>(OnExpAdded);
         EventManager.Instance.AddListener<LevelUpEvent>(OnLevelUp);
+    }
+
+    public void LoadData()
+    {
+        currentExp = 0; //read from player's save
+        currentLevel = 0;  //read from player's save
+        expNeeded = levelList.levels[currentLevel].expNeeded;
+        
         UpdateUI();
     }
 
@@ -80,35 +84,21 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>
         Debug.Log("Level Up");
 
         CurrencyChangeEvent addSilver = new CurrencyChangeEvent(
-            levelList.levels[eventInfo.nextLv].rewards.silver, CurrencyType.Silver);
+            levelList.levels[eventInfo.nextLv].currencyReward[0], CurrencyType.Silver);
         EventManager.Instance.QueueEvent(addSilver);
         
         CurrencyChangeEvent addGold = new CurrencyChangeEvent(
-            levelList.levels[eventInfo.nextLv].rewards.gold, CurrencyType.Gold);
+            levelList.levels[eventInfo.nextLv].currencyReward[1], CurrencyType.Gold);
         EventManager.Instance.QueueEvent(addGold);
         
         UpdateUI();
     }
 }
 
-[Serializable]
-public class Level
-{
-    public int levelCount;
-    public int expNeeded;
-    public int[] itemsUnlocked;
-    public Reward rewards;
-}
 
-[Serializable]
-public class Reward
-{
-    public int gold;
-    public int silver;
-}
 
 [Serializable]
 public class LevelList
 {
-    public Level[] levels;
+    public LevelData[] levels;
 }

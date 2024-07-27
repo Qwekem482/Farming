@@ -33,37 +33,24 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         base.Awake();
         CloseBuildingMode();
     }
-    
-    void FixedUpdate()
-    {
-        if (!tempBuilding) return;
-        if (Input.GetMouseButton(0))
-        {
-            SetupBuild();
-        }
-    }
-
-    void OnMouseDrag()
-    {
-        SetupBuild();
-    }
 
     #endregion
 
     #region Controller
 
-    void SetupBuild()
+    public void SetupBuild(/*MovableBuilding building*/)
     {
+        if (!tempBuilding) return;
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (tempBuilding.IsPlaced) return;
-            
+
         Vector2 touchPosition = mainCam.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPosition = layout.LocalToCell(touchPosition);
 
         if (prevPosition == cellPosition) return;
 
         tempBuilding.transform.localPosition = layout.CellToLocalInterpolated
-            (cellPosition /*+ new Vector3(0.5f, 0.5f, 0f)*/);
+            (cellPosition);
         prevPosition = cellPosition;
         TileFollowBuilding();
     }
@@ -80,7 +67,6 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         if (!tempBuilding.Placeable()) return;
         
         tempBuilding.Place();
-        tempMap.SetTilesBlock(tempBuilding.area, SetTileBaseArrayValue(tempBuilding.area, TileType.Red));
         
         tempBuilding = null;
         prevArea = new BoundsInt();
@@ -185,16 +171,9 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
         return true;
     }
 
-    public void SetAreaGreen(BoundsInt area)
-    {
-        TileBase[] bases = SetTileBaseArrayValue(area, TileType.White);
-        tempMap.SetTilesBlock(area, bases);
-        bases = SetTileBaseArrayValue(area, TileType.Green);
-        mainMap.SetTilesBlock(area, bases);
-    }
-
     public TileBase[] SetTileBaseArrayValue(BoundsInt area, TileType type)
     {
+        Debug.Log(type);
         TileBase[] toReturn = new TileBase[area.size.x * area.size.y * area.size.z];
         FillTiles(toReturn, type);
 
@@ -205,9 +184,9 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
 
     #region Tilemap
 
-    void FillTiles(TileBase[] tiles, TileType type)
+    void FillTiles(IList<TileBase> tiles, TileType type)
     {
-        for (int i = 0; i < tiles.Length; i++)
+        for (int i = 0; i < tiles.Count; i++)
         {
             tiles[i] = tileBases[type];
         }

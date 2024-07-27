@@ -9,7 +9,7 @@ public class BuildableBuilding : MovableBuilding
     Timer timer;
     string buildingName;
     TimePeriod buildingPeriod;
-    readonly static int Greyscale = Shader.PropertyToID("_Greyscale");
+    readonly static int GREYSCALE = Shader.PropertyToID("_Greyscale");
 
     public override void Init(BuildingData data)
     {
@@ -50,7 +50,7 @@ public class BuildableBuilding : MovableBuilding
         {
             time += Time.deltaTime;
             float grayscale = Mathf.Lerp(start, end, Mathf.Clamp01(time / 1f));
-            sRenderer.material.SetFloat(Greyscale, grayscale);
+            sRenderer.material.SetFloat(GREYSCALE, grayscale);
             yield return null;
         }
     }

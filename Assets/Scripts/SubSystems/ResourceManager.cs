@@ -1,9 +1,21 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
+using AYellowpaper.SerializedCollections;
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : SingletonMonoBehavior<ResourceManager>
 {
-    public Dictionary<ItemType, List<ShopItem>> shopItems;
+    //public List<LevelData> levelData;
+    public List<BuildingData> allBuildingData;
+    [SerializedDictionary("Type", "List")] 
+    public SerializedDictionary<ItemType, List<ShopItem>> shopItems;
     public List<Collectible> allCollectibles;
+}
+
+[Serializable]
+public class LevelData
+{
+    public int levelCount;
+    public int expNeeded;
+    public int[] itemsUnlocked;
+    public int[] currencyReward;
 }

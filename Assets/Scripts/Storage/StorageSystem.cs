@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StorageSystem : SingletonMonoBehavior<StorageSystem>
+public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
 {
     readonly Dictionary<Collectible, int> allItems = new Dictionary<Collectible, int>();
     Dictionary<Collectible, int> existingItems = new Dictionary<Collectible, int>();
-    const string CollectiblePath = "Data/ScriptableObject/Collecitibles/";
     
     [SerializeField] Collectible[] upgradeTools = new Collectible[3];
     
@@ -23,14 +22,23 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>
         LoadItemFromDisk();
         existingItems = GetExistingItem();
     }
-    
-    void Start()
+
+    public void StartingSystem()
     {
+        LoadItemFromDisk();
+        
         EventManager.Instance.AddListener<InsufficientCapacityEvent>(OnInsufficientCapacity);
         EventManager.Instance.AddListener<StorageItemChangeEvent>(OnStorageChange);
         
         StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
         StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
+    }
+
+    public void LoadSavedData()
+    {
+        //TODO: Load
+        
+        existingItems = GetExistingItem();
     }
     
     #endregion
@@ -124,10 +132,9 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>
     
     void LoadItemFromDisk()
     {
-        Collectible[] collectibles = Resources.LoadAll<Collectible>(CollectiblePath);
-        foreach(Collectible t in collectibles)
+        foreach(Collectible collectible in ResourceManager.Instance.allCollectibles)
         {
-            allItems.Add(t, 0);
+            allItems.Add(collectible, 0);
         }
     }
 
