@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
+using UnityEngine;
 
 public class ResourceManager : SingletonMonoBehavior<ResourceManager>
 {
@@ -9,7 +10,7 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
     public List<Collectible> allCollectibles;
     
     [SerializedDictionary("ItemType", "List")] 
-    public SerializedDictionary<ItemType, ShopItemData[]> shopItems;
+    public SerializedDictionary<BuildingType, ShopItemData[]> shopItems;
     [SerializedDictionary("BuildingType", "List")] 
     public SerializedDictionary<FactoryType, ProductData[]> products;
 

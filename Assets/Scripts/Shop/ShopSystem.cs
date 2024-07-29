@@ -16,7 +16,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     [SerializeField] Button shopButton;
 
     [SerializedDictionary("Type", "Button")] 
-    public SerializedDictionary<ItemType, TabButton> typeButtons;
+    public SerializedDictionary<BuildingType, TabButton> typeButtons;
     
 
     public Sprite coin;
@@ -63,7 +63,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     {
         if (isOpen) return;
         shop.gameObject.SetActive(true);
-        typeButtons[ItemType.Factory].thisButton.onClick.Invoke();
+        typeButtons[BuildingType.Factory].thisButton.onClick.Invoke();
         OpenCurtain();
         shop.DOAnchorPosX(shop.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
@@ -81,7 +81,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
 
     void InitShopItem()
     {
-        foreach(ItemType type in ResourceManager.Instance.shopItems.Keys)
+        foreach(BuildingType type in ResourceManager.Instance.shopItems.Keys)
         {
             typeButtons[type].SetUp(ResourceManager.Instance.shopItems[type].ToList());
         }
@@ -92,7 +92,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     {
         for (int i = 0; i < ResourceManager.Instance.shopItems.Keys.Count; i++)
         {
-            ItemType key = ResourceManager.Instance.shopItems.Keys.ToArray()[i];
+            BuildingType key = ResourceManager.Instance.shopItems.Keys.ToArray()[i];
             for (int j = 0; j < ResourceManager.Instance.shopItems[key].Length; j++)
             {
                 ShopItemData item = ResourceManager.Instance.shopItems[key][j];
