@@ -525,7 +525,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 50204090}
-  - component: {fileID: 50204091}
   m_Layer: 5
   m_Name: ShopUI
   m_TagString: Untagged
@@ -553,34 +552,6 @@ RectTransform:
   m_AnchoredPosition: {x: -390, y: 0}
   m_SizeDelta: {x: 780, y: 1058.07}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &50204091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50204089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0ec49e45f772441bcc9d94e914bdba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shop: {fileID: 50204090}
-  shopButtonRect: {fileID: 1760477959}
-  shopButton: {fileID: 1760477961}
-  typeButtons:
-    _serializedList:
-    - Key: 0
-      Value: {fileID: 503093561}
-    - Key: 1
-      Value: {fileID: 970294294}
-    - Key: 2
-      Value: {fileID: 1683309407}
-    - Key: 3
-      Value: {fileID: 1585926323}
-    - Key: 4
-      Value: {fileID: 447356042}
-  coin: {fileID: 21300000, guid: 0d5457257cdc96e409084abb919c51fb, type: 3}
 --- !u!1 &59861970
 GameObject:
   m_ObjectHideFlags: 0
@@ -29784,18 +29755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb305de5bc6456148a41b92e1fd922e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  products:
-    _serializedList:
-    - Key: 1
-      Value:
-      - {fileID: 11400000, guid: f7df3960679fd2e4ea5fb0b6bb584a1d, type: 2}
-      - {fileID: 11400000, guid: e634b459039017d41a2a046badf15985, type: 2}
-    - Key: 0
-      Value:
-      - {fileID: 11400000, guid: 3f8e5e2f0e7f3a7409d2006df176815b, type: 2}
-    - Key: 2
-      Value:
-      - {fileID: 11400000, guid: 9e58b8a7bbbb08b429940dbc8d8b2979, type: 2}
   scroller: {fileID: 1029261347}
   cell: {fileID: 4974872854716943920, guid: 1a46167ca736fb54a81ac58b02e7fe3f, type: 3}
   rectTrans: {fileID: 667247101}
@@ -29912,6 +29871,7 @@ Transform:
   - {fileID: 1655924639}
   - {fileID: 1881803322}
   - {fileID: 203392233}
+  - {fileID: 1574835412}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &715290613
@@ -31367,9 +31327,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allBuildingData: []
-  shopItems:
-    _serializedList: []
   allCollectibles: []
+  shopItems:
+    _serializedList:
+    - Key: 0
+      Value: []
+    - Key: 1
+      Value:
+      - {fileID: 11400000, guid: 29342f5223b35ff4fa69d60d4e6fe947, type: 2}
+      - {fileID: 11400000, guid: 3046c7c972b049847ae73a0a1946253e, type: 2}
+    - Key: 2
+      Value: []
+    - Key: 3
+      Value: []
+  products:
+    _serializedList: []
 --- !u!1 &917642098
 GameObject:
   m_ObjectHideFlags: 0
@@ -34218,6 +34190,64 @@ MonoBehaviour:
   buildingConfirmPanel: {fileID: 59861971}
   confirmButton: {fileID: 2126202712}
   cancelButton: {fileID: 794355763}
+--- !u!1 &1574835411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1574835412}
+  - component: {fileID: 1574835413}
+  m_Layer: 0
+  m_Name: ShopSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1574835412
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574835411}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 675153080}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1574835413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574835411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0ec49e45f772441bcc9d94e914bdba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shop: {fileID: 50204090}
+  shopButtonRect: {fileID: 1760477959}
+  shopButton: {fileID: 1760477961}
+  typeButtons:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 503093561}
+    - Key: 1
+      Value: {fileID: 970294294}
+    - Key: 2
+      Value: {fileID: 1683309407}
+    - Key: 3
+      Value: {fileID: 1585926323}
+  coin: {fileID: 21300000, guid: 0d5457257cdc96e409084abb919c51fb, type: 3}
 --- !u!1 &1581655170
 GameObject:
   m_ObjectHideFlags: 0

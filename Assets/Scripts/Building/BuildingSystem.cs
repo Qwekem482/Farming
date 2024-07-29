@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
-public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
+public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
 {
     public GridLayout layout;
     [SerializeField] Tilemap mainMap;
@@ -28,9 +28,8 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
     
     #region MonoBehavior
 
-    protected override void Awake()
+    public void StartingSystem()
     {
-        base.Awake();
         CloseBuildingMode();
     }
 
@@ -173,7 +172,6 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>
 
     public TileBase[] SetTileBaseArrayValue(BoundsInt area, TileType type)
     {
-        Debug.Log(type);
         TileBase[] toReturn = new TileBase[area.size.x * area.size.y * area.size.z];
         FillTiles(toReturn, type);
 

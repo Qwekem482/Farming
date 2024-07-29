@@ -10,7 +10,6 @@ using UnlimitedScrollUI;
 
 public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 {
-    [SerializeField] SerializedDictionary<BuildingType, ProductData[]> products;
     [SerializeField] VerticalUnlimitedScroller scroller;
     [SerializeField] GameObject cell;
     [SerializeField] RectTransform rectTrans;
@@ -68,19 +67,19 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 
     void Generate(Factory currentFactory)
     {
-        scroller.Generate(cell, products[currentFactory.type].Length, (index, iCell) =>
+        scroller.Generate(cell, ResourceManager.Instance.products[currentFactory.type].Length, (index, iCell) =>
         {
             ProductInfoCell infoCell = iCell as ProductInfoCell;
-            if (infoCell != null) infoCell.AssignData(products[currentFactory.type][index], canvas, factory);
+            if (infoCell != null) infoCell.AssignData(ResourceManager.Instance.products[currentFactory.type][index], canvas, factory);
         });
     }
 
     void Generate()
     {
-        scroller.Generate(cell, products[BuildingType.Field].Length, (index, iCell) =>
+        scroller.Generate(cell, ResourceManager.Instance.products[FactoryType.Field].Length, (index, iCell) =>
         {
             ProductInfoCell infoCell = iCell as ProductInfoCell;
-            if (infoCell != null) infoCell.AssignData(products[BuildingType.Field][index] as CropData, canvas, coin);
+            if (infoCell != null) infoCell.AssignData(ResourceManager.Instance.products[FactoryType.Field][index] as CropData, canvas, coin);
         });
     }
 

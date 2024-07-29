@@ -10,7 +10,7 @@ public class Factory : MonoBehaviour
     Queue<ProductData> processingQueue;
     Queue<ProductData> completeQueue;
     
-    public BuildingType type;
+    public FactoryType type;
     public FactoryState state;
     public int queueCapacity = 3;
 
@@ -27,7 +27,7 @@ public class Factory : MonoBehaviour
         ReloadFactoryUIHolder();
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this);
         FactoryUIHolder.Instance.gameObject.SetActive(true);
-        if (state == FactoryState.Processing) TimerSystem.Instance.ShowTimer(gameObject);
+        if (state == FactoryState.Processing) TimerUI.Instance.ShowTimer(gameObject);
     }
 
     public void AddProcessingProduct(ProductData data)
@@ -91,16 +91,6 @@ public class Factory : MonoBehaviour
     {
         FactoryUIHolder.Instance.Init(this, processingQueue, completeQueue);
     }
-
-    /*void OnSufficient(SufficientItemsEvent info)
-    {
-        EventManager.Instance.RemoveListener<InsufficientItemsEvent>(OnInsufficient);
-    }
-
-    void OnInsufficient(InsufficientItemsEvent info)
-    {
-        EventManager.Instance.RemoveListener<SufficientItemsEvent>(OnSufficient);
-    }*/
 }
 
 public enum FactoryState

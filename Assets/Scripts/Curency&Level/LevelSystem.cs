@@ -32,12 +32,13 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
     {
         base.Awake();
         levelList ??= GetLevels();
+        EventManager.Instance.AddListener<ExpAddedEvent>(OnExpAdded);
+        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelUp);
     }
 
     public void StartingSystem()
     {
-        EventManager.Instance.AddListener<ExpAddedEvent>(OnExpAdded);
-        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelUp);
+
     }
 
     public void LoadData()

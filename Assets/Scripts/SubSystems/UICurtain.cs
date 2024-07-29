@@ -20,7 +20,6 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
     
     public void Transparent()
     {
-        Debug.Log("Curtain: Transparent");
         TurnOn();
         curtain.color = transparent;
     }

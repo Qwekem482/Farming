@@ -14,7 +14,7 @@ public class Field : Factory
 
     void Awake()
     {
-        type = BuildingType.Field;
+        type = FactoryType.Field;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -28,7 +28,7 @@ public class Field : Factory
                 if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller();
                 break;
             case FactoryState.Processing:
-                TimerSystem.Instance.ShowTimer(gameObject);
+                TimerUI.Instance.ShowTimer(gameObject);
                 break;
             case FactoryState.Complete:
                 HorizontalUIHolder.Instance.OpenUI(true);

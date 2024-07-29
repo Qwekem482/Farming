@@ -6,9 +6,13 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
 {
     //public List<LevelData> levelData;
     public List<BuildingData> allBuildingData;
-    [SerializedDictionary("Type", "List")] 
-    public SerializedDictionary<ItemType, List<ShopItem>> shopItems;
     public List<Collectible> allCollectibles;
+    
+    [SerializedDictionary("ItemType", "List")] 
+    public SerializedDictionary<ItemType, ShopItemData[]> shopItems;
+    [SerializedDictionary("BuildingType", "List")] 
+    public SerializedDictionary<FactoryType, ProductData[]> products;
+
 }
 
 [Serializable]

@@ -27,17 +27,15 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     protected override void Awake()
     {
         base.Awake();
-        
         closeButton.onClick.AddListener(CloseStorageUI);
         changeView.onClick.AddListener(() => SetStorageViewState(!storageView.gameObject.activeSelf));
-        upgradeButton.onClick.AddListener(StorageSystem.Instance.IncreaseCapacity);
-
         SetStorageViewState(false);
     }
 
     void Start()
     {
         gameObject.SetActive(false);
+        //upgradeButton.onClick.AddListener(StorageSystem.Instance.IncreaseCapacity);
     }
 
     public void OpenStorageUI()

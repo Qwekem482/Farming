@@ -19,17 +19,13 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     protected override void Awake()
     {
         base.Awake();
-        LoadItemFromDisk();
-        existingItems = GetExistingItem();
+        EventManager.Instance.AddListener<InsufficientCapacityEvent>(OnInsufficientCapacity);
+        EventManager.Instance.AddListener<StorageItemChangeEvent>(OnStorageChange);
     }
 
     public void StartingSystem()
     {
         LoadItemFromDisk();
-        
-        EventManager.Instance.AddListener<InsufficientCapacityEvent>(OnInsufficientCapacity);
-        EventManager.Instance.AddListener<StorageItemChangeEvent>(OnStorageChange);
-        
         StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
         StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
     }

@@ -31,7 +31,7 @@ public class BuildableBuilding : MovableBuilding
         base.OnMouseUp();
         if (timer != null && IsPlaced)
         {
-            TimerSystem.Instance.ShowTimer(gameObject);
+            TimerUI.Instance.ShowTimer(gameObject);
         }
     }
 
@@ -60,12 +60,12 @@ public class BuildableBuilding : MovableBuilding
         StartCoroutine(ChangeSpriteColor(1, 0));
         switch (type)
         {
-            case BuildingType.Field:
+            case FactoryType.Field:
                 Field field = gameObject.AddComponent<Field>();
                 field.freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
                 break;
-            case BuildingType.Grinder:
-            case BuildingType.SteamStation:
+            case FactoryType.Grinder:
+            case FactoryType.SteamStation:
             default:
                 Factory factory = gameObject.AddComponent<Factory>();
                 factory.type = type;

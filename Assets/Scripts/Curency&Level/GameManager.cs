@@ -13,7 +13,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         ChangeState(GameState.Starting);
     }
 
-    public void ChangeState(GameState state)
+    void ChangeState(GameState state)
     {
         onBeforeStateChanged?.Invoke(state);
         State = state;
@@ -29,11 +29,11 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             case GameState.DownloadingSave:
                 DownloadingSave();
                 break;
-            case GameState.StartingSystems:
-                StartingSystems();
-                break;
             case GameState.LoadingSave:
                 LoadingSave();
+                break;
+            case GameState.StartingSystems:
+                StartingSystems();
                 break;
             case GameState.EnteringGame:
                 EnteringGame();
@@ -56,28 +56,33 @@ public class GameManager : SingletonMonoBehavior<GameManager>
 
     void Starting()
     {
-        
+        ChangeState(GameState.DownloadingAssets);
     }
 
     void DownloadingAssets()
     {
-        
+        ChangeState(GameState.DownloadingSave);
     }
 
     void DownloadingSave()
     {
-        
+        ChangeState(GameState.LoadingSave);
     }
     
-
-    void StartingSystems()
-    {
-        ShopManager.Instance.StartingSystem();
-    }
-
     void LoadingSave()
     {
-        
+        ChangeState(GameState.StartingSystems);
+    }
+    
+    //Replace of Start, initialization data which get from another instance or save
+    void StartingSystems()
+    {
+        ShopSystem.Instance.StartingSystem();
+        LevelSystem.Instance.StartingSystem();
+        CurrencySystem.Instance.StartingSystem();
+        BuildingSystem.Instance.StartingSystem();
+        StorageSystem.Instance.StartingSystem();
+        ChangeState(GameState.EnteringGame);
     }
 
     void EnteringGame()
@@ -92,7 +97,7 @@ public enum GameState {
     Starting,
     DownloadingAssets,
     DownloadingSave,
-    StartingSystems,
     LoadingSave,
+    StartingSystems,
     EnteringGame,
 }

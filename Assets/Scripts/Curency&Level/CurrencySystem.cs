@@ -7,14 +7,23 @@ using UnityEngine;
 public class CurrencySystem : SingletonMonoBehavior<CurrencySystem>, IGameSystem
 {
     readonly Dictionary<CurrencyType, int> currencyAmounts = new Dictionary<CurrencyType, int>();
-    [SerializedDictionary("Type", "Text")]
-    SerializedDictionary<CurrencyType, TextMeshProUGUI> currencyTexts = new SerializedDictionary<CurrencyType, TextMeshProUGUI>();
     
+    
+    
+    [SerializedDictionary("Type", "Text")]
+    [SerializeField]SerializedDictionary<CurrencyType, TextMeshProUGUI> currencyTexts = new SerializedDictionary<CurrencyType, TextMeshProUGUI>();
+    
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     public void StartingSystem()
     {
         EventManager.Instance.AddListener<CurrencyChangeEvent>(OnCurrencyChange);
         EventManager.Instance.AddListener<InsufficientCurrencyEvent>(OnInsufficient);
         EventManager.Instance.AddListener<SufficientCurrencyEvent>(OnSufficient);
+        LoadCurrency();
     }
 
     public void LoadCurrency()

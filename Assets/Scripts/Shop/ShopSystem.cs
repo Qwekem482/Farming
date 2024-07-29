@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
-public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
+public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
 {
     [SerializeField] RectTransform shop;
     [SerializeField] RectTransform shopButtonRect;
@@ -27,16 +27,14 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
     protected override void Awake()
     {
         base.Awake();
-        
         shopButton.onClick.AddListener(OnClickShopButton);
+        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelChanged);
     }
     
     public void StartingSystem()
     {
-        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelChanged);
-        
         InitShopItem();
-        gameObject.SetActive(false);
+        shop.gameObject.SetActive(false);
     }
 
     void OnClickShopButton()
@@ -64,8 +62,8 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
     void OpenShop()
     {
         if (isOpen) return;
-        gameObject.SetActive(true);
-        typeButtons[ItemType.AnimalHouses].thisButton.onClick.Invoke();
+        shop.gameObject.SetActive(true);
+        typeButtons[ItemType.Factory].thisButton.onClick.Invoke();
         OpenCurtain();
         shop.DOAnchorPosX(shop.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
@@ -76,7 +74,7 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
     {
         if (!isOpen) return;
         shop.DOAnchorPosX(shop.anchoredPosition.x - shop.sizeDelta.x, 0.2f)
-            .OnComplete(() => gameObject.SetActive(false));
+            .OnComplete(() => shop.gameObject.SetActive(false));
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x - shop.sizeDelta.x, 0.2f);
         isOpen = false;
     }
@@ -85,7 +83,7 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
     {
         foreach(ItemType type in ResourceManager.Instance.shopItems.Keys)
         {
-            typeButtons[type].SetUp(ResourceManager.Instance.shopItems[type]);
+            typeButtons[type].SetUp(ResourceManager.Instance.shopItems[type].ToList());
         }
     }
 
@@ -95,9 +93,9 @@ public class ShopManager : SingletonMonoBehavior<ShopManager>, IGameSystem
         for (int i = 0; i < ResourceManager.Instance.shopItems.Keys.Count; i++)
         {
             ItemType key = ResourceManager.Instance.shopItems.Keys.ToArray()[i];
-            for (int j = 0; j < ResourceManager.Instance.shopItems[key].Count; j++)
+            for (int j = 0; j < ResourceManager.Instance.shopItems[key].Length; j++)
             {
-                ShopItem item = ResourceManager.Instance.shopItems[key][j];
+                ShopItemData item = ResourceManager.Instance.shopItems[key][j];
 
                 if (item.level == info.nextLv)
                 {

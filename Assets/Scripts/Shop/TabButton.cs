@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +11,7 @@ public class TabButton : MonoBehaviour
     [SerializeField] GameObject cell;
     int totalCount = 0;
 
-    List<ShopItem> shopItems;
+    List<ShopItemData> shopItems;
     public Button thisButton;
 
     void Awake()
@@ -21,15 +19,15 @@ public class TabButton : MonoBehaviour
         thisButton.onClick.AddListener(OnClick);
     }
 
-    public void SetUp(List<ShopItem> items)
+    public void SetUp(List<ShopItemData> items)
     {
         shopItems = items;
         totalCount = shopItems.Count;
+        Debug.Log("shopItemCount: " + shopItems.Count + "|" + totalCount);
     }
 
     void OnClick()
     {
-        Debug.Log("shopItemCount: " + shopItems.Count);
         scroller.Clear();
         Generate();
     }

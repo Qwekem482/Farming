@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimerSystem : SingletonMonoBehavior<TimerSystem>
+public class TimerUI : SingletonMonoBehavior<TimerUI>
 {
     [SerializeField] Camera mainCam;
     [SerializeField] GridLayout layout;

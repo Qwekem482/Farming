@@ -15,14 +15,14 @@ public class ShopCell : RegularCell
     [SerializeField] Image unit;
     [SerializeField] bool isGem;
     [SerializeField] TextMeshProUGUI price;
-    ShopItem itemData;
+    ShopItemData itemData;
 
     void Awake()
     {
         thisButton.onClick.AddListener(BuyItem);
     }
 
-    public void AssignData(ShopItem shopItem)
+    public void AssignData(ShopItemData shopItem)
     {
         itemName.text = shopItem.itemName;
         icon.sprite = shopItem.icon;
@@ -30,7 +30,7 @@ public class ShopCell : RegularCell
         price.text = shopItem.price.ToString();
         itemData = shopItem;
 
-        if (!isGem) unit.sprite = ShopManager.Instance.coin;
+        if (!isGem) unit.sprite = ShopSystem.Instance.coin;
     }
 
     void BuyItem()
@@ -43,7 +43,7 @@ public class ShopCell : RegularCell
     void AllowBuy()
     {
         BuildingSystem.Instance.InstantiateConstruction(itemData.building);
-        ShopManager.Instance.CloseShop();
+        ShopSystem.Instance.CloseShop();
     }
 
     void OnSufficientCurrency(SufficientCurrencyEvent info)

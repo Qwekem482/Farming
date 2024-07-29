@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34982c6f485ca43468aa817c1847d1c0, type: 3}
-  m_Name: Field
+  m_Script: {fileID: 11500000, guid: 9032f4508c1009c4bb19261f2c559e57, type: 3}
+  m_Name: SteamStation
   m_EditorClassIdentifier: 
-  id: B0
-  buildingName: "Ru\u1ED9ng"
-  type: 2
-  sprite: {fileID: 21300000, guid: 2f88f7f856604bc4fa4999faaaeb81ea, type: 3}
+  id: B1
+  buildingName: "X\u1EEDng H\u1EA5p"
+  sprite: {fileID: 21300000, guid: 1a8ae830e6c30a74bab9742020d6033d, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 2, y: 2, z: 1}
+    m_Size: {x: 3, y: 3, z: 1}
   constructionTime:
     days: 0
     hours: 0
-    minutes: 0
-    seconds: 10
+    minutes: 1
+    seconds: 0
+  type: 1

@@ -9,14 +9,15 @@ public class MovableBuilding : MonoBehaviour
 {
     public string uniqueID;
     public BoundsInt area;
-    protected BuildingType type;
+    protected FactoryType type;
     
     public bool IsPlaced { get; private set; }
 
     public virtual void Init(BuildingData data)
     {
         area = data.area;
-        type = data.type;
+
+        //type = data.type;
     }
 
     public bool Placeable()
