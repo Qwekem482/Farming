@@ -30,6 +30,7 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
            rectTrans.anchoredPosition.x > - canvas.gameObject.GetComponent<RectTransform>().sizeDelta.x * 2 / 3)
         {
             ProductScroller.Instance.CloseScroller();
+            UICurtain.Instance.TurnOff();
         }
         
         TryPlant();
@@ -39,7 +40,7 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
     {
         Destroy(gameObject);
         //rectTrans.anchoredPosition = originalPos;
-        PanZoom.Instance.enabled = true;
+        CameraSystem.Instance.enabled = true;
     }
 
     void TryPlant()

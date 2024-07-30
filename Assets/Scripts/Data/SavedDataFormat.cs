@@ -8,12 +8,14 @@ public struct SavedFactoryData
     public string savedDataID;
     public string factoryDataID;
     public BoundsInt area;
+    public int queueCapacity;
 
-    public SavedFactoryData(string savedDataID, string factoryDataID, BoundsInt area)
+    public SavedFactoryData(string savedDataID, string factoryDataID, BoundsInt area, int queueCapacity)
     {
         this.savedDataID = savedDataID;
         this.factoryDataID = factoryDataID;
         this.area = area;
+        this.queueCapacity = queueCapacity;
     }
 }
 

@@ -38,7 +38,7 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        PanZoom.Instance.enabled = false;
+        CameraSystem.Instance.enabled = false;
         originalPos = rectTrans.anchoredPosition;
         transform.SetParent(canvas.gameObject.transform);
     }
@@ -61,7 +61,7 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         
         //rectTrans.anchoredPosition = originalPos;
         Destroy(gameObject);
-        PanZoom.Instance.enabled = true;
+        CameraSystem.Instance.enabled = true;
     }
     
     bool Detect()

@@ -6,6 +6,7 @@ using UnityEngine;
 public class FactoryData : BuildingData
 {
     public FactoryType type;
+    public List<ProductData> productData;
     
     void OnValidate()
     {

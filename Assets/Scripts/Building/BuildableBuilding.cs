@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -58,7 +59,15 @@ public class BuildableBuilding : MovableBuilding
     void OnCompleteConstruction()
     {
         StartCoroutine(ChangeSpriteColor(1, 0));
-        switch (type)
+        
+        if(data.GetType() == typeof(FactoryData)) AssignFactory((FactoryData) data);
+        
+        enabled = false;
+    }
+
+    void AssignFactory(FactoryData factoryData)
+    {
+        switch (factoryData.type)
         {
             case FactoryType.Field:
                 Field field = gameObject.AddComponent<Field>();
@@ -67,10 +76,11 @@ public class BuildableBuilding : MovableBuilding
             case FactoryType.Grinder:
             case FactoryType.SteamStation:
             default:
-                Factory factory = gameObject.AddComponent<Factory>();
-                factory.type = type;
+                gameObject.AddComponent<Factory>();
                 break;
         }
-        enabled = false;
+
+        Factory factory = gameObject.GetComponent<Factory>();
+        factory.factoryData = factoryData;
     }
 }

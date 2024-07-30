@@ -15,7 +15,7 @@ public class Sickle : SingletonMonoBehavior<Sickle>, IBeginDragHandler, IDragHan
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        PanZoom.Instance.enabled = false;
+        CameraSystem.Instance.enabled = false;
         originalPos = rectTrans.anchoredPosition;
         transform.SetParent(canvas.transform);
         HorizontalUIHolder.Instance.CloseUI();
@@ -29,7 +29,8 @@ public class Sickle : SingletonMonoBehavior<Sickle>, IBeginDragHandler, IDragHan
     
     public void OnEndDrag(PointerEventData eventData)
     {
-        PanZoom.Instance.enabled = true;
+        CameraSystem.Instance.enabled = true;
+        transform.SetParent(HorizontalUIHolder.Instance.transform);
         rectTrans.anchoredPosition = originalPos;
     }
     

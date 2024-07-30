@@ -8,21 +8,17 @@ using UnityEngine.EventSystems;
 public class MovableBuilding : MonoBehaviour
 {
     public string uniqueID;
-    public BoundsInt area;
-    protected FactoryType type;
-    
+    public BuildingData data;
     public bool IsPlaced { get; private set; }
 
-    public virtual void Init(BuildingData data)
+    public virtual void Init(BuildingData buildingData)
     {
-        area = data.area;
-
-        //type = data.type;
+        data = buildingData;
     }
 
     public bool Placeable()
     {
-        BoundsInt areaTemp = area;
+        BoundsInt areaTemp = data.area;
         areaTemp.position = BuildingSystem.Instance.layout.LocalToCell(transform.position);
         areaTemp.position -= new Vector3Int(
             Mathf.CeilToInt((float)areaTemp.size.x / 2),
@@ -34,7 +30,7 @@ public class MovableBuilding : MonoBehaviour
 
     public virtual void Place()
     {
-        BoundsInt areaTemp = area;
+        BoundsInt areaTemp = data.area;
         areaTemp.position = BuildingSystem.Instance.layout.LocalToCell(transform.position);
         areaTemp.position -= new Vector3Int(
             Mathf.CeilToInt((float)areaTemp.size.x / 2),
@@ -44,7 +40,7 @@ public class MovableBuilding : MonoBehaviour
         IsPlaced = true;
         BuildingSystem.Instance.SetTileBaseArrayValue(areaTemp, TileType.White);
         
-        PanZoom.Instance.Unfollow();
+        CameraSystem.Instance.Unfollow();
     }
 
     protected virtual void OnMouseUp()

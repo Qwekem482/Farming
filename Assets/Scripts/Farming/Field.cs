@@ -10,11 +10,10 @@ public class Field : Factory
     public Sprite freeSprite;
     SpriteRenderer spriteRenderer;
     
-    CropData data;
+    CropData cropData;
 
     void Awake()
     {
-        type = FactoryType.Field;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -25,7 +24,7 @@ public class Field : Factory
         switch (state)
         {
             case FactoryState.Idle:
-                if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller();
+                if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, true);
                 break;
             case FactoryState.Processing:
                 TimerUI.Instance.ShowTimer(gameObject);
@@ -41,7 +40,7 @@ public class Field : Factory
 
     public void Plant(CropData cropData)
     {
-        data = cropData;
+        this.cropData = cropData;
         EventManager.Instance.AddListenerOnce<SufficientCurrencyEvent>(OnSufficientCurrency);
         EventManager.Instance.AddListenerOnce<InsufficientCurrencyEvent>(OnInsufficientCurrency);
         EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-cropData.price, CurrencyType.Silver));
@@ -61,10 +60,10 @@ public class Field : Factory
 
     IEnumerator ProcessingProduct()
     {
-        WaitForSeconds processingTime = new WaitForSeconds(data.processingTime.ToSecond());
-        Timer.CreateTimer(gameObject, data.product.itemName, data.processingTime, OnSkipProcessingProduct);
+        WaitForSeconds processingTime = new WaitForSeconds(cropData.processingTime.ToSecond());
+        Timer.CreateTimer(gameObject, cropData.product.itemName, cropData.processingTime, OnSkipProcessingProduct);
         state = FactoryState.Processing;
-        spriteRenderer.sprite = data.processingSprite;
+        spriteRenderer.sprite = cropData.processingSprite;
         
         yield return processingTime;
         
@@ -81,13 +80,13 @@ public class Field : Factory
     {
         state = FactoryState.Complete;
         processingCoroutine = null;
-        spriteRenderer.sprite = data.completeSprite;
+        spriteRenderer.sprite = cropData.completeSprite;
     }
 
     public void HarvestProduct()
     {
-        if (data == null) return;
-        EventManager.Instance.QueueEvent(new StorageItemChangeEvent(new Item(data.product, 2)));
+        if (cropData == null) return;
+        EventManager.Instance.QueueEvent(new StorageItemChangeEvent(new Item(cropData.product, 2)));
         EventManager.Instance.AddListenerOnce<SufficientCapacityEvent>(OnSufficient);
         EventManager.Instance.AddListenerOnce<InsufficientCapacityEvent>(OnInsufficient);
     }
@@ -98,7 +97,7 @@ public class Field : Factory
         
         state = FactoryState.Idle;
         spriteRenderer.sprite = freeSprite;
-        data = null;
+        cropData = null;
 
         //Effect here
     }

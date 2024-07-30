@@ -19,7 +19,7 @@ public class ProductData : ScriptableObject
 
     void FixID()
     {
-        if (char.IsDigit(id[0])) id = "F" + id;
+        if (char.IsDigit(id[0])) id = "P" + id;
     }
 
     void FixMaterial()

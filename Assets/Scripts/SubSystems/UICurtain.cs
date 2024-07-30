@@ -9,9 +9,9 @@ using UnityEngine.UI;
 public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
 {
     [SerializeField] Image curtain;
-    readonly  Color transparent = new Color(255, 255, 255, 0);
+    readonly Color transparent = new Color(255, 255, 255, 0);
     readonly Color darkFade = new Color(0, 0, 0, 128);
-    UnityAction onClick;
+    readonly List<UnityAction> onClick = new List<UnityAction>();
 
     void Start()
     {
@@ -42,12 +42,16 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
 
     public void AssignOnClickOnce(UnityAction action)
     {
-        onClick = action;
+        onClick.Add(action);
     }
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        onClick?.Invoke();
-        onClick = null;
+        if (onClick.Count != 0)
+        {
+            foreach (UnityAction action in onClick) action.Invoke();
+        }
+        
+        onClick.Clear();
     }
 }

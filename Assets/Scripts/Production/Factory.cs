@@ -1,16 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
 
 public class Factory : MonoBehaviour
 {
     Queue<ProductData> processingQueue;
     Queue<ProductData> completeQueue;
     
-    public FactoryType type;
+    //public FactoryType type;
+    public FactoryData factoryData;
     public FactoryState state;
     public int queueCapacity = 3;
 
@@ -21,11 +21,12 @@ public class Factory : MonoBehaviour
         processingQueue = new Queue<ProductData>();
         completeQueue = new Queue<ProductData>();
     }
+    
     void OnMouseUp()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         ReloadFactoryUIHolder();
-        if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this);
+        if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         FactoryUIHolder.Instance.gameObject.SetActive(true);
         if (state == FactoryState.Processing) TimerUI.Instance.ShowTimer(gameObject);
     }

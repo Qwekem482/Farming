@@ -115,7 +115,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         
         TileFollowBuilding();
         
-        PanZoom.Instance.SetupFollow(tempBuilding.transform);
+        CameraSystem.Instance.SetupFollow(tempBuilding.transform);
     }
 
     void ClearArea()
@@ -128,14 +128,14 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     {
         ClearArea();
 
-        tempBuilding.area.position =
+        tempBuilding.data.area.position =
             layout.WorldToCell(tempBuilding.gameObject.transform.position) -
             new Vector3Int(
-                Mathf.CeilToInt((float)tempBuilding.area.size.x / 2),
-                Mathf.CeilToInt((float)tempBuilding.area.size.y / 2),
+                Mathf.CeilToInt((float)tempBuilding.data.area.size.x / 2),
+                Mathf.CeilToInt((float)tempBuilding.data.area.size.y / 2),
                 0);
         
-        TileBase[] baseArray = tempMap.GetTilesBlock(tempBuilding.area);
+        TileBase[] baseArray = tempMap.GetTilesBlock(tempBuilding.data.area);
         TileBase[] tileArray = new TileBase[baseArray.Length];
 
         for (int i = 0; i < baseArray.Length; i++)
@@ -151,9 +151,9 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
             }
         }
         
-        prevBase = tempMap.GetTilesBlock(tempBuilding.area);
-        tempMap.SetTilesBlock(tempBuilding.area, tileArray);
-        prevArea = tempBuilding.area;
+        prevBase = tempMap.GetTilesBlock(tempBuilding.data.area);
+        tempMap.SetTilesBlock(tempBuilding.data.area, tileArray);
+        prevArea = tempBuilding.data.area;
     }
 
     public bool ValidArea(BoundsInt area)

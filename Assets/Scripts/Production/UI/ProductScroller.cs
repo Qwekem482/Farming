@@ -34,24 +34,16 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         });
     }
 
-    public void OpenScroller(Factory currentFactory)
+    public void OpenScroller(Factory currentFactory, bool isField)
     {
         isOpen = true;
         factory = currentFactory;
         gameObject.SetActive(true);
-        Generate(currentFactory);
+        Generate(currentFactory, isField);
         OpenCurtain();
         rectTrans.DOAnchorPosX(rectTrans.anchoredPosition.x + rectTrans.sizeDelta.x, 0.2f);
     }
-
-    public void OpenScroller()
-    {
-        isOpen = true;
-        Generate();
-        gameObject.SetActive(true);
-        OpenCurtain();
-        rectTrans.DOAnchorPosX(rectTrans.anchoredPosition.x + rectTrans.sizeDelta.x, 0.2f);
-    }
+    
 
     public void CloseScroller()
     {
@@ -65,21 +57,16 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
             });
     }
 
-    void Generate(Factory currentFactory)
+    void Generate(Factory currentFactory, bool isField)
     {
-        scroller.Generate(cell, ResourceManager.Instance.products[currentFactory.type].Length, (index, iCell) =>
+        
+        scroller.Generate(cell, currentFactory.factoryData.productData.Count, (index, iCell) =>
         {
             ProductInfoCell infoCell = iCell as ProductInfoCell;
-            if (infoCell != null) infoCell.AssignData(ResourceManager.Instance.products[currentFactory.type][index], canvas, factory);
-        });
-    }
-
-    void Generate()
-    {
-        scroller.Generate(cell, ResourceManager.Instance.products[FactoryType.Field].Length, (index, iCell) =>
-        {
-            ProductInfoCell infoCell = iCell as ProductInfoCell;
-            if (infoCell != null) infoCell.AssignData(ResourceManager.Instance.products[FactoryType.Field][index] as CropData, canvas, coin);
+            if (infoCell == null) return;
+            if (isField)
+                infoCell.AssignData(currentFactory.factoryData.productData[index] as CropData, canvas, coin);
+            else infoCell.AssignData(currentFactory.factoryData.productData[index], canvas, factory);
         });
     }
 

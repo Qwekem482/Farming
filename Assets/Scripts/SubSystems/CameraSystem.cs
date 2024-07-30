@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using AYellowpaper.SerializedCollections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
-public class PanZoom : SingletonMonoBehavior<PanZoom>
+public class CameraSystem : SingletonMonoBehavior<CameraSystem>
 {
     [SerializeField] Camera mainCam;
     [SerializeField] float topLimit;
@@ -33,17 +28,18 @@ public class PanZoom : SingletonMonoBehavior<PanZoom>
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0)
+        switch (Input.touchCount)
         {
-            if (Input.touchCount == 2)
-            {
+            case <= 0:
+                return;
+            case 2:
                 ZoomOperation();
-            } else
-            {
+                break;
+            default:
                 MoveOperation();
-            }
+                break;
         }
-        
+
 
     }
 
@@ -148,7 +144,7 @@ public class PanZoom : SingletonMonoBehavior<PanZoom>
     {
         Vector3 camPosition = mainCam.transform.position;
         Vector3 position = new Vector3(focusPosition.x, focusPosition.y, camPosition.z);
-        mainCam.transform.DOMove(position, 0.1f);
+        mainCam.transform.DOMove(position, 0.5f);
         
         ClampCamera();
         

@@ -52,6 +52,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         price.text = (3 + currentFactory.queueCapacity * 2).ToString();
         
         OpenCurtain();
+        CameraSystem.Instance.Focus(factory.transform.position);
         gameObject.SetActive(true);
     }
 
