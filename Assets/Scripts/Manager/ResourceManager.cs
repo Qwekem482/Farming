@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResourceManager : SingletonMonoBehavior<ResourceManager>
@@ -9,8 +10,8 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
     //public List<LevelData> levelData;
     public List<Collectible> allCollectibles;
 
-    public Dictionary<string, BuildingData> allBuildingData;
-    public Dictionary<string, ProductData> allProductData;
+    public Dictionary<string, BuildingData> allBuildingData = new Dictionary<string, BuildingData>();
+    public Dictionary<string, ProductData> allProductData = new Dictionary<string, ProductData>();
     public SerializedDictionary<BuildingType, ShopItemData[]> shopItems;
 
     public void Initialization()
@@ -27,6 +28,11 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
             
             
         }
+    }
+
+    public ProductData TranslateToProductData(string id)
+    {
+        return allProductData[id];
     }
 }
 

@@ -26,9 +26,9 @@ public class Timer : MonoBehaviour
         onComplete = new UnityEvent();
     }
 
-    void TimerBegin()
+    void TimerBegin(TimeSpan timeLeft)
     {
-        TimeLeft = duration.TotalSeconds;
+        TimeLeft = timeLeft.TotalSeconds;
         IsRunning = true;
     }
 
@@ -65,23 +65,15 @@ public class Timer : MonoBehaviour
         TimeLeft = 0;
         finishTime = DateTime.Now;
     }
-    
-    public static void CreateTimer(GameObject source, string processName, TimePeriod period)
-    {
-        Timer timer = source.AddComponent<Timer>();
-        timer.InitTimer(processName, DateTime.Now, period.ConvertToTimeSpan());
-        timer.TimerBegin();
-        timer.onComplete.AddListener(() => Destroy(timer));
-    }
 
-    public static void CreateTimer(GameObject source, string processName, TimePeriod period, UnityAction onCompleteEvent)
+    public static void CreateTimer(GameObject source, string processName, TimePeriod period, UnityAction onCompleteEvent, TimeSpan timeLeft = default)
     {
         Timer timer = source.AddComponent<Timer>();
         timer.InitTimer(processName, DateTime.Now, period.ConvertToTimeSpan());
-        timer.TimerBegin();
+        timer.TimerBegin(timeLeft == default ? period.ConvertToTimeSpan() : timeLeft);
         timer.onComplete.AddListener(() =>
         {
-            onCompleteEvent.Invoke();
+            onCompleteEvent?.Invoke();
             Destroy(timer);
         });
     }
@@ -106,13 +98,10 @@ public class TimePeriod
         return (float) ConvertToTimeSpan().TotalSeconds;
     }
 
-    public string ConvertToString()
-    {
-        return ConvertToTimeSpan().ToString(@"dd\:hh\:mm\:ss");
-    }
-
     public string ConvertToStringWithoutDay()
     {
         return ConvertToTimeSpan().ToString(@"hh\:mm\:ss");
     }
+    
+    
 }

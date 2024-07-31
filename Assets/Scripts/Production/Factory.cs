@@ -61,16 +61,24 @@ public class Factory : MovableBuilding
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
     
-    IEnumerator ProcessingProduct()
+    IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
     {
         state = FactoryState.Processing;
         while (processingQueue.Count > 0)
         {
             ProductData productData = processingQueue.Peek();
-            WaitForSeconds processingTime = new WaitForSeconds(productData.processingTime.ToSecond());
+            WaitForSeconds processingTime;
+            if (timeLeft == default)
+            {
+                processingTime = new WaitForSeconds(productData.processingTime.ToSecond());
+            } else
+            {
+                processingTime = new WaitForSeconds((float) timeLeft.TotalSeconds);
+                timeLeft = default;
+            }
             
             Timer.CreateTimer(gameObject, productData.product.itemName, 
-                productData.processingTime, OnSkipProcessingProduct);
+                productData.processingTime, OnSkipProcessingProduct, timeLeft);
 
             SaveFactoryState();
             
@@ -107,13 +115,23 @@ public class Factory : MovableBuilding
     protected void SaveFactoryState()
     {
         EventManager.Instance.QueueEvent(new FactoryDataEvent
-            (uniqueID, buildingData.id, buildingArea, processingQueue, completeQueue));
+            (uniqueID, buildingData.id, transform.position, 
+                buildingArea, processingQueue, completeQueue));
     }
 
     public override void Place()
     {
         base.Place();
         SaveFactoryState();
+    }
+
+    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
+    {
+        uniqueID = factoryID;
+        processingQueue = savedProcessing;
+        completeQueue = savedCompleted;
+        processingCoroutine = null;
+        processingCoroutine ??= StartCoroutine(ProcessingProduct(timeLeft));
     }
 }
 

@@ -20,7 +20,7 @@ public class LocalSaveSystem
             Directory.CreateDirectory(SAVE_FILE_LOCATION);
 
         FileName = FILE_NAME + EXTENSION;
-        FilePath = SAVE_FILE_LOCATION + FILE_NAME + EXTENSION;
+        FilePath = SAVE_FILE_LOCATION + FileName;
     }
 
     public static bool Save<T>(T saveData)

@@ -16,7 +16,7 @@ MonoBehaviour:
   buildingName: "X\u1EEDng H\u1EA5p"
   sprite: {fileID: 21300000, guid: 1a8ae830e6c30a74bab9742020d6033d, type: 3}
   area:
-    m_Position: {x: -12, y: -3, z: 0}
+    m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 3, y: 3, z: 1}
   constructionTime:
     days: 0
