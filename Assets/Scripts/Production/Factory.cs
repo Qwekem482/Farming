@@ -1,16 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class Factory : MonoBehaviour
+public class Factory : MovableBuilding
 {
     Queue<ProductData> processingQueue;
     Queue<ProductData> completeQueue;
     
-    //public FactoryType type;
-    public FactoryData factoryData;
     public FactoryState state;
     public int queueCapacity = 3;
 
@@ -22,13 +21,21 @@ public class Factory : MonoBehaviour
         completeQueue = new Queue<ProductData>();
     }
     
-    void OnMouseUp()
+    protected override void OnMouseUp()
     {
+        base.OnMouseUp();
         if (EventSystem.current.IsPointerOverGameObject()) return;
         ReloadFactoryUIHolder();
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         FactoryUIHolder.Instance.gameObject.SetActive(true);
         if (state == FactoryState.Processing) TimerUI.Instance.ShowTimer(gameObject);
+    }
+
+    public override void Init(BuildingData data)
+    {
+        base.Init(data);
+        uniqueID = SaveData.GenerateUniqueID();
+        if(GetType() == typeof(Factory)) SaveFactoryState();
     }
 
     public void AddProcessingProduct(ProductData data)
@@ -62,7 +69,10 @@ public class Factory : MonoBehaviour
             ProductData productData = processingQueue.Peek();
             WaitForSeconds processingTime = new WaitForSeconds(productData.processingTime.ToSecond());
             
-            Timer.CreateTimer(gameObject, productData.product.itemName, productData.processingTime, OnSkipProcessingProduct);
+            Timer.CreateTimer(gameObject, productData.product.itemName, 
+                productData.processingTime, OnSkipProcessingProduct);
+
+            SaveFactoryState();
             
             yield return processingTime;
             
@@ -85,12 +95,25 @@ public class Factory : MonoBehaviour
     void OnCompleteProcessingProduct(ProductData data)
     {
         completeQueue.Enqueue(data);
+        SaveFactoryState();
         if (ReferenceEquals(FactoryUIHolder.Instance.currentFactory, this)) ReloadFactoryUIHolder();
     }
 
     public void ReloadFactoryUIHolder()
     {
         FactoryUIHolder.Instance.Init(this, processingQueue, completeQueue);
+    }
+
+    protected void SaveFactoryState()
+    {
+        EventManager.Instance.QueueEvent(new FactoryDataEvent
+            (uniqueID, buildingData.id, buildingArea, processingQueue, completeQueue));
+    }
+
+    public override void Place()
+    {
+        base.Place();
+        SaveFactoryState();
     }
 }
 

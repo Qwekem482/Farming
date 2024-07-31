@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d467f13fd4427674691fda828ffe6f25, type: 3}
   m_Name: glutinous_rice_flour
   m_EditorClassIdentifier: 
+  id: F1
   product: {fileID: 11400000, guid: c3f276a9d40c74c43a44c2c5f26a3d79, type: 2}
   materials:
   - collectible: {fileID: 11400000, guid: b6360c6e05b39a54c81163e0303fee12, type: 2}

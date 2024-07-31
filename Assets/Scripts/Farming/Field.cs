@@ -17,7 +17,7 @@ public class Field : Factory
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnMouseUp()
+    protected override void OnMouseUp()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
@@ -36,6 +36,13 @@ public class Field : Factory
                 Debug.Log("OutOfRange");
                 break;
         }
+    }
+    
+    public override void Init(BuildingData data)
+    {
+        base.Init(data);
+        freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        SaveFactoryState();
     }
 
     public void Plant(CropData cropData)

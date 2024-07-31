@@ -28,5 +28,16 @@ public class ProductData : ScriptableObject
         Array.Resize(ref materials, 4);
         Debug.LogError("Material array is limited to 4 elements");
     }
+
+    public SavedProcessingData ConvertToSavedData()
+    {
+        DateTime completedTime = DateTime.Now + processingTime.ConvertToTimeSpan();
+        return new SavedProcessingData(id, completedTime);
+    }
+
+    public static ProductData ConvertFromSavedData(SavedProcessingData data)
+    {
+        return ResourceManager.Instance.allProductData[data.productDataID];
+    }
     
 }

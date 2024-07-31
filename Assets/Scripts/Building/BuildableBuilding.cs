@@ -8,7 +8,6 @@ using UnityEngine;
 public class BuildableBuilding : MovableBuilding
 {
     Timer timer;
-    string buildingName;
     TimePeriod buildingPeriod;
     readonly static int GREYSCALE = Shader.PropertyToID("_Greyscale");
 
@@ -16,7 +15,6 @@ public class BuildableBuilding : MovableBuilding
     {
         base.Init(data);
         buildingPeriod = data.constructionTime;
-        buildingName = data.buildingName;
     }
     
     public override void Place()
@@ -34,12 +32,6 @@ public class BuildableBuilding : MovableBuilding
         {
             TimerUI.Instance.ShowTimer(gameObject);
         }
-    }
-
-    void SaveBuilding()
-    {
-        uniqueID = SaveData.GenerateUniqueID();
-        
     }
 
     IEnumerator ChangeSpriteColor(float start, float end)
@@ -60,7 +52,7 @@ public class BuildableBuilding : MovableBuilding
     {
         StartCoroutine(ChangeSpriteColor(1, 0));
         
-        if(data.GetType() == typeof(FactoryData)) AssignFactory((FactoryData) data);
+        if(buildingData.GetType() == typeof(FactoryData)) AssignFactory((FactoryData) buildingData);
         
         enabled = false;
     }
@@ -71,16 +63,16 @@ public class BuildableBuilding : MovableBuilding
         {
             case FactoryType.Field:
                 Field field = gameObject.AddComponent<Field>();
-                field.freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+                field.Init(buildingData);
                 break;
             case FactoryType.Grinder:
             case FactoryType.SteamStation:
             default:
-                gameObject.AddComponent<Factory>();
+                Factory tempFactory = gameObject.AddComponent<Factory>();
+                tempFactory.Init(buildingData);
                 break;
         }
-
-        Factory factory = gameObject.GetComponent<Factory>();
-        factory.factoryData = factoryData;
+        
+        Destroy(this);
     }
 }

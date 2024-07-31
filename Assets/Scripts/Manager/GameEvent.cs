@@ -110,6 +110,53 @@ public class SufficientCapacityEvent : GameEvent
     }
 }
 
+public class FactoryDataEvent : GameEvent
+{
+    public readonly string factoryID;
+    readonly string factoryDataID;
+    readonly BoundsInt area;
+    readonly int queueCapacity;
+    readonly Queue<SavedProcessingData> processing;
+    readonly Queue<string> completed; //productDataID of completed item
 
+    public FactoryDataEvent(string factoryID, string factoryDataID, BoundsInt area, 
+        Queue<ProductData> processing, Queue<ProductData> completed, int queueCapacity = 3)
+    {
+        this.factoryID = factoryID;
+        this.factoryDataID = factoryDataID;
+        this.area = area;
+        this.queueCapacity = queueCapacity;
+        this.processing = ConvertProcessing(processing);
+        this.completed = ConvertCompleted(completed);
+    }
 
+    static Queue<SavedProcessingData> ConvertProcessing(Queue<ProductData> dataQueue)
+    {
+        Queue<SavedProcessingData> toReturn = new Queue<SavedProcessingData>();
+        
+        foreach(ProductData productData in dataQueue)
+        {
+            toReturn.Enqueue(productData.ConvertToSavedData());
+        }
+        
+        return toReturn;
+    }
 
+    static Queue<string> ConvertCompleted(Queue<ProductData> dataQueue)
+    {
+        Queue<string> toReturn = new Queue<string>();
+        
+        foreach(ProductData productData in dataQueue)
+        {
+            toReturn.Enqueue(productData.id);
+        }
+        
+        return toReturn;
+    }
+
+    public SavedFactoryData CreateSavedFactoryData()
+    {
+        return new SavedFactoryData(factoryID, factoryDataID, 
+            area, queueCapacity, processing, completed);
+    }
+}

@@ -28022,6 +28022,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383409de01d55e34aa5d43b31e5fda7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyTexts:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 2055887157}
+    - Key: 1
+      Value: {fileID: 939547839}
 --- !u!1 &281295248
 GameObject:
   m_ObjectHideFlags: 0
@@ -31326,8 +31332,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 460368da0af6ae54583d35e23e7d88c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allBuildingData: []
-  allCollectibles: []
+  allCollectibles:
+  - {fileID: 11400000, guid: 6973aa97c20f6544aa536f9b018344e3, type: 2}
+  - {fileID: 11400000, guid: ee23beb79591c86419f13c7e87d564de, type: 2}
+  - {fileID: 11400000, guid: b6360c6e05b39a54c81163e0303fee12, type: 2}
+  - {fileID: 11400000, guid: c3f276a9d40c74c43a44c2c5f26a3d79, type: 2}
+  - {fileID: 11400000, guid: dba6bc1d9dcf27b4c82afe3e34f72fc6, type: 2}
+  - {fileID: 11400000, guid: 11ae7f9a0fb6c584487935e372096f48, type: 2}
+  - {fileID: 11400000, guid: 137c041b00fe971498ed838c5332899e, type: 2}
+  - {fileID: 11400000, guid: 6ffe01f760fe0594bb6aa4e5cec03047, type: 2}
   shopItems:
     _serializedList:
     - Key: 0
@@ -31340,8 +31353,6 @@ MonoBehaviour:
       Value: []
     - Key: 3
       Value: []
-  products:
-    _serializedList: []
 --- !u!1 &917642098
 GameObject:
   m_ObjectHideFlags: 0

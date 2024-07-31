@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d467f13fd4427674691fda828ffe6f25, type: 3}
   m_Name: round_sticky_rice_cake
   m_EditorClassIdentifier: 
+  id: F3
   product: {fileID: 11400000, guid: 11ae7f9a0fb6c584487935e372096f48, type: 2}
   materials:
   - collectible: {fileID: 11400000, guid: c3f276a9d40c74c43a44c2c5f26a3d79, type: 2}

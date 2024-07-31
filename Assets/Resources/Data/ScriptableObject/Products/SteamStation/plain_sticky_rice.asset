@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d467f13fd4427674691fda828ffe6f25, type: 3}
   m_Name: plain_sticky_rice
   m_EditorClassIdentifier: 
+  id: F2
   product: {fileID: 11400000, guid: dba6bc1d9dcf27b4c82afe3e34f72fc6, type: 2}
   materials:
   - collectible: {fileID: 11400000, guid: b6360c6e05b39a54c81163e0303fee12, type: 2}

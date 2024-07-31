@@ -3,22 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PolygonCollider2D))]
 public class MovableBuilding : MonoBehaviour
 {
     public string uniqueID;
-    public BuildingData data;
+    public BuildingData buildingData;
+    public BoundsInt buildingArea;
+    public string buildingName;
     public bool IsPlaced { get; private set; }
 
-    public virtual void Init(BuildingData buildingData)
+    public virtual void Init(BuildingData data)
     {
-        data = buildingData;
+        buildingData = data;
+        buildingArea = data.area;
+        buildingName = buildingData.buildingName;
     }
 
     public bool Placeable()
     {
-        BoundsInt areaTemp = data.area;
+        BoundsInt areaTemp = buildingArea;
         areaTemp.position = BuildingSystem.Instance.layout.LocalToCell(transform.position);
         areaTemp.position -= new Vector3Int(
             Mathf.CeilToInt((float)areaTemp.size.x / 2),
@@ -30,7 +35,7 @@ public class MovableBuilding : MonoBehaviour
 
     public virtual void Place()
     {
-        BoundsInt areaTemp = data.area;
+        BoundsInt areaTemp = buildingArea;
         areaTemp.position = BuildingSystem.Instance.layout.LocalToCell(transform.position);
         areaTemp.position -= new Vector3Int(
             Mathf.CeilToInt((float)areaTemp.size.x / 2),

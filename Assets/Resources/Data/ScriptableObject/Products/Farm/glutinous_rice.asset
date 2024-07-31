@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022ad81ef22c6f641a852bc6277b5bf7, type: 3}
   m_Name: glutinous_rice
   m_EditorClassIdentifier: 
+  id: F0
   product: {fileID: 11400000, guid: b6360c6e05b39a54c81163e0303fee12, type: 2}
   materials: []
   processingTime:

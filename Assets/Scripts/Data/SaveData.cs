@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class SaveData
 {
-    Dictionary<string, SavedFactoryData> placeableData;
+    Dictionary<string, SavedFactoryData> factoryData;
     Dictionary<Collectible, int> storageData;
     Dictionary<string, Queue> productionQueueData;
     //public List<Quest> currentQuestList;
@@ -22,18 +22,11 @@ public class SaveData
         return Guid.NewGuid().ToString();
     }
 
-    /*public void AddPlaceableData(string uniqueID, BoundsInt area)
+    public void AddFactoryData(FactoryDataEvent info)
     {
-        SavedFactoryData data = new SavedFactoryData(uniqueID, area);
-        if (placeableData.ContainsKey(uniqueID)) placeableData[uniqueID] = data;
-        else placeableData.Add(uniqueID, data);
+        if (factoryData.ContainsKey(info.factoryID)) factoryData[info.factoryID] = info.CreateSavedFactoryData();
+        else factoryData.Add(info.factoryID, info.CreateSavedFactoryData());
     }
-
-    public void RemovePlaceableData(string uniqueID)
-    {
-        if (placeableData.ContainsKey(uniqueID)) placeableData.Remove(uniqueID);
-    }*/
-    
 }
 
 

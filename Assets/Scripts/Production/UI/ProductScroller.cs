@@ -59,14 +59,25 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 
     void Generate(Factory currentFactory, bool isField)
     {
+        FactoryData factoryData;
         
-        scroller.Generate(cell, currentFactory.factoryData.productData.Count, (index, iCell) =>
+        try
+        {
+            factoryData = (FactoryData)currentFactory.buildingData;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Cannot cast to FactoryData" + "\n" + e.Message + "\n" + e.StackTrace);
+            throw;
+        }
+            
+        scroller.Generate(cell, factoryData.productData.Count, (index, iCell) =>
         {
             ProductInfoCell infoCell = iCell as ProductInfoCell;
             if (infoCell == null) return;
             if (isField)
-                infoCell.AssignData(currentFactory.factoryData.productData[index] as CropData, canvas, coin);
-            else infoCell.AssignData(currentFactory.factoryData.productData[index], canvas, factory);
+                infoCell.AssignData(factoryData.productData[index] as CropData, canvas, coin);
+            else infoCell.AssignData(factoryData.productData[index], canvas, factory);
         });
     }
 

@@ -16,11 +16,14 @@ MonoBehaviour:
   buildingName: "Ru\u1ED9ng"
   sprite: {fileID: 21300000, guid: 2f88f7f856604bc4fa4999faaaeb81ea, type: 3}
   area:
-    m_Position: {x: 0, y: 0, z: 0}
+    m_Position: {x: -5, y: 0, z: 0}
     m_Size: {x: 2, y: 2, z: 1}
   constructionTime:
     days: 0
     hours: 0
     minutes: 0
     seconds: 10
+  buildingType: 0
   type: 2
+  productData:
+  - {fileID: 11400000, guid: 9e58b8a7bbbb08b429940dbc8d8b2979, type: 2}

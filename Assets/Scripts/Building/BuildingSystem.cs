@@ -128,14 +128,14 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     {
         ClearArea();
 
-        tempBuilding.data.area.position =
+        tempBuilding.buildingArea.position =
             layout.WorldToCell(tempBuilding.gameObject.transform.position) -
             new Vector3Int(
-                Mathf.CeilToInt((float)tempBuilding.data.area.size.x / 2),
-                Mathf.CeilToInt((float)tempBuilding.data.area.size.y / 2),
+                Mathf.CeilToInt((float)tempBuilding.buildingArea.size.x / 2),
+                Mathf.CeilToInt((float)tempBuilding.buildingArea.size.y / 2),
                 0);
         
-        TileBase[] baseArray = tempMap.GetTilesBlock(tempBuilding.data.area);
+        TileBase[] baseArray = tempMap.GetTilesBlock(tempBuilding.buildingArea);
         TileBase[] tileArray = new TileBase[baseArray.Length];
 
         for (int i = 0; i < baseArray.Length; i++)
@@ -151,9 +151,9 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
             }
         }
         
-        prevBase = tempMap.GetTilesBlock(tempBuilding.data.area);
-        tempMap.SetTilesBlock(tempBuilding.data.area, tileArray);
-        prevArea = tempBuilding.data.area;
+        prevBase = tempMap.GetTilesBlock(tempBuilding.buildingArea);
+        tempMap.SetTilesBlock(tempBuilding.buildingArea, tileArray);
+        prevArea = tempBuilding.buildingArea;
     }
 
     public bool ValidArea(BoundsInt area)
