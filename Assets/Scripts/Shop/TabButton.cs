@@ -23,7 +23,6 @@ public class TabButton : MonoBehaviour
     {
         shopItems = items;
         totalCount = shopItems.Count;
-        Debug.Log("shopItemCount: " + shopItems.Count + "|" + totalCount);
     }
 
     void OnClick()

@@ -107,13 +107,23 @@ public class Factory : MovableBuilding
     protected void SaveFactoryState()
     {
         EventManager.Instance.QueueEvent(new FactoryDataEvent
-            (uniqueID, buildingData.id, buildingArea, processingQueue, completeQueue));
+            (uniqueID, buildingData.id, transform.position, 
+                buildingArea, processingQueue, completeQueue));
     }
 
     public override void Place()
     {
         base.Place();
         SaveFactoryState();
+    }
+
+    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, Queue<ProductData> savedCompleted)
+    {
+        uniqueID = factoryID;
+        processingQueue = savedProcessing;
+        completeQueue = savedCompleted;
+        processingCoroutine = null;
+        processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
 }
 

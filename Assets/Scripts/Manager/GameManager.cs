@@ -80,6 +80,10 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     
     void LoadingSave()
     {
+        SaveLoadSystem.Instance.LoadToSaveData();
+        
+        SaveLoadSystem.Instance.LoadFactoryData();
+        
         ChangeState(GameState.StartingSystems);
     }
     

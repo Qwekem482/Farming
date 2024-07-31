@@ -114,16 +114,18 @@ public class FactoryDataEvent : GameEvent
 {
     public readonly string factoryID;
     readonly string factoryDataID;
+    readonly Vector3 position;
     readonly BoundsInt area;
     readonly int queueCapacity;
     readonly Queue<SavedProcessingData> processing;
     readonly Queue<string> completed; //productDataID of completed item
 
-    public FactoryDataEvent(string factoryID, string factoryDataID, BoundsInt area, 
+    public FactoryDataEvent(string factoryID, string factoryDataID, Vector3 position, BoundsInt area, 
         Queue<ProductData> processing, Queue<ProductData> completed, int queueCapacity = 3)
     {
         this.factoryID = factoryID;
         this.factoryDataID = factoryDataID;
+        this.position = position;
         this.area = area;
         this.queueCapacity = queueCapacity;
         this.processing = ConvertProcessing(processing);
@@ -156,7 +158,7 @@ public class FactoryDataEvent : GameEvent
 
     public SavedFactoryData CreateSavedFactoryData()
     {
-        return new SavedFactoryData(factoryID, factoryDataID, 
+        return new SavedFactoryData(factoryID, factoryDataID, position, 
             area, queueCapacity, processing, completed);
     }
 }

@@ -1,15 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SaveData
 {
-    Dictionary<string, SavedFactoryData> factoryData;
-    Dictionary<Collectible, int> storageData;
-    Dictionary<string, Queue> productionQueueData;
+    public Dictionary<string, SavedFactoryData> factoryData = new Dictionary<string, SavedFactoryData>();
+    Dictionary<Collectible, int> storageData = new Dictionary<Collectible, int>();
     //public List<Quest> currentQuestList;
 
     string exp;
@@ -26,6 +21,11 @@ public class SaveData
     {
         if (factoryData.ContainsKey(info.factoryID)) factoryData[info.factoryID] = info.CreateSavedFactoryData();
         else factoryData.Add(info.factoryID, info.CreateSavedFactoryData());
+    }
+
+    public void ModifyStorageData()
+    {
+        
     }
 }
 

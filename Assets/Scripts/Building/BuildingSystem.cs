@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -156,18 +157,24 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         prevArea = tempBuilding.buildingArea;
     }
 
+    public void ColorTileFollowBuilding(BoundsInt area)
+    {
+        TileBase[] baseArray = tempMap.GetTilesBlock(area);
+        TileBase[] tileArray = new TileBase[baseArray.Length];
+
+        for (int i = 0; i < baseArray.Length; i++)
+        {
+            tileArray[i] = tileBases[TileType.White];
+        }
+        
+        tempMap.SetTilesBlock(area, tileArray);
+    }
+
     public bool ValidArea(BoundsInt area)
     {
         TileBase[] baseArray = tempMap.GetTilesBlock(area);
-        foreach(var tile in baseArray)
-        {
-            if (tile != tileBases[TileType.Green])
-            {
-                return false;
-            }
-        }
+        return baseArray.All(tile => tile == tileBases[TileType.Green]);
 
-        return true;
     }
 
     public TileBase[] SetTileBaseArrayValue(BoundsInt area, TileType type)
