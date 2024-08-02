@@ -32,10 +32,22 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void CreateFactory(SavedFactoryData data)
     {
+<<<<<<< HEAD
         GameObject emptyBuilding = CreateGameObject(
             ResourceManager.Instance.allBuildingData[data.factoryDataID].buildingName,
             data.position,
             data.area);
+=======
+        GameObject emptyBuilding = new GameObject
+        {
+            transform =
+            {
+                parent = gameObjectParent,
+                position = data.position,
+            },
+           name = ResourceManager.Instance.allBuildingData[data.factoryDataID].buildingName,
+        };
+>>>>>>> origin/main
 
         Factory emptyFactory = emptyBuilding.AddComponent<Factory>();
         emptyFactory.Init(ResourceManager.Instance.allBuildingData[data.factoryDataID]);
@@ -64,6 +76,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             completedProductData.Enqueue(ResourceManager.Instance.TranslateToProductData(completedData));
         }
         
+<<<<<<< HEAD
         emptyFactory.LoadFactory(data.factoryID, processingProductData, completedProductData, difference);
     }
 
@@ -82,6 +95,14 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         BuildingSystem.Instance.ColorTileFollowBuilding(area);
 
         return emptyBuilding;
+=======
+        BuildingSystem.Instance.ColorTileFollowBuilding(data.area);
+    }
+
+    public void LoadStorageData()
+    {
+        
+>>>>>>> origin/main
     }
     
 

@@ -125,7 +125,11 @@ public class Factory : MovableBuilding
         SaveFactoryState();
     }
 
+<<<<<<< HEAD
     public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
+=======
+    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, Queue<ProductData> savedCompleted)
+>>>>>>> origin/main
     {
         uniqueID = factoryID;
         processingQueue = savedProcessing;
