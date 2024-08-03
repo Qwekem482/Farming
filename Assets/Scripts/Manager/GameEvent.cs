@@ -123,6 +123,7 @@ public class FactoryDataEvent : GameEvent
     public FactoryDataEvent(string factoryID, string factoryDataID, Vector3 position, BoundsInt area, 
         Queue<ProductData> processing, Queue<ProductData> completed, int queueCapacity = 3)
     {
+        Debug.Log("Create FactoryDataEvent");
         this.factoryID = factoryID;
         this.factoryDataID = factoryDataID;
         this.position = position;

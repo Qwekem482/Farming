@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 {
@@ -12,7 +11,6 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     public void LoadToSaveData()
     {
-        LocalSaveSystem.Init();
         saveData = LocalSaveSystem.LoadData<SaveData>();
     }
 
@@ -32,23 +30,11 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void CreateFactory(SavedFactoryData data)
     {
-<<<<<<< HEAD
         GameObject emptyBuilding = CreateGameObject(
             ResourceManager.Instance.allBuildingData[data.factoryDataID].buildingName,
             data.position,
             data.area);
-=======
-        GameObject emptyBuilding = new GameObject
-        {
-            transform =
-            {
-                parent = gameObjectParent,
-                position = data.position,
-            },
-           name = ResourceManager.Instance.allBuildingData[data.factoryDataID].buildingName,
-        };
->>>>>>> origin/main
-
+        
         Factory emptyFactory = emptyBuilding.AddComponent<Factory>();
         emptyFactory.Init(ResourceManager.Instance.allBuildingData[data.factoryDataID]);
         emptyFactory.queueCapacity = data.queueCapacity;
@@ -76,7 +62,6 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             completedProductData.Enqueue(ResourceManager.Instance.TranslateToProductData(completedData));
         }
         
-<<<<<<< HEAD
         emptyFactory.LoadFactory(data.factoryID, processingProductData, completedProductData, difference);
     }
 
@@ -95,16 +80,20 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         BuildingSystem.Instance.ColorTileFollowBuilding(area);
 
         return emptyBuilding;
-=======
-        BuildingSystem.Instance.ColorTileFollowBuilding(data.area);
     }
 
-    public void LoadStorageData()
+    void OnApplicationPause(bool pauseStatus)
     {
-        
->>>>>>> origin/main
+        SaveData();
     }
-    
 
+    void OnApplicationQuit()
+    {
+        SaveData();
+    }
 
+    void SaveData()
+    {
+        LocalSaveSystem.Save(saveData);
+    }
 }

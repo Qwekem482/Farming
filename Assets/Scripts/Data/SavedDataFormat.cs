@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -26,6 +27,24 @@ public class SavedFactoryData
         this.processing = processing;
         this.completed = completed;
     }
+
+    public override string ToString()
+    {
+        string toReturn = "";
+
+        toReturn = "factoryID : " + factoryID + "\n" +
+                   "factoryDataID : " + factoryDataID + "\n" +
+                   "position : " + position + "\n" +
+                   "area : " + area + "\n" +
+                   "queueCapacity : " + queueCapacity + "\n" +
+                   "processing: \n";
+
+        toReturn = processing.Aggregate(toReturn, (current, data) => current + (data + "\n"));
+
+        toReturn += "completed : \n";
+
+        return completed.Aggregate(toReturn, (current, data) => current + (data + "\n"));
+    }
 }
 
 [Serializable]
@@ -38,5 +57,12 @@ public class SavedProcessingData
     {
         this.productDataID = productDataID;
         this.completedTime = completedTime;
+    }
+
+    public override string ToString()
+    {
+        string toReturn = "productDataID : " + productDataID + "\n" +
+                          "completedTime : " + completedTime.ToString("F");
+        return toReturn;
     }
 }

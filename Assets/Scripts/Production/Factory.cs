@@ -114,6 +114,7 @@ public class Factory : MovableBuilding
 
     protected void SaveFactoryState()
     {
+        Debug.Log("Queue FactoryDataEvent");
         EventManager.Instance.QueueEvent(new FactoryDataEvent
             (uniqueID, buildingData.id, transform.position, 
                 buildingArea, processingQueue, completeQueue));
@@ -125,11 +126,8 @@ public class Factory : MovableBuilding
         SaveFactoryState();
     }
 
-<<<<<<< HEAD
-    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
-=======
-    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, Queue<ProductData> savedCompleted)
->>>>>>> origin/main
+    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, 
+        Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
     {
         uniqueID = factoryID;
         processingQueue = savedProcessing;
