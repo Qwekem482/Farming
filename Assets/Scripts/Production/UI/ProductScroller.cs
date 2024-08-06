@@ -16,7 +16,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
     [SerializeField] Canvas canvas;
     [SerializeField] Sprite coin;
 
-    Factory factory;
+    ProductionBuilding factory;
     public bool isOpen;
 
     void Start()
@@ -34,7 +34,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         });
     }
 
-    public void OpenScroller(Factory currentFactory, bool isField)
+    public void OpenScroller(ProductionBuilding currentFactory, bool isField)
     {
         isOpen = true;
         factory = currentFactory;
@@ -57,13 +57,13 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
             });
     }
 
-    void Generate(Factory currentFactory, bool isField)
+    void Generate(ProductionBuilding currentFactory, bool isField)
     {
-        FactoryData factoryData;
+        ProductionBuildingData factoryData;
         
         try
         {
-            factoryData = (FactoryData)currentFactory.buildingData;
+            factoryData = (ProductionBuildingData) currentFactory.buildingData;
         }
         catch (Exception e)
         {
@@ -77,7 +77,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
             if (infoCell == null) return;
             if (isField)
                 infoCell.AssignData(factoryData.productData[index] as CropData, canvas, coin);
-            else infoCell.AssignData(factoryData.productData[index], canvas, factory);
+            else infoCell.AssignData(factoryData.productData[index] as ProductData, canvas, factory as Factory);
         });
     }
 

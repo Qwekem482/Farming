@@ -5,24 +5,29 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class SavedFactoryData
+public abstract class SavedBuildingData
 {
-    public string factoryID;
-    public string factoryDataID;
+    public string buildingID;
+    public string buildingDataID;
     public Vector3 position;
     public BoundsInt area;
+}
+
+[Serializable]
+public class SavedFactoryData : SavedBuildingData
+{
     public int queueCapacity;
     public Queue<SavedProcessingData> processing; 
     public Queue<string> completed; //productDataID of completed item
 
-    public SavedFactoryData(string factoryID, string factoryDataID, Vector3 position, 
+    public SavedFactoryData(string buildingID, string buildingDataID, Vector3 position, 
         BoundsInt area, int queueCapacity, Queue<SavedProcessingData> processing, 
         Queue<string> completed)
     {
-        this.factoryID = factoryID;
-        this.factoryDataID = factoryDataID;
-        this.position = position;
-        this.area = area;
+        base.buildingID = buildingID;
+        base.buildingDataID = buildingDataID;
+        base.position = position;
+        base.area = area;
         this.queueCapacity = queueCapacity;
         this.processing = processing;
         this.completed = completed;
@@ -32,8 +37,8 @@ public class SavedFactoryData
     {
         string toReturn = "";
 
-        toReturn = "factoryID : " + factoryID + "\n" +
-                   "factoryDataID : " + factoryDataID + "\n" +
+        toReturn = "buildingID : " + buildingID + "\n" +
+                   "buildingDataID : " + buildingDataID + "\n" +
                    "position : " + position + "\n" +
                    "area : " + area + "\n" +
                    "queueCapacity : " + queueCapacity + "\n" +
@@ -48,21 +53,37 @@ public class SavedFactoryData
 }
 
 [Serializable]
+public class SavedFieldData : SavedBuildingData
+{
+    public SavedProcessingData processingData;
+    
+    public SavedFieldData(string buildingID, string buildingDataID, Vector3 position, 
+        BoundsInt area, SavedProcessingData processingData)
+    {
+        base.buildingID = buildingID;
+        base.buildingDataID = buildingDataID;
+        base.position = position;
+        base.area = area;
+        this.processingData = processingData;
+    }
+}
+
+[Serializable]
 public class SavedProcessingData
 {
     public string productDataID;
-    public DateTime completedTime; //TimeSpan => CompletedTime
+    public DateTime completedDateTime;
 
-    public SavedProcessingData(string productDataID, DateTime completedTime)
+    public SavedProcessingData(string productDataID, DateTime completedDateTime)
     {
         this.productDataID = productDataID;
-        this.completedTime = completedTime;
+        this.completedDateTime = completedDateTime;
     }
 
     public override string ToString()
     {
         string toReturn = "productDataID : " + productDataID + "\n" +
-                          "completedTime : " + completedTime.ToString("F");
+                          "completedTime : " + completedDateTime.ToString("F");
         return toReturn;
     }
 }

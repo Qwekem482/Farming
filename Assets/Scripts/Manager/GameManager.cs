@@ -46,7 +46,6 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         }
         
         onAfterStateChanged?.Invoke(state);
-        Debug.Log("Loaded State: " + state);
     }
 
     void OnApplicationPause(bool pauseStatus)
@@ -81,8 +80,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     void LoadingSave()
     {
         SaveLoadSystem.Instance.LoadToSaveData();
-        
-        SaveLoadSystem.Instance.LoadFactoryData();
+        SaveLoadSystem.Instance.LoadAllData();
         
         ChangeState(GameState.StartingSystems);
     }

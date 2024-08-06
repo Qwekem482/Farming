@@ -57,7 +57,7 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (Detect()) factory.AddProcessingProduct(data);
+        if (Detect()) factory.AddProduct(data);
         
         //rectTrans.anchoredPosition = originalPos;
         Destroy(gameObject);

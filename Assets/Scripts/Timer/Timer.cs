@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour
             };
         } else
         {
-            onComplete.Invoke();
+            onComplete?.Invoke();
             TimeLeft = 0;
             IsRunning = false;
         }

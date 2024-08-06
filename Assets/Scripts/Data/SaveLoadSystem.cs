@@ -6,22 +6,31 @@ using UnityEngine;
 public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 {
     SaveData saveData = new SaveData();
+    bool isLoaded;
 
     [SerializeField] Transform gameObjectParent;
 
     public void LoadToSaveData()
     {
-        saveData = LocalSaveSystem.LoadData<SaveData>();
+        saveData = LocalSaveSystem.LoadData<SaveData>() ?? new SaveData();
     }
 
     //Actually not start here, just AddListener to receive data to save (to SaveData object)
     public void StartingSystem()
     {
-        EventManager.Instance.AddListener<FactoryDataEvent>(saveData.AddFactoryData);
+        Debug.Log("saveData : " + saveData);
+        EventManager.Instance.AddListener<SaveFactoryDataEvent>(saveData.AddFactoryData);
     }
 
-    public void LoadFactoryData()
+    public void LoadAllData()
     {
+        LoadFactoryData();
+    }
+
+    void LoadFactoryData()
+    {
+        isLoaded = true;
+        if (saveData == null) return;
         foreach(SavedFactoryData savedFactoryData in saveData.factoryData.Values)
         {
             CreateFactory(savedFactoryData);
@@ -30,42 +39,40 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void CreateFactory(SavedFactoryData data)
     {
-        GameObject emptyBuilding = CreateGameObject(
-            ResourceManager.Instance.allBuildingData[data.factoryDataID].buildingName,
+        BuildingData buildingData = ResourceManager.Instance.allBuildingData[data.buildingDataID];
+        GameObject emptyBuilding = CreateBuildingGameObject(
+            buildingData.buildingName,
             data.position,
-            data.area);
+            data.area,
+            buildingData.sprite);
         
         Factory emptyFactory = emptyBuilding.AddComponent<Factory>();
-        emptyFactory.Init(ResourceManager.Instance.allBuildingData[data.factoryDataID]);
+        emptyFactory.Init(buildingData);
         emptyFactory.queueCapacity = data.queueCapacity;
-
-        Queue<SavedProcessingData> savedProcessing = new Queue<SavedProcessingData>(data.processing);
-        Queue<string> savedCompleted = new Queue<string>(data.completed);
-        Queue<ProductData> processingProductData = new Queue<ProductData>();
-        Queue<ProductData> completedProductData = new Queue<ProductData>();
+        
+        Queue<ProductData>[] productDataQueue = InitializeProductionQueue
+        (new Queue<SavedProcessingData>(data.processing),
+            new Queue<string>(data.completed));
 
         TimeSpan difference = default;
-        while (savedProcessing.Peek().completedTime < DateTime.Now)
-        {
-            savedCompleted.Enqueue(savedProcessing.Dequeue().productDataID);
-            if (savedProcessing.Count == 0) break;
-            difference = DateTime.Now - savedProcessing.Peek().completedTime;
-        }
-
-        foreach(SavedProcessingData processingData in savedProcessing)
-        {
-            processingProductData.Enqueue(ResourceManager.Instance.TranslateToProductData(processingData.productDataID));
-        }
-        
-        foreach(string completedData in savedCompleted)
-        {
-            completedProductData.Enqueue(ResourceManager.Instance.TranslateToProductData(completedData));
-        }
-        
-        emptyFactory.LoadFactory(data.factoryID, processingProductData, completedProductData, difference);
+        emptyFactory.LoadState(data.buildingID, data.queueCapacity, 
+            productDataQueue[0],productDataQueue[1], difference);
     }
 
-    GameObject CreateGameObject(string objectName, Vector3 position, BoundsInt area)
+    void CreateField(SavedFieldData data)
+    {
+        BuildingData buildingData = ResourceManager.Instance.allBuildingData[data.buildingDataID];
+        GameObject emptyBuilding = CreateBuildingGameObject(
+            buildingData.buildingName,
+            data.position,
+            data.area,
+            buildingData.sprite);
+
+        Field emptyField = emptyBuilding.AddComponent<Field>();
+        emptyField.Init(buildingData);
+    }
+
+    GameObject CreateBuildingGameObject(string objectName, Vector3 position, BoundsInt area, Sprite sprite)
     {
         GameObject emptyBuilding = new GameObject
         {
@@ -77,19 +84,52 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             name = objectName,
         };
         
+        emptyBuilding.AddComponent<SpriteRenderer>().sprite = sprite;
         BuildingSystem.Instance.ColorTileFollowBuilding(area);
 
         return emptyBuilding;
     }
 
-    void OnApplicationPause(bool pauseStatus)
+    Queue<ProductData>[] InitializeProductionQueue(Queue<SavedProcessingData> savedProcessing, Queue<string> savedCompleted)
     {
-        SaveData();
+        Queue<ProductData> processingProductData = new Queue<ProductData>();
+        Queue<ProductData> completedProductData = new Queue<ProductData>();
+        
+        while (savedProcessing.Count != 0 && savedProcessing.Peek().completedDateTime < DateTime.Now)
+        {
+            savedCompleted.Enqueue(savedProcessing.Dequeue().productDataID);
+            if (savedProcessing.Count == 0) break;
+        }
+
+        if (savedProcessing.Count != 0)
+        {
+            foreach(SavedProcessingData processingData in savedProcessing)
+            {
+                processingProductData.Enqueue(ResourceManager.Instance.
+                    TranslateToProductData(processingData.productDataID));
+            }
+        }
+        
+        if (completedProductData.Count != 0)
+        {
+            foreach(string completedData in savedCompleted)
+            {
+                completedProductData.Enqueue(ResourceManager.Instance.
+                    TranslateToProductData(completedData));
+            }
+        }
+
+        return new[] { processingProductData, completedProductData };
     }
+
+    /*void OnApplicationPause(bool pauseStatus)
+    {
+        if (isLoaded) SaveData();
+    }*/
 
     void OnApplicationQuit()
     {
-        SaveData();
+        if (isLoaded) SaveData();
     }
 
     void SaveData()

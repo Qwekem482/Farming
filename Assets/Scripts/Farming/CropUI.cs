@@ -53,7 +53,7 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
         
         if (field != null && field.state == FactoryState.Idle)
         {
-            field.Plant(data);
+            field.AddProduct(data);
         }
     }
 }

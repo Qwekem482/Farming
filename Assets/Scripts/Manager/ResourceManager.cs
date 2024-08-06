@@ -11,7 +11,7 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
     public List<Collectible> allCollectibles;
 
     public Dictionary<string, BuildingData> allBuildingData = new Dictionary<string, BuildingData>();
-    public Dictionary<string, ProductData> allProductData = new Dictionary<string, ProductData>();
+    public Dictionary<string, ProductionOutputData> allProductData = new Dictionary<string, ProductionOutputData>();
     public SerializedDictionary<BuildingType, ShopItemData[]> shopItems;
 
     public void Initialization()
@@ -20,9 +20,9 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
         {
             allBuildingData.Add(item.building.id, item.building);
 
-            if (item.building.GetType() == typeof(FactoryData))
+            if (item.building.GetType() == typeof(ProductionBuildingData))
             {
-                foreach(ProductData data in ((FactoryData)item.building).productData) 
+                foreach(ProductionOutputData data in ((ProductionBuildingData)item.building).productData) 
                     allProductData.Add(data.id, data);
             }
             
@@ -32,7 +32,7 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
 
     public ProductData TranslateToProductData(string id)
     {
-        return allProductData[id];
+        return allProductData[id] as ProductData;
     }
 }
 

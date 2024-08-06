@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -19,11 +20,10 @@ public class SaveData
         return Guid.NewGuid().ToString();
     }
 
-    public void AddFactoryData(FactoryDataEvent info)
+    public void AddFactoryData(SaveFactoryDataEvent info)
     {
-        Debug.Log("Add Factory Data: " + info);
-        if (factoryData.ContainsKey(info.factoryID)) factoryData[info.factoryID] = info.CreateSavedFactoryData();
-        else factoryData.Add(info.factoryID, info.CreateSavedFactoryData());
+        if (factoryData.ContainsKey(info.buildingID)) factoryData[info.buildingID] = info.CreateSavedFactoryData();
+        else factoryData.Add(info.buildingID, info.CreateSavedFactoryData());
     }
 
     public void ModifyStorageData()
@@ -33,13 +33,9 @@ public class SaveData
 
     public override string ToString()
     {
-        string toReturn = "";
-        foreach(KeyValuePair<string, SavedFactoryData> data in factoryData)
-        {
-            toReturn += data.Key + " : " + data.Value;
-        }
-
-        return toReturn;
+        return factoryData.Aggregate("",
+            (current, data)
+                => current + (data.Key + " : " + data.Value));
     }
 }
 

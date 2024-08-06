@@ -4,25 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Product", menuName = "CustomObject/Product")]
-public class ProductData : ScriptableObject
+public class ProductData : ProductionOutputData
 {
-    public string id;
-    public Collectible product;
     public Item[] materials;
-    public TimePeriod processingTime;
 
-    protected virtual void OnValidate()
+    protected override void OnValidate()
     {
-        FixMaterial();
+        FixInput();
         FixID();
     }
 
-    void FixID()
+    protected override void FixID()
     {
         if (char.IsDigit(id[0])) id = "P" + id;
     }
 
-    void FixMaterial()
+    protected override void FixInput()
     {
         if (materials.Length <= 4) return;
         Array.Resize(ref materials, 4);
@@ -31,13 +28,8 @@ public class ProductData : ScriptableObject
 
     public SavedProcessingData ConvertToSavedData()
     {
-        DateTime completedTime = DateTime.Now + processingTime.ConvertToTimeSpan();
-        return new SavedProcessingData(id, completedTime);
-    }
-
-    public static ProductData ConvertFromSavedData(SavedProcessingData data)
-    {
-        return ResourceManager.Instance.allProductData[data.productDataID];
+        DateTime completedDateTime = DateTime.Now + processingTime.ConvertToTimeSpan();
+        return new SavedProcessingData(id, completedDateTime);
     }
     
 }

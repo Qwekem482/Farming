@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Field : Factory
+public class Field : ProductionBuilding
 {
     public Sprite freeSprite;
     SpriteRenderer spriteRenderer;
@@ -16,6 +16,13 @@ public class Field : Factory
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
+    
+    public override void Init(BuildingData data)
+    {
+        base.Init(data);
+        freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        SaveState();
+    }
 
     protected override void OnMouseUp()
     {
@@ -24,7 +31,8 @@ public class Field : Factory
         switch (state)
         {
             case FactoryState.Idle:
-                if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, true);
+                if (!ProductScroller.Instance.isOpen) 
+                    ProductScroller.Instance.OpenScroller(this, true);
                 break;
             case FactoryState.Processing:
                 TimerUI.Instance.ShowTimer(gameObject);
@@ -38,21 +46,75 @@ public class Field : Factory
         }
     }
     
-    public override void Init(BuildingData data)
+    protected override void SaveState()
     {
-        base.Init(data);
-        freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-        SaveFactoryState();
+        DateTime completedDateTime =
+            DateTime.Now +
+            TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
+        
+        EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
+            uniqueID, buildingData.id, transform.position,
+            buildingArea, new SavedProcessingData(cropData.id, completedDateTime)));
     }
 
-    public void Plant(CropData cropData)
+    public void LoadState()
     {
-        this.cropData = cropData;
+        
+    }
+
+    protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
+    {
+        WaitForSeconds processingTime = new WaitForSeconds(cropData.processingTime.ToSecond());
+        Timer.CreateTimer(gameObject, cropData.product.itemName,
+            cropData.processingTime, OnSkipProcessingProduct, timeLeft);
+        
+        state = FactoryState.Processing;
+        spriteRenderer.sprite = cropData.processingSprite;
+        
+        yield return processingTime;
+        
+        OnCompleteProcessingProduct();
+    }
+
+    protected override void OnSkipProcessingProduct()
+    {
+        StopCoroutine(processingCoroutine);
+        OnCompleteProcessingProduct();
+    }
+
+    protected override void OnCompleteProcessingProduct()
+    {
+        state = FactoryState.Complete;
+        processingCoroutine = null;
+        spriteRenderer.sprite = cropData.completeSprite;
+    }
+    
+    public override void AddProduct(ProductionOutputData inputData)
+    {
+        cropData = inputData as CropData;
+
+        if (cropData == null)
+        {
+            Debug.Log("Error data");
+            return;
+        }
+        
         EventManager.Instance.AddListenerOnce<SufficientCurrencyEvent>(OnSufficientCurrency);
         EventManager.Instance.AddListenerOnce<InsufficientCurrencyEvent>(OnInsufficientCurrency);
         EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-cropData.price, CurrencyType.Silver));
     }
 
+    public void HarvestProduct()
+    {
+        if (cropData == null) return;
+        EventManager.Instance.QueueEvent(new StorageItemChangeEvent(new Item(cropData.product, 2)));
+        EventManager.Instance.AddListenerOnce<SufficientCapacityEvent>(OnSufficient);
+        EventManager.Instance.AddListenerOnce<InsufficientCapacityEvent>(OnInsufficient);
+    }
+    
+
+    #region EventCommunication
+    
     void OnSufficientCurrency(SufficientCurrencyEvent info)
     {
         EventManager.Instance.RemoveListener<InsufficientCurrencyEvent>(OnInsufficientCurrency);
@@ -65,39 +127,6 @@ public class Field : Factory
         EventManager.Instance.RemoveListener<SufficientCurrencyEvent>(OnSufficientCurrency);
     }
 
-    IEnumerator ProcessingProduct()
-    {
-        WaitForSeconds processingTime = new WaitForSeconds(cropData.processingTime.ToSecond());
-        Timer.CreateTimer(gameObject, cropData.product.itemName, cropData.processingTime, OnSkipProcessingProduct);
-        state = FactoryState.Processing;
-        spriteRenderer.sprite = cropData.processingSprite;
-        
-        yield return processingTime;
-        
-        OnCompleteProcessingProduct();
-    }
-
-    void OnSkipProcessingProduct()
-    {
-        StopCoroutine(processingCoroutine);
-        OnCompleteProcessingProduct();
-    }
-
-    void OnCompleteProcessingProduct()
-    {
-        state = FactoryState.Complete;
-        processingCoroutine = null;
-        spriteRenderer.sprite = cropData.completeSprite;
-    }
-
-    public void HarvestProduct()
-    {
-        if (cropData == null) return;
-        EventManager.Instance.QueueEvent(new StorageItemChangeEvent(new Item(cropData.product, 2)));
-        EventManager.Instance.AddListenerOnce<SufficientCapacityEvent>(OnSufficient);
-        EventManager.Instance.AddListenerOnce<InsufficientCapacityEvent>(OnInsufficient);
-    }
-    
     void OnSufficient(SufficientCapacityEvent info)
     {
         EventManager.Instance.RemoveListener<InsufficientCapacityEvent>(OnInsufficient);
@@ -114,5 +143,7 @@ public class Field : Factory
         EventManager.Instance.RemoveListener<SufficientCapacityEvent>(OnSufficient);
         //Cancel collecting here
     }
+
+    #endregion
 }
 

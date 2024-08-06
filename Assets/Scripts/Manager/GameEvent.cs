@@ -110,56 +110,53 @@ public class SufficientCapacityEvent : GameEvent
     }
 }
 
-public class FactoryDataEvent : GameEvent
+
+public class SaveBuildingDataEvent : GameEvent
 {
-    public readonly string factoryID;
-    readonly string factoryDataID;
-    readonly Vector3 position;
-    readonly BoundsInt area;
+    public string buildingID;
+    protected string buildingDataID;
+    protected Vector3 position;
+    protected BoundsInt area;
+}
+
+public class SaveFactoryDataEvent : SaveBuildingDataEvent
+{
     readonly int queueCapacity;
     readonly Queue<SavedProcessingData> processing;
     readonly Queue<string> completed; //productDataID of completed item
 
-    public FactoryDataEvent(string factoryID, string factoryDataID, Vector3 position, BoundsInt area, 
-        Queue<ProductData> processing, Queue<ProductData> completed, int queueCapacity = 3)
+    public SaveFactoryDataEvent(string buildingID, string buildingDataID, Vector3 position, BoundsInt area, 
+        Queue<SavedProcessingData> processing, Queue<string> completed, int queueCapacity = 3)
     {
-        Debug.Log("Create FactoryDataEvent");
-        this.factoryID = factoryID;
-        this.factoryDataID = factoryDataID;
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
         this.position = position;
         this.area = area;
         this.queueCapacity = queueCapacity;
-        this.processing = ConvertProcessing(processing);
-        this.completed = ConvertCompleted(completed);
+        this.processing = processing;
+        this.completed = completed;
     }
 
-    static Queue<SavedProcessingData> ConvertProcessing(Queue<ProductData> dataQueue)
-    {
-        Queue<SavedProcessingData> toReturn = new Queue<SavedProcessingData>();
-        
-        foreach(ProductData productData in dataQueue)
-        {
-            toReturn.Enqueue(productData.ConvertToSavedData());
-        }
-        
-        return toReturn;
-    }
-
-    static Queue<string> ConvertCompleted(Queue<ProductData> dataQueue)
-    {
-        Queue<string> toReturn = new Queue<string>();
-        
-        foreach(ProductData productData in dataQueue)
-        {
-            toReturn.Enqueue(productData.id);
-        }
-        
-        return toReturn;
-    }
+    
 
     public SavedFactoryData CreateSavedFactoryData()
     {
-        return new SavedFactoryData(factoryID, factoryDataID, position, 
+        return new SavedFactoryData(buildingID, buildingDataID, position, 
             area, queueCapacity, processing, completed);
+    }
+}
+
+public class SaveFieldDataEvent : SaveBuildingDataEvent
+{
+    readonly SavedProcessingData processing;
+    
+    public SaveFieldDataEvent(string buildingID, string buildingDataID, Vector3 position, BoundsInt area, 
+        SavedProcessingData processing)
+    {
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
+        this.position = position;
+        this.area = area;
+        this.processing = processing;
     }
 }

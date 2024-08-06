@@ -1,9 +1,7 @@
-
 using System;
 using System.IO;
-using Newtonsoft.Json;
 using UnityEngine;
-
+using Newtonsoft.Json;
 
 public static class LocalSaveSystem
 {
@@ -46,7 +44,7 @@ public static class LocalSaveSystem
              {
                  ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
              }));
-             Debug.Log("saveData: \n " + saveData);
+             Debug.Log("Write Save");
              return true;
         }
         catch (Exception e)
@@ -66,6 +64,7 @@ public static class LocalSaveSystem
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             });
+            
             return data;
         }
         catch (Exception e)

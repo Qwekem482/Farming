@@ -5,15 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class Factory : MovableBuilding
+public class Factory : ProductionBuilding
 {
     Queue<ProductData> processingQueue;
     Queue<ProductData> completeQueue;
     
-    public FactoryState state;
     public int queueCapacity = 3;
-
-    protected Coroutine processingCoroutine;
+    
 
     void Awake()
     {
@@ -21,25 +19,73 @@ public class Factory : MovableBuilding
         completeQueue = new Queue<ProductData>();
     }
     
+    public override void Init(BuildingData data)
+    {
+        base.Init(data);
+        uniqueID = SaveData.GenerateUniqueID();
+        if(GetType() == typeof(Factory)) SaveState();
+    }
+    
     protected override void OnMouseUp()
     {
-        base.OnMouseUp();
         if (EventSystem.current.IsPointerOverGameObject()) return;
         ReloadFactoryUIHolder();
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         FactoryUIHolder.Instance.gameObject.SetActive(true);
         if (state == FactoryState.Processing) TimerUI.Instance.ShowTimer(gameObject);
     }
-
-    public override void Init(BuildingData data)
+    
+    protected override void SaveState()
     {
-        base.Init(data);
-        uniqueID = SaveData.GenerateUniqueID();
-        if(GetType() == typeof(Factory)) SaveFactoryState();
+        DateTime productCompletedTime = DateTime.Now;
+        Queue<SavedProcessingData> saveProcessing = new Queue<SavedProcessingData>();
+        Queue<string> saveCompleted = new Queue<string>();
+        
+        if(processingQueue.Count > 0)
+        {
+            productCompletedTime += TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
+            foreach(ProductData productData in processingQueue)
+            {
+                if (productData != processingQueue.Peek()) 
+                    productCompletedTime += productData.processingTime.ConvertToTimeSpan();
+                saveProcessing.Enqueue(new SavedProcessingData(productData.id, productCompletedTime));
+            }
+        }
+        
+        if(completeQueue.Count > 0)
+        {
+            foreach(ProductData productData in completeQueue)
+            {
+                saveCompleted.Enqueue(productData.id);
+            }
+        }
+        
+        EventManager.Instance.QueueEvent(new SaveFactoryDataEvent
+        (uniqueID, buildingData.id, transform.position, 
+            buildingArea, saveProcessing, saveCompleted, queueCapacity));
+    }
+    
+    public void LoadState(string factoryID, int queueCap, Queue<ProductData> savedProcessing, 
+        Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
+    {
+        uniqueID = factoryID;
+        queueCapacity = queueCap;
+        processingQueue = savedProcessing;
+        completeQueue = savedCompleted;
+        processingCoroutine = null;
+        processingCoroutine ??= StartCoroutine(ProcessingProduct(timeLeft));
     }
 
-    public void AddProcessingProduct(ProductData data)
+    public override void AddProduct(ProductionOutputData inputData)
     {
+        ProductData data = inputData as ProductData;
+        
+        if (data == null)
+        {
+            Debug.Log("Error data");
+            return;
+        }
+        
         if (StorageSystem.Instance.IsSufficient(data.materials))
         {
             Debug.Log("Insufficient Materials");
@@ -61,7 +107,7 @@ public class Factory : MovableBuilding
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
     
-    IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
+    protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
     {
         state = FactoryState.Processing;
         while (processingQueue.Count > 0)
@@ -80,30 +126,30 @@ public class Factory : MovableBuilding
             Timer.CreateTimer(gameObject, productData.product.itemName, 
                 productData.processingTime, OnSkipProcessingProduct, timeLeft);
 
-            SaveFactoryState();
+            SaveState();
             
             yield return processingTime;
             
-            OnCompleteProcessingProduct(processingQueue.Dequeue());
+            OnCompleteProcessingProduct();
         }
         state = FactoryState.Idle;
         processingCoroutine = null;
     }
 
-    void OnSkipProcessingProduct()
+    protected override void OnSkipProcessingProduct()
     {
         StopCoroutine(processingCoroutine);
-        OnCompleteProcessingProduct(processingQueue.Dequeue());
+        OnCompleteProcessingProduct();
         
         state = FactoryState.Idle;
         processingCoroutine = null;
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
 
-    void OnCompleteProcessingProduct(ProductData data)
+    protected override void OnCompleteProcessingProduct()
     {
-        completeQueue.Enqueue(data);
-        SaveFactoryState();
+        completeQueue.Enqueue(processingQueue.Dequeue());
+        SaveState();
         if (ReferenceEquals(FactoryUIHolder.Instance.currentFactory, this)) ReloadFactoryUIHolder();
     }
 
@@ -112,28 +158,10 @@ public class Factory : MovableBuilding
         FactoryUIHolder.Instance.Init(this, processingQueue, completeQueue);
     }
 
-    protected void SaveFactoryState()
-    {
-        Debug.Log("Queue FactoryDataEvent");
-        EventManager.Instance.QueueEvent(new FactoryDataEvent
-            (uniqueID, buildingData.id, transform.position, 
-                buildingArea, processingQueue, completeQueue));
-    }
-
     public override void Place()
     {
         base.Place();
-        SaveFactoryState();
-    }
-
-    public virtual void LoadFactory(string factoryID, Queue<ProductData> savedProcessing, 
-        Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
-    {
-        uniqueID = factoryID;
-        processingQueue = savedProcessing;
-        completeQueue = savedCompleted;
-        processingCoroutine = null;
-        processingCoroutine ??= StartCoroutine(ProcessingProduct(timeLeft));
+        SaveState();
     }
 }
 

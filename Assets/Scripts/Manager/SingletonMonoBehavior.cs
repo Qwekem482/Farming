@@ -11,7 +11,6 @@ public class SingletonMonoBehavior<T> : MonoBehaviour where T : Component
     {
         if (Instance == null) {
             Instance = this as T;
-            Debug.Log("SingletonCreate: " + Instance);
         }
         else Destroy(gameObject);
     }
