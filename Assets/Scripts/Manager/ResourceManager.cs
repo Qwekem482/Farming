@@ -30,9 +30,9 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
         }
     }
 
-    public ProductData TranslateToProductData(string id)
+    public ProductionOutputData TranslateToProductData(string id)
     {
-        return allProductData[id] as ProductData;
+        return allProductData[id];
     }
 }
 

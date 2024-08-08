@@ -43,7 +43,7 @@ public class Sickle : SingletonMonoBehavior<Sickle>, IBeginDragHandler, IDragHan
         if (hit.collider == null) return;
         hit.collider.gameObject.TryGetComponent(out Field field);
         
-        if (field != null && field.state == FactoryState.Complete)
+        if (field != null && field.state == ProductionBuildingState.Complete)
         {
             field.HarvestProduct();
         }

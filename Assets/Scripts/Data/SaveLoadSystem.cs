@@ -18,24 +18,40 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     //Actually not start here, just AddListener to receive data to save (to SaveData object)
     public void StartingSystem()
     {
-        Debug.Log("saveData : " + saveData);
         EventManager.Instance.AddListener<SaveFactoryDataEvent>(saveData.AddFactoryData);
+        EventManager.Instance.AddListener<SaveFieldDataEvent>(saveData.AddFieldData);
     }
+
+    #region LoadSave
 
     public void LoadAllData()
     {
+        isLoaded = true;
+        if (saveData == null) return;
+        
         LoadFactoryData();
+        LoadFieldData();
     }
 
     void LoadFactoryData()
     {
-        isLoaded = true;
-        if (saveData == null) return;
         foreach(SavedFactoryData savedFactoryData in saveData.factoryData.Values)
         {
             CreateFactory(savedFactoryData);
         }
     }
+
+    void LoadFieldData()
+    {
+        foreach(SavedFieldData savedFieldData in saveData.fieldData.Values)
+        {
+            CreateField(savedFieldData);
+        }
+    }
+
+    #endregion
+
+    #region CreateGameObject
 
     void CreateFactory(SavedFactoryData data)
     {
@@ -54,7 +70,8 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         (new Queue<SavedProcessingData>(data.processing),
             new Queue<string>(data.completed));
 
-        TimeSpan difference = default;
+        TimeSpan difference = TimeDifference(new Queue<SavedProcessingData>(data.processing));;
+        
         emptyFactory.LoadState(data.buildingID, data.queueCapacity, 
             productDataQueue[0],productDataQueue[1], difference);
     }
@@ -70,6 +87,16 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
         Field emptyField = emptyBuilding.AddComponent<Field>();
         emptyField.Init(buildingData);
+
+        TimeSpan difference = default;
+        if (data.processingData.completedDateTime > DateTime.Now) 
+            difference = data.processingData.completedDateTime - DateTime.Now;
+        
+        emptyField.LoadState(
+            data.buildingID,
+            ResourceManager.Instance.TranslateToProductData
+                (data.processingData.productDataID) as CropData,
+            difference);
     }
 
     GameObject CreateBuildingGameObject(string objectName, Vector3 position, BoundsInt area, Sprite sprite)
@@ -90,6 +117,9 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         return emptyBuilding;
     }
 
+    #endregion
+
+    #region CreateFactorySupport
     Queue<ProductData>[] InitializeProductionQueue(Queue<SavedProcessingData> savedProcessing, Queue<string> savedCompleted)
     {
         Queue<ProductData> processingProductData = new Queue<ProductData>();
@@ -106,7 +136,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             foreach(SavedProcessingData processingData in savedProcessing)
             {
                 processingProductData.Enqueue(ResourceManager.Instance.
-                    TranslateToProductData(processingData.productDataID));
+                    TranslateToProductData(processingData.productDataID) as ProductData);
             }
         }
         
@@ -115,12 +145,31 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             foreach(string completedData in savedCompleted)
             {
                 completedProductData.Enqueue(ResourceManager.Instance.
-                    TranslateToProductData(completedData));
+                    TranslateToProductData(completedData) as ProductData);
             }
         }
 
         return new[] { processingProductData, completedProductData };
     }
+
+    TimeSpan TimeDifference(Queue<SavedProcessingData> savedProcessing)
+    {
+        TimeSpan toReturn = default;
+        while (savedProcessing.Count != 0 && savedProcessing.Peek().completedDateTime < DateTime.Now)
+        {
+            toReturn = savedProcessing.Dequeue().completedDateTime - DateTime.Now;
+            
+            if (savedProcessing.Count == 0)
+            {
+                toReturn = default;
+                break;
+            }
+        }
+
+        return toReturn;
+    }
+
+    #endregion
 
     /*void OnApplicationPause(bool pauseStatus)
     {

@@ -51,7 +51,7 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
         if (hit.collider == null) return;
         hit.collider.gameObject.TryGetComponent(out Field field);
         
-        if (field != null && field.state == FactoryState.Idle)
+        if (field != null && field.state == ProductionBuildingState.Idle)
         {
             field.AddProduct(data);
         }

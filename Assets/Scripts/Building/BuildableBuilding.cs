@@ -41,11 +41,18 @@ public class BuildableBuilding : MovableBuilding
         float time = 0f;
         while (time < 1f)
         {
+            Debug.Log("time += Time.deltaTime;");
             time += Time.deltaTime;
+            Debug.Log("float grayscale = Mathf.Lerp(start, end, Mathf.Clamp01(time / 1f));");
             float grayscale = Mathf.Lerp(start, end, Mathf.Clamp01(time / 1f));
+            Debug.Log("sRenderer.material.SetFloat(GREYSCALE, grayscale);");
             sRenderer.material.SetFloat(GREYSCALE, grayscale);
+            Debug.Log(grayscale + " | " + time);
             yield return null;
+            Debug.Log("yield return null;");
         }
+        
+        Debug.Log("Complete Change Color: " + time);
     }
 
     void OnCompleteConstruction()
@@ -54,7 +61,7 @@ public class BuildableBuilding : MovableBuilding
         
         if(buildingData.GetType() == typeof(ProductionBuildingData)) AssignFactory((ProductionBuildingData) buildingData);
         
-        enabled = false;
+        Destroy(this);
     }
 
     void AssignFactory(ProductionBuildingData factoryData)

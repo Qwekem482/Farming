@@ -23,7 +23,7 @@ public class Factory : ProductionBuilding
     {
         base.Init(data);
         uniqueID = SaveData.GenerateUniqueID();
-        if(GetType() == typeof(Factory)) SaveState();
+        SaveState();
     }
     
     protected override void OnMouseUp()
@@ -32,7 +32,7 @@ public class Factory : ProductionBuilding
         ReloadFactoryUIHolder();
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         FactoryUIHolder.Instance.gameObject.SetActive(true);
-        if (state == FactoryState.Processing) TimerUI.Instance.ShowTimer(gameObject);
+        if (state == ProductionBuildingState.Processing) TimerUI.Instance.ShowTimer(gameObject);
     }
     
     protected override void SaveState()
@@ -73,7 +73,7 @@ public class Factory : ProductionBuilding
         processingQueue = savedProcessing;
         completeQueue = savedCompleted;
         processingCoroutine = null;
-        processingCoroutine ??= StartCoroutine(ProcessingProduct(timeLeft));
+        processingCoroutine = StartCoroutine(ProcessingProduct(timeLeft));
     }
 
     public override void AddProduct(ProductionOutputData inputData)
@@ -109,7 +109,7 @@ public class Factory : ProductionBuilding
     
     protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
     {
-        state = FactoryState.Processing;
+        state = ProductionBuildingState.Processing;
         while (processingQueue.Count > 0)
         {
             ProductData productData = processingQueue.Peek();
@@ -132,7 +132,7 @@ public class Factory : ProductionBuilding
             
             OnCompleteProcessingProduct();
         }
-        state = FactoryState.Idle;
+        state = ProductionBuildingState.Idle;
         processingCoroutine = null;
     }
 
@@ -141,7 +141,7 @@ public class Factory : ProductionBuilding
         StopCoroutine(processingCoroutine);
         OnCompleteProcessingProduct();
         
-        state = FactoryState.Idle;
+        state = ProductionBuildingState.Idle;
         processingCoroutine = null;
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
@@ -163,12 +163,5 @@ public class Factory : ProductionBuilding
         base.Place();
         SaveState();
     }
-}
-
-public enum FactoryState
-{
-    Idle,
-    Processing,
-    Complete,
 }
 

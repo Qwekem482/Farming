@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ProductionBuilding : MovableBuilding
 {
-    public FactoryState state;
+    public ProductionBuildingState state;
     protected Coroutine processingCoroutine;
 
     protected abstract void SaveState();
@@ -13,4 +13,11 @@ public abstract class ProductionBuilding : MovableBuilding
     protected abstract void OnSkipProcessingProduct();
     protected abstract void OnCompleteProcessingProduct();
 
+}
+
+public enum ProductionBuildingState
+{
+    Idle,
+    Processing,
+    Complete,
 }

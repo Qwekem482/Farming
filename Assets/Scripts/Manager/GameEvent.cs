@@ -137,8 +137,6 @@ public class SaveFactoryDataEvent : SaveBuildingDataEvent
         this.completed = completed;
     }
 
-    
-
     public SavedFactoryData CreateSavedFactoryData()
     {
         return new SavedFactoryData(buildingID, buildingDataID, position, 
@@ -150,13 +148,29 @@ public class SaveFieldDataEvent : SaveBuildingDataEvent
 {
     readonly SavedProcessingData processing;
     
-    public SaveFieldDataEvent(string buildingID, string buildingDataID, Vector3 position, BoundsInt area, 
-        SavedProcessingData processing)
+    public SaveFieldDataEvent(string buildingID, string buildingDataID,
+        Vector3 position, BoundsInt area, SavedProcessingData processing)
     {
         this.buildingID = buildingID;
         this.buildingDataID = buildingDataID;
         this.position = position;
         this.area = area;
         this.processing = processing;
+    }
+    public SaveFieldDataEvent(string buildingID, string buildingDataID,
+        Vector3 position, BoundsInt area)
+    {
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
+        this.position = position;
+        this.area = area;
+        processing = null;
+    }
+    
+    
+    public SavedFieldData CreateSavedFieldData()
+    {
+        return new SavedFieldData(buildingID, buildingDataID, position, 
+            area, processing);
     }
 }

@@ -15,12 +15,14 @@ public class Field : ProductionBuilding
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        cropData = null;
     }
     
     public override void Init(BuildingData data)
     {
         base.Init(data);
         freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        uniqueID = SaveData.GenerateUniqueID();
         SaveState();
     }
 
@@ -30,14 +32,14 @@ public class Field : ProductionBuilding
 
         switch (state)
         {
-            case FactoryState.Idle:
+            case ProductionBuildingState.Idle:
                 if (!ProductScroller.Instance.isOpen) 
                     ProductScroller.Instance.OpenScroller(this, true);
                 break;
-            case FactoryState.Processing:
+            case ProductionBuildingState.Processing:
                 TimerUI.Instance.ShowTimer(gameObject);
                 break;
-            case FactoryState.Complete:
+            case ProductionBuildingState.Complete:
                 HorizontalUIHolder.Instance.OpenUI(true);
                 break;
             default:
@@ -48,18 +50,37 @@ public class Field : ProductionBuilding
     
     protected override void SaveState()
     {
-        DateTime completedDateTime =
-            DateTime.Now +
-            TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
-        
-        EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
-            uniqueID, buildingData.id, transform.position,
-            buildingArea, new SavedProcessingData(cropData.id, completedDateTime)));
+        if (cropData == null)
+        {
+            EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
+                uniqueID, buildingData.id, transform.position,
+                buildingArea));
+        } else
+        {
+            DateTime completedDateTime =
+                DateTime.Now +
+                TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
+            
+            EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
+                uniqueID, buildingData.id, transform.position,
+                buildingArea, new SavedProcessingData(cropData.id, completedDateTime)));
+        }
     }
 
-    public void LoadState()
+    public void LoadState(string fieldID, CropData data, TimeSpan timeLeft = default)
     {
-        
+        uniqueID = fieldID;
+        cropData = data;
+
+        if (cropData == null)
+        {
+            state = ProductionBuildingState.Idle;
+            return;
+        }
+
+        if (timeLeft == default) OnCompleteProcessingProduct();
+
+        processingCoroutine = StartCoroutine(ProcessingProduct(timeLeft));
     }
 
     protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
@@ -68,7 +89,7 @@ public class Field : ProductionBuilding
         Timer.CreateTimer(gameObject, cropData.product.itemName,
             cropData.processingTime, OnSkipProcessingProduct, timeLeft);
         
-        state = FactoryState.Processing;
+        state = ProductionBuildingState.Processing;
         spriteRenderer.sprite = cropData.processingSprite;
         
         yield return processingTime;
@@ -84,7 +105,7 @@ public class Field : ProductionBuilding
 
     protected override void OnCompleteProcessingProduct()
     {
-        state = FactoryState.Complete;
+        state = ProductionBuildingState.Complete;
         processingCoroutine = null;
         spriteRenderer.sprite = cropData.completeSprite;
     }
@@ -131,7 +152,7 @@ public class Field : ProductionBuilding
     {
         EventManager.Instance.RemoveListener<InsufficientCapacityEvent>(OnInsufficient);
         
-        state = FactoryState.Idle;
+        state = ProductionBuildingState.Idle;
         spriteRenderer.sprite = freeSprite;
         cropData = null;
 
