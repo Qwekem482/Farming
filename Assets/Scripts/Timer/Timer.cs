@@ -42,7 +42,7 @@ public class Timer : MonoBehaviour
             {
                 0 => 0,
                 < 60 => 1,
-                > 60 => (int)(TimeLeft / 60) * 2,
+                > 60 => (int)(TimeLeft / 60) + 1,
                 _ => SkipPrice
             };
         } else

@@ -8,8 +8,6 @@ public class CurrencySystem : SingletonMonoBehavior<CurrencySystem>, IGameSystem
 {
     readonly Dictionary<CurrencyType, int> currencyAmounts = new Dictionary<CurrencyType, int>();
     
-    
-    
     [SerializedDictionary("Type", "Text")]
     [SerializeField]SerializedDictionary<CurrencyType, TextMeshProUGUI> currencyTexts = new SerializedDictionary<CurrencyType, TextMeshProUGUI>();
     
@@ -23,13 +21,15 @@ public class CurrencySystem : SingletonMonoBehavior<CurrencySystem>, IGameSystem
         EventManager.Instance.AddListener<CurrencyChangeEvent>(OnCurrencyChange);
         EventManager.Instance.AddListener<InsufficientCurrencyEvent>(OnInsufficient);
         EventManager.Instance.AddListener<SufficientCurrencyEvent>(OnSufficient);
-        LoadCurrency();
     }
 
-    public void LoadCurrency()
+    public void LoadCurrency(int silver, int gold)
     {
-        currencyAmounts.Add(CurrencyType.Silver, 10); //import from player's save
-        currencyAmounts.Add(CurrencyType.Gold, 10); //import from player's save
+        currencyAmounts.Add(CurrencyType.Silver, silver); //import from player's save
+        currencyAmounts.Add(CurrencyType.Gold, gold); //import from player's save
+        
+        ChangeCurrencyText(CurrencyType.Silver);
+        ChangeCurrencyText(CurrencyType.Gold);
     }
 
     void OnCurrencyChange(CurrencyChangeEvent info)
@@ -54,7 +54,12 @@ public class CurrencySystem : SingletonMonoBehavior<CurrencySystem>, IGameSystem
     void OnSufficient(SufficientCurrencyEvent info)
     {
         currencyAmounts[info.currencyType] += info.amount;
-        currencyTexts[info.currencyType].text = currencyAmounts[info.currencyType].ToString();
+        ChangeCurrencyText(info.currencyType);
+    }
+
+    void ChangeCurrencyText(CurrencyType type)
+    {
+        currencyTexts[type].text = currencyAmounts[type].ToString();
     }
     
 }

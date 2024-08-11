@@ -77,6 +77,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     void Generate(Dictionary<Collectible, int> itemList)
     {
         scroller.Clear();
+        Debug.Log("itemListCount: " + itemList.Count);
         scroller.Generate(itemCell, itemList.Count, (index, iCell) =>
         {
             StorageCell storageCell = iCell as StorageCell;

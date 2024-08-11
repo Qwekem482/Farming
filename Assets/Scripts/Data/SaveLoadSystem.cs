@@ -29,8 +29,14 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         isLoaded = true;
         if (saveData == null) return;
         
+        LoadCurrency();
         LoadFactoryData();
         LoadFieldData();
+    }
+
+    void LoadCurrency()
+    {
+        CurrencySystem.Instance.LoadCurrency(10, 10);
     }
 
     void LoadFactoryData()
@@ -89,13 +95,13 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         emptyField.Init(buildingData);
 
         TimeSpan difference = default;
-        if (data.processingData.completedDateTime > DateTime.Now) 
+        if (data.processingData != null && data.processingData.completedDateTime > DateTime.Now) 
             difference = data.processingData.completedDateTime - DateTime.Now;
-        
+
         emptyField.LoadState(
             data.buildingID,
             ResourceManager.Instance.TranslateToProductData
-                (data.processingData.productDataID) as CropData,
+                (data.processingData?.productDataID) as CropData,
             difference);
     }
 

@@ -57,9 +57,11 @@ public class Field : ProductionBuilding
                 buildingArea));
         } else
         {
-            DateTime completedDateTime =
-                DateTime.Now +
-                TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
+            Timer timer = gameObject.GetComponent<Timer>();
+            DateTime completedDateTime;
+            
+            if(timer == null) completedDateTime = DateTime.Now;
+            else completedDateTime = DateTime.Now + TimeSpan.FromSeconds(timer.TimeLeft);
             
             EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
                 uniqueID, buildingData.id, transform.position,
@@ -77,8 +79,13 @@ public class Field : ProductionBuilding
             state = ProductionBuildingState.Idle;
             return;
         }
+        
 
-        if (timeLeft == default) OnCompleteProcessingProduct();
+        if (timeLeft == default)
+        {
+            OnCompleteProcessingProduct();
+            return;
+        }
 
         processingCoroutine = StartCoroutine(ProcessingProduct(timeLeft));
     }
@@ -108,6 +115,7 @@ public class Field : ProductionBuilding
         state = ProductionBuildingState.Complete;
         processingCoroutine = null;
         spriteRenderer.sprite = cropData.completeSprite;
+        SaveState();
     }
     
     public override void AddProduct(ProductionOutputData inputData)
@@ -129,8 +137,8 @@ public class Field : ProductionBuilding
     {
         if (cropData == null) return;
         EventManager.Instance.QueueEvent(new StorageItemChangeEvent(new Item(cropData.product, 2)));
-        EventManager.Instance.AddListenerOnce<SufficientCapacityEvent>(OnSufficient);
-        EventManager.Instance.AddListenerOnce<InsufficientCapacityEvent>(OnInsufficient);
+        EventManager.Instance.AddListenerOnce<SufficientCapacityEvent>(OnSufficientStorageCapacity);
+        EventManager.Instance.AddListenerOnce<InsufficientCapacityEvent>(OnInsufficientStorageCapacity);
     }
     
 
@@ -140,6 +148,7 @@ public class Field : ProductionBuilding
     {
         EventManager.Instance.RemoveListener<InsufficientCurrencyEvent>(OnInsufficientCurrency);
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
+        SaveState();
     }
     
     void OnInsufficientCurrency(InsufficientCurrencyEvent info)
@@ -148,9 +157,9 @@ public class Field : ProductionBuilding
         EventManager.Instance.RemoveListener<SufficientCurrencyEvent>(OnSufficientCurrency);
     }
 
-    void OnSufficient(SufficientCapacityEvent info)
+    void OnSufficientStorageCapacity(SufficientCapacityEvent info)
     {
-        EventManager.Instance.RemoveListener<InsufficientCapacityEvent>(OnInsufficient);
+        EventManager.Instance.RemoveListener<InsufficientCapacityEvent>(OnInsufficientStorageCapacity);
         
         state = ProductionBuildingState.Idle;
         spriteRenderer.sprite = freeSprite;
@@ -159,9 +168,9 @@ public class Field : ProductionBuilding
         //Effect here
     }
 
-    void OnInsufficient(InsufficientCapacityEvent info)
+    void OnInsufficientStorageCapacity(InsufficientCapacityEvent info)
     {
-        EventManager.Instance.RemoveListener<SufficientCapacityEvent>(OnSufficient);
+        EventManager.Instance.RemoveListener<SufficientCapacityEvent>(OnSufficientStorageCapacity);
         //Cancel collecting here
     }
 

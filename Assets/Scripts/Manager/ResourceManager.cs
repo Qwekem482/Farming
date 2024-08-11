@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -30,9 +31,10 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
         }
     }
 
+    [CanBeNull]
     public ProductionOutputData TranslateToProductData(string id)
     {
-        return allProductData[id];
+        return id == null ? null : allProductData[id];
     }
 }
 
