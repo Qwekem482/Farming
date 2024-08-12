@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class CameraSystem : SingletonMonoBehavior<CameraSystem>
@@ -39,8 +40,6 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
                 MoveOperation();
                 break;
         }
-
-
     }
 
     void FixedUpdate()
@@ -140,11 +139,12 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
         followObjectTransform = null;
     }
 
-    public void Focus(Vector3 focusPosition)
+    public void Focus(Vector3 focusPosition, UnityAction onComplete = null)
     {
         Vector3 camPosition = mainCam.transform.position;
         Vector3 position = new Vector3(focusPosition.x, focusPosition.y, camPosition.z);
-        mainCam.transform.DOMove(position, 0.5f);
+        mainCam.transform.DOMove(position, 0.5f)
+            .OnComplete(() => onComplete?.Invoke());
         
         ClampCamera();
         

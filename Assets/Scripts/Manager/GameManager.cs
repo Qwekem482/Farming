@@ -11,6 +11,8 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     void Start()
     {
         ChangeState(GameState.Starting);
+        Application.runInBackground = true;
+        Application.targetFrameRate = 60;
     }
 
     void ChangeState(GameState state)

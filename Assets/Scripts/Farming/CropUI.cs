@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -38,8 +35,13 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
 
     public new void OnEndDrag(PointerEventData eventData)
     {
-        Destroy(gameObject);
-        //rectTrans.anchoredPosition = originalPos;
+        if(cellParent == null) Destroy(gameObject);
+        else
+        {
+            transform.SetParent(cellParent.transform);
+            rectTrans.anchoredPosition = originalPos;
+        }
+        
         CameraSystem.Instance.enabled = true;
     }
 

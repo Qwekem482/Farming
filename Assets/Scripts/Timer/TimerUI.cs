@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class TimerUI : SingletonMonoBehavior<TimerUI>
 {
     [SerializeField] Camera mainCam;
-    [SerializeField] GridLayout layout;
     [SerializeField] Slider progress;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI timeLeft;
@@ -53,14 +52,27 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
 
         countdown = true;
         FixedUpdate();
+        OpenCurtain();
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     void HideTimer()
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        UICurtain.Instance.TurnOff();
         timer = null;
         countdown = false;
+    }
+    
+    void OpenCurtain()
+    {
+        
+        UICurtain.Instance.Transparent();
+        UICurtain.Instance.AssignOnClickOnce(() =>
+        {
+            HideTimer();
+            UICurtain.Instance.TurnOff();
+        });
     }
 
     void FixedUpdate()
@@ -81,9 +93,9 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     {
         EventManager.Instance.AddListenerOnce<SufficientCurrencyEvent>(OnSufficientCurrency);
         EventManager.Instance.AddListenerOnce<InsufficientCurrencyEvent>(OnInsufficientCurrency);
-
-        CurrencyChangeEvent changeEvent = new CurrencyChangeEvent(-timer.SkipPrice, CurrencyType.Gold);
-        EventManager.Instance.QueueEvent(changeEvent);
+        
+        EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-timer.SkipPrice, CurrencyType.Gold));
+        UICurtain.Instance.TurnOff();
     }
 
     void OnSufficientCurrency(SufficientCurrencyEvent info)

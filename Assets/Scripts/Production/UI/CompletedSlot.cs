@@ -17,9 +17,8 @@ public class CompletedSlot : ProcessingSlot, IPointerClickHandler
     void OnSufficient(SufficientCapacityEvent info)
     {
         EventManager.Instance.RemoveListener<InsufficientCapacityEvent>(OnInsufficient);
-        
-        //Effect here
-        
+        FactoryUIHolder.Instance.currentFactory.RemoveCompletedData(productData);
+        productData = null;
         Hide();
     }
 

@@ -92,7 +92,7 @@ public class Field : ProductionBuilding
 
     protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
     {
-        WaitForSeconds processingTime = new WaitForSeconds(cropData.processingTime.ToSecond());
+        WaitForSecondsRealtime processingTime = new WaitForSecondsRealtime(cropData.processingTime.ToSecond());
         Timer.CreateTimer(gameObject, cropData.product.itemName,
             cropData.processingTime, OnSkipProcessingProduct, timeLeft);
         
@@ -164,6 +164,7 @@ public class Field : ProductionBuilding
         state = ProductionBuildingState.Idle;
         spriteRenderer.sprite = freeSprite;
         cropData = null;
+        SaveState();
 
         //Effect here
     }

@@ -76,10 +76,11 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
 
     void Generate(Dictionary<Collectible, int> itemList)
     {
-        scroller.Clear();
-        Debug.Log("itemListCount: " + itemList.Count);
+        scroller.ClearALlCells();
+        Debug.Log(scroller.CellPerRow);
         scroller.Generate(itemCell, itemList.Count, (index, iCell) =>
         {
+            Debug.Log(itemList.ElementAt(index).Key + "|" + itemList.ElementAt(index).Value);
             StorageCell storageCell = iCell as StorageCell;
             if(storageCell != null) storageCell.AssignData
                 (itemList.ElementAt(index).Key, itemList.ElementAt(index).Value);

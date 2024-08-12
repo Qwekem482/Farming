@@ -36,7 +36,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void LoadCurrency()
     {
-        CurrencySystem.Instance.LoadCurrency(10, 10);
+        CurrencySystem.Instance.LoadCurrency(1000, 1000);
     }
 
     void LoadFactoryData()

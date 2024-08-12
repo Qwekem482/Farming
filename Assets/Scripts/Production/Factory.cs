@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 
 public class Factory : ProductionBuilding
 {
     Queue<ProductData> processingQueue;
-    Queue<ProductData> completeQueue;
+    List<ProductData> completeQueue;
     
     public int queueCapacity = 3;
     
@@ -16,7 +18,7 @@ public class Factory : ProductionBuilding
     void Awake()
     {
         processingQueue = new Queue<ProductData>();
-        completeQueue = new Queue<ProductData>();
+        completeQueue = new List<ProductData>();
     }
     
     public override void Init(BuildingData data)
@@ -29,10 +31,20 @@ public class Factory : ProductionBuilding
     protected override void OnMouseUp()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        ReloadFactoryUIHolder();
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
+        
+        ReloadFactoryUIHolder();
         FactoryUIHolder.Instance.gameObject.SetActive(true);
-        if (state == ProductionBuildingState.Processing) TimerUI.Instance.ShowTimer(gameObject);
+        UnityAction onCompleteFocus = null;
+        
+        if (state == ProductionBuildingState.Processing)
+        {
+            onCompleteFocus = () => TimerUI.Instance.ShowTimer(gameObject);
+        }
+        
+        CameraSystem.Instance.Focus(
+            transform.position, 
+            onCompleteFocus);
     }
     
     protected override void SaveState()
@@ -66,12 +78,12 @@ public class Factory : ProductionBuilding
     }
     
     public void LoadState(string factoryID, int queueCap, Queue<ProductData> savedProcessing, 
-        Queue<ProductData> savedCompleted, TimeSpan timeLeft = default)
+        IEnumerable<ProductData> savedCompleted, TimeSpan timeLeft = default)
     {
         uniqueID = factoryID;
         queueCapacity = queueCap;
         processingQueue = savedProcessing;
-        completeQueue = savedCompleted;
+        completeQueue = savedCompleted.ToList();
         processingCoroutine = null;
         processingCoroutine = StartCoroutine(ProcessingProduct(timeLeft));
     }
@@ -86,7 +98,7 @@ public class Factory : ProductionBuilding
             return;
         }
         
-        if (StorageSystem.Instance.IsSufficient(data.materials))
+        if (!StorageSystem.Instance.IsSufficient(data.materials))
         {
             Debug.Log("Insufficient Materials");
             return;
@@ -100,9 +112,11 @@ public class Factory : ProductionBuilding
         
         foreach(Item item in data.materials)
         {
-            EventManager.Instance.QueueEvent(new StorageItemChangeEvent(item));
+            Item tempItem = new Item(item.collectible, -item.amount);
+            EventManager.Instance.QueueEvent(new StorageItemChangeEvent(tempItem));
         }
         
+        ReloadFactoryUIHolder();
         processingQueue.Enqueue(data);
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
@@ -113,13 +127,13 @@ public class Factory : ProductionBuilding
         while (processingQueue.Count > 0)
         {
             ProductData productData = processingQueue.Peek();
-            WaitForSeconds processingTime;
+            WaitForSecondsRealtime processingTime;
             if (timeLeft == default)
             {
-                processingTime = new WaitForSeconds(productData.processingTime.ToSecond());
+                processingTime = new WaitForSecondsRealtime(productData.processingTime.ToSecond());
             } else
             {
-                processingTime = new WaitForSeconds((float) timeLeft.TotalSeconds);
+                processingTime = new WaitForSecondsRealtime((float) timeLeft.TotalSeconds);
                 timeLeft = default;
             }
             
@@ -148,14 +162,20 @@ public class Factory : ProductionBuilding
 
     protected override void OnCompleteProcessingProduct()
     {
-        completeQueue.Enqueue(processingQueue.Dequeue());
+        completeQueue.Add(processingQueue.Dequeue());
         SaveState();
         if (ReferenceEquals(FactoryUIHolder.Instance.currentFactory, this)) ReloadFactoryUIHolder();
     }
 
     public void ReloadFactoryUIHolder()
     {
+        Debug.Log("Reload");
         FactoryUIHolder.Instance.Init(this, processingQueue, completeQueue);
+    }
+
+    public void RemoveCompletedData(ProductData productData)
+    {
+        completeQueue.Remove(productData);
     }
 
     public override void Place()

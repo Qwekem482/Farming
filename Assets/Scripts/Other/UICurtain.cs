@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -11,7 +12,9 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
     [SerializeField] Image curtain;
     readonly Color transparent = new Color(255, 255, 255, 0);
     readonly Color darkFade = new Color(0, 0, 0, 128);
-    readonly List<UnityAction> onClick = new List<UnityAction>();
+    List<UnityAction> onClick = new List<UnityAction>();
+
+    bool isClicked = false;
 
     void Start()
     {
@@ -38,6 +41,7 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
     public void TurnOff()
     {
         gameObject.SetActive(false);
+        if(isClicked == false) onClick.Clear(); 
     }
 
     public void AssignOnClickOnce(UnityAction action)
@@ -47,11 +51,12 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
+        isClicked = true;
         if (onClick.Count != 0)
         {
             foreach (UnityAction action in onClick) action.Invoke();
         }
-        
+        isClicked = false;
         onClick.Clear();
     }
 }

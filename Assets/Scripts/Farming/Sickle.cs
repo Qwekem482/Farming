@@ -30,7 +30,7 @@ public class Sickle : SingletonMonoBehavior<Sickle>, IBeginDragHandler, IDragHan
     public void OnEndDrag(PointerEventData eventData)
     {
         CameraSystem.Instance.enabled = true;
-        transform.SetParent(HorizontalUIHolder.Instance.transform);
+        transform.SetParent(HorizontalUIHolder.Instance.transform.GetChild(0));
         rectTrans.anchoredPosition = originalPos;
     }
     

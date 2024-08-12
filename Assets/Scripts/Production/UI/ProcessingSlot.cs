@@ -20,4 +20,11 @@ public class ProcessingSlot : MonoBehaviour
         productData = null;
         icon.color = Color.clear;
     }
+
+    public void UnloadAllData()
+    {
+        productData = null;
+        icon.sprite = null;
+        icon.color = Color.white;
+    }
 }

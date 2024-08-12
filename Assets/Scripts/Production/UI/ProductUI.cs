@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -59,8 +56,13 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         if (Detect()) factory.AddProduct(data);
         
-        //rectTrans.anchoredPosition = originalPos;
-        Destroy(gameObject);
+        if(cellParent == null) Destroy(gameObject);
+        else
+        {
+            transform.SetParent(cellParent.transform);
+            rectTrans.anchoredPosition = originalPos;
+        }
+        
         CameraSystem.Instance.enabled = true;
     }
     

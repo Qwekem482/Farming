@@ -36,6 +36,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 
     public void OpenScroller(ProductionBuilding currentFactory, bool isField)
     {
+        if (isOpen) return;
         isOpen = true;
         factory = currentFactory;
         gameObject.SetActive(true);
@@ -47,6 +48,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 
     public void CloseScroller()
     {
+        if (!isOpen) return;
         isOpen = false;
         factory = null;
         rectTrans.DOAnchorPosX(rectTrans.anchoredPosition.x - rectTrans.sizeDelta.x, 0.2f)

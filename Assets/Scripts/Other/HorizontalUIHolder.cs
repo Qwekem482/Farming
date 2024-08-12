@@ -31,6 +31,7 @@ public class HorizontalUIHolder : SingletonMonoBehavior<HorizontalUIHolder>
 
     public void OpenUI(bool isSickle)
     {
+        if (isOpen) return;
         isOpen = true;
         SetSickleViewState(isSickle);
         gameObject.SetActive(true);

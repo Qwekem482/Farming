@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Debug = System.Diagnostics.Debug;
 
 public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
 {
@@ -35,10 +36,13 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         
         currentFactory = factory;
 
-        rectTrans.anchoredPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        rectTrans.anchoredPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
         
         for (int i = 0; i < factory.queueCapacity; i++)
         {
+            processing[i].UnloadAllData();
+            completed[i].UnloadAllData();
+            
             //Fix distribution of conflict between processing queue and completed queue later
             if (processData.Count != 0) processing[i].Init(processData.Dequeue());
             if (completeData.Count != 0) completed[i].Init(completeData.Dequeue());
@@ -52,7 +56,6 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         price.text = (3 + currentFactory.queueCapacity * 2).ToString();
         
         OpenCurtain();
-        CameraSystem.Instance.Focus(factory.transform.position);
         gameObject.SetActive(true);
     }
 

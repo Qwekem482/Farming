@@ -242,6 +242,15 @@ namespace UnlimitedScrollUI {
             layoutGroup.padding.right = offsetPadding.right;
         }
 
+        public void ClearALlCells()
+        {
+            if (!Generated) return;
+            
+            DestroyAllCells();
+            Destroy(pendingDestroyGo);
+            Generated = false;
+        }
+
         /// <inheritdoc cref="IUnlimitedScroller.ClearCache"/>
         public void ClearCache() {
             cachedCells.Clear();
