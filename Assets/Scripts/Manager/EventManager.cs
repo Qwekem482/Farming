@@ -91,21 +91,17 @@ public class EventManager : MonoBehaviour {
             Debug.LogWarning("Event: " + e.GetType() + " has no listeners");
         }
     }
-
-    //Inserts the event into the current queue.
+    
     public bool QueueEvent(GameEvent evt) {
         if (!delegates.ContainsKey(evt.GetType())) {
-            Debug.LogWarning("EventManager: QueueEvent failed due to no listeners for event: " + evt.GetType());
+            //Debug.LogWarning("EventManager: QueueEvent failed due to no listeners for event: " + evt.GetType());
             return false;
         }
 
         mEventQueue.Enqueue(evt);
         return true;
     }
-
-    //Every update cycle the queue is processed, if the queue processing is limited,
-    //a maximum processing time per update can be set after which the events will have
-    //to be processed next update loop.
+    
     void Update() {
         float timer = 0.0f;
         while (mEventQueue.Count > 0) {

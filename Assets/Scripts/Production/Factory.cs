@@ -34,7 +34,6 @@ public class Factory : ProductionBuilding
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         
         ReloadFactoryUIHolder();
-        FactoryUIHolder.Instance.gameObject.SetActive(true);
         UnityAction onCompleteFocus = null;
         
         if (state == ProductionBuildingState.Processing)
@@ -55,11 +54,19 @@ public class Factory : ProductionBuilding
         
         if(processingQueue.Count > 0)
         {
-            productCompletedTime += TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
+            int index = 0;
             foreach(ProductData productData in processingQueue)
             {
-                if (productData != processingQueue.Peek()) 
+                if (index != 0)
+                {
                     productCompletedTime += productData.processingTime.ConvertToTimeSpan();
+                }
+                else
+                {
+                    productCompletedTime += TimeSpan.FromSeconds(gameObject.GetComponent<Timer>().TimeLeft);
+                }
+                
+                index++;
                 saveProcessing.Enqueue(new SavedProcessingData(productData.id, productCompletedTime));
             }
         }
@@ -121,7 +128,7 @@ public class Factory : ProductionBuilding
         
         
         ReloadFactoryUIHolder();
-        TimerUI.Instance.ShowTimer(gameObject);
+        SaveState();
     }
     
     protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
@@ -131,6 +138,7 @@ public class Factory : ProductionBuilding
         {
             ProductData productData = processingQueue.Peek();
             WaitForSecondsRealtime processingTime;
+            
             if (timeLeft == default)
             {
                 processingTime = new WaitForSecondsRealtime(productData.processingTime.ToSecond());
@@ -142,11 +150,11 @@ public class Factory : ProductionBuilding
             
             Timer.CreateTimer(gameObject, productData.product.itemName, 
                 productData.processingTime, OnSkipProcessingProduct, timeLeft);
-
+            
+            yield return new WaitForFixedUpdate();
             SaveState();
             
             yield return processingTime;
-            
             OnCompleteProcessingProduct();
         }
         state = ProductionBuildingState.Idle;
@@ -173,6 +181,16 @@ public class Factory : ProductionBuilding
     public void ReloadFactoryUIHolder()
     {
         FactoryUIHolder.Instance.Init(this, processingQueue, completeQueue);
+        UnityAction onCompleteFocus = null;
+        
+        if (state == ProductionBuildingState.Processing)
+        {
+            onCompleteFocus = () => TimerUI.Instance.ShowTimer(gameObject);
+        }
+        
+        CameraSystem.Instance.Focus(
+            transform.position, 
+            onCompleteFocus);
     }
 
     public void RemoveCompletedData(ProductData productData)

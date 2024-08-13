@@ -29,7 +29,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     {
         timer = triggerObject.GetComponent<Timer>();
 
-        if (timer == null) return;
+        if (timer == null) HideTimer();
 
         nameText.text = timer.TimerName;
         skipPriceText.text = timer.SkipPrice.ToString();

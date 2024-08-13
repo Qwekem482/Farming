@@ -27,7 +27,6 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
 
     public void Init(Factory factory, IEnumerable<ProductData> process, IEnumerable<ProductData> complete)
     {
-        Debug.Log("Init");
         Queue<ProductData> processData = process != null ? new Queue<ProductData>(process) : new Queue<ProductData>();
         Queue<ProductData> completeData = complete != null ? new Queue<ProductData>(complete) : new Queue<ProductData>();
         
@@ -47,12 +46,11 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
             
             if (processData.Count != 0)
             {
-                Debug.Log(processData.Peek().product);
+
                 processing[i].Init(processData.Dequeue());
             }
             if (completeData.Count != 0)
             {
-                Debug.Log(completeData.Peek().product);
                 completed[i].Init(completeData.Dequeue());
             }
             

@@ -24,6 +24,7 @@ public class Timer : MonoBehaviour
         duration = timerDuration;
         finishTime = start.Add(timerDuration);
         onComplete = new UnityEvent();
+        onComplete.AddListener(() => Destroy(this));
     }
 
     void TimerBegin(TimeSpan timeLeft)
@@ -47,7 +48,7 @@ public class Timer : MonoBehaviour
             };
         } else
         {
-            onComplete?.Invoke();
+            onComplete.Invoke();
             TimeLeft = 0;
             IsRunning = false;
         }
@@ -64,18 +65,21 @@ public class Timer : MonoBehaviour
     {
         TimeLeft = 0;
         finishTime = DateTime.Now;
+        onComplete.Invoke();
     }
 
-    public static void CreateTimer(GameObject source, string processName, TimePeriod period, UnityAction onCompleteEvent, TimeSpan timeLeft = default)
+    public static Timer CreateTimer(GameObject source, string processName, TimePeriod period, UnityAction onCompleteEvent, TimeSpan timeLeft = default)
     {
         Timer timer = source.AddComponent<Timer>();
         timer.InitTimer(processName, DateTime.Now, period.ConvertToTimeSpan());
         timer.TimerBegin(timeLeft == default ? period.ConvertToTimeSpan() : timeLeft);
-        timer.onComplete.AddListener(() =>
-        {
-            onCompleteEvent?.Invoke();
-            Destroy(timer);
-        });
+        timer.onComplete.AddListener(() => onCompleteEvent?.Invoke());
+        return timer;
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log("Destroyed");
     }
 }
 

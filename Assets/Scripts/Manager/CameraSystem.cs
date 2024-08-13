@@ -143,11 +143,16 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
     {
         Vector3 camPosition = mainCam.transform.position;
         Vector3 position = new Vector3(focusPosition.x, focusPosition.y, camPosition.z);
+
+        if (camPosition == position)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+        
         mainCam.transform.DOMove(position, 0.5f)
             .OnComplete(() => onComplete?.Invoke());
-        
         ClampCamera();
-        
         touchPosition = camPosition;
     }
 }

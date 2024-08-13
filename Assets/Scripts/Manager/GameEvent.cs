@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class GameEvent { }
@@ -141,6 +142,18 @@ public class SaveFactoryDataEvent : SaveBuildingDataEvent
     {
         return new SavedFactoryData(buildingID, buildingDataID, position, 
             area, queueCapacity, processing, completed);
+    }
+
+    public override string ToString()
+    {
+        string complete = completed.Aggregate("", (current, completeData) => current + (completeData + "\n"));
+
+        string process = processing.Aggregate("", (current, processingData) => current + (processingData + "\n"));
+
+        return "buildingID: " + buildingID + "\n" +
+               "buildingDataID: " + buildingDataID + "\n" +
+               "complete: " + "\n{\n" + complete + "\n}\n" +
+               "process: " + "\n{\n" + process + "\n}\n";
     }
 }
 
