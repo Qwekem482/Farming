@@ -27,7 +27,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     protected override void Awake()
     {
         base.Awake();
-        closeButton.onClick.AddListener(CloseStorageUI);
+        closeButton.onClick.AddListener(() => UICurtain.Instance.InvokeAndClose());
         changeView.onClick.AddListener(() => SetStorageViewState(!storageView.gameObject.activeSelf));
         SetStorageViewState(false);
     }
@@ -45,12 +45,10 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         
         gameObject.SetActive(true);
     }
-
-
+    
     void CloseStorageUI()
     {
         gameObject.SetActive(false);
-        UICurtain.Instance.TurnOff();
     }
 
     public void LoadStoringData(int currentCap, int maxCap, Dictionary<Collectible, int> items)
@@ -77,10 +75,8 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     void Generate(Dictionary<Collectible, int> itemList)
     {
         scroller.ClearALlCells();
-        Debug.Log(scroller.CellPerRow);
         scroller.Generate(itemCell, itemList.Count, (index, iCell) =>
         {
-            Debug.Log(itemList.ElementAt(index).Key + "|" + itemList.ElementAt(index).Value);
             StorageCell storageCell = iCell as StorageCell;
             if(storageCell != null) storageCell.AssignData
                 (itemList.ElementAt(index).Key, itemList.ElementAt(index).Value);

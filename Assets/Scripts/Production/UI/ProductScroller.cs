@@ -27,11 +27,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
     void OpenCurtain()
     {
         UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(() =>
-        {
-            CloseScroller();
-            UICurtain.Instance.TurnOff();
-        });
+        UICurtain.Instance.AssignOnClickOnce(CloseScroller);
     }
 
     public void OpenScroller(ProductionBuilding currentFactory, bool isField)

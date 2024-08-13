@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TimerUI : SingletonMonoBehavior<TimerUI>
@@ -21,7 +22,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     {
         base.Awake();
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        skipButton.onClick.AddListener(Skip);
+        skipButton.onClick.AddListener(SkipButtonAction);
     }
 
     public void ShowTimer(GameObject triggerObject)
@@ -59,7 +60,6 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     void HideTimer()
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        UICurtain.Instance.TurnOff();
         timer = null;
         countdown = false;
     }
@@ -68,11 +68,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     {
         
         UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(() =>
-        {
-            HideTimer();
-            UICurtain.Instance.TurnOff();
-        });
+        UICurtain.Instance.AssignOnClickOnce(HideTimer);
     }
 
     void FixedUpdate()
@@ -89,19 +85,19 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
         timeLeft.text = timer.TimeLeftString();
     }
 
-    void Skip()
+    void SkipButtonAction()
     {
         EventManager.Instance.AddListenerOnce<SufficientCurrencyEvent>(OnSufficientCurrency);
         EventManager.Instance.AddListenerOnce<InsufficientCurrencyEvent>(OnInsufficientCurrency);
         
         EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-timer.SkipPrice, CurrencyType.Gold));
-        UICurtain.Instance.TurnOff();
     }
 
     void OnSufficientCurrency(SufficientCurrencyEvent info)
     {
         timer.Skip();
         skipButton.gameObject.SetActive(false);
+        UICurtain.Instance.InvokeAndClose();
         EventManager.Instance.RemoveListener<InsufficientCurrencyEvent>(OnInsufficientCurrency);
     }
 

@@ -116,9 +116,12 @@ public class Factory : ProductionBuilding
             EventManager.Instance.QueueEvent(new StorageItemChangeEvent(tempItem));
         }
         
-        ReloadFactoryUIHolder();
         processingQueue.Enqueue(data);
         processingCoroutine ??= StartCoroutine(ProcessingProduct());
+        
+        
+        ReloadFactoryUIHolder();
+        TimerUI.Instance.ShowTimer(gameObject);
     }
     
     protected override IEnumerator ProcessingProduct(TimeSpan timeLeft = default)
@@ -169,7 +172,6 @@ public class Factory : ProductionBuilding
 
     public void ReloadFactoryUIHolder()
     {
-        Debug.Log("Reload");
         FactoryUIHolder.Instance.Init(this, processingQueue, completeQueue);
     }
 

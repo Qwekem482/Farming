@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Debug = System.Diagnostics.Debug;
 
 public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
 {
@@ -31,6 +27,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
 
     public void Init(Factory factory, IEnumerable<ProductData> process, IEnumerable<ProductData> complete)
     {
+        Debug.Log("Init");
         Queue<ProductData> processData = process != null ? new Queue<ProductData>(process) : new Queue<ProductData>();
         Queue<ProductData> completeData = complete != null ? new Queue<ProductData>(complete) : new Queue<ProductData>();
         
@@ -40,12 +37,24 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         
         for (int i = 0; i < factory.queueCapacity; i++)
         {
+            //Fix distribution of conflict between processing queue and completed queue later
+            //Fix duplicate
             processing[i].UnloadAllData();
             completed[i].UnloadAllData();
             
-            //Fix distribution of conflict between processing queue and completed queue later
-            if (processData.Count != 0) processing[i].Init(processData.Dequeue());
-            if (completeData.Count != 0) completed[i].Init(completeData.Dequeue());
+            processing[i].gameObject.SetActive(false);
+            completed[i].gameObject.SetActive(false);
+            
+            if (processData.Count != 0)
+            {
+                Debug.Log(processData.Peek().product);
+                processing[i].Init(processData.Dequeue());
+            }
+            if (completeData.Count != 0)
+            {
+                Debug.Log(completeData.Peek().product);
+                completed[i].Init(completeData.Dequeue());
+            }
             
             processing[i].gameObject.SetActive(true);
             completed[i].gameObject.SetActive(true);
@@ -62,11 +71,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
     void OpenCurtain()
     {
         UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(() =>
-        {
-            gameObject.SetActive(false);
-            UICurtain.Instance.TurnOff();
-        });
+        UICurtain.Instance.AssignOnClickOnce(() => gameObject.SetActive(false));
     }
 
     void OnDisable()

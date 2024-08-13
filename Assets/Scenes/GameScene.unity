@@ -26985,7 +26985,7 @@ GameObject:
   - component: {fileID: 154465295}
   - component: {fileID: 154465296}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: TimerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27024,7 +27024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCam: {fileID: 519420031}
-  layout: {fileID: 1596689003}
   progress: {fileID: 1009816641}
   nameText: {fileID: 445357235}
   timeLeft: {fileID: 1173435129}
@@ -36085,8 +36084,8 @@ RectTransform:
   - {fileID: 69750263}
   - {fileID: 1760477959}
   - {fileID: 1736617299}
-  - {fileID: 154465295}
   - {fileID: 1693993088}
+  - {fileID: 154465295}
   - {fileID: 50204090}
   - {fileID: 667247101}
   - {fileID: 1882838873}
@@ -36233,8 +36232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a89965232511348939d8fc5a3c1f9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LimitQueueProcesing: 0
-  QueueProcessTime: 0
+  limitQueueProcessing: 0
+  queueProcessTime: 0
 --- !u!1 &1882838872
 GameObject:
   m_ObjectHideFlags: 0

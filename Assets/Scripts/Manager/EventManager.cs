@@ -1,129 +1,91 @@
-/*
-* Copyright 2017 Ben D'Angelo
-*
-* MIT License
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy of this
-* software and associated documentation files (the "Software"), to deal in the Software
-* without restriction, including without limitation the rights to use, copy, modify, merge,
-* publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
-* to whom the Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in all copies or
-* substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-* INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-* PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-* FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-* OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-* DEALINGS IN THE SOFTWARE.
-*/
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class EventManager : MonoBehaviour {
-    public bool LimitQueueProcesing = false;
-    public float QueueProcessTime = 0.0f;
-    private static EventManager s_Instance = null;
-    private Queue m_eventQueue = new Queue();
+    public bool limitQueueProcessing;
+    public float queueProcessTime;
+    static EventManager sInstance;
+    readonly Queue mEventQueue = new Queue();
 
-    public delegate void EventDelegate<T> (T e) where T : GameEvent;
-    private delegate void EventDelegate (GameEvent e);
+    public delegate void EventDelegate<in T> (T e) where T : GameEvent;
+    delegate void EventDelegate (GameEvent e);
 
-    private Dictionary<System.Type, EventDelegate> delegates = new Dictionary<System.Type, EventDelegate>();
-    private Dictionary<System.Delegate, EventDelegate> delegateLookup = new Dictionary<System.Delegate, EventDelegate>();
-    private Dictionary<System.Delegate, System.Delegate> onceLookups = new Dictionary<System.Delegate, System.Delegate>();
-
-    // override so we don't have the typecast the object
+    readonly Dictionary<Type, EventDelegate> delegates = new Dictionary<Type, EventDelegate>();
+    readonly Dictionary<Delegate, EventDelegate> delegateDictionary = new Dictionary<Delegate, EventDelegate>();
+    readonly Dictionary<Delegate, Delegate> onceLookups = new Dictionary<Delegate, Delegate>();
+    
     public static EventManager Instance {
         get {
-            if (s_Instance == null) {
-                s_Instance = GameObject.FindObjectOfType (typeof(EventManager)) as EventManager;
+            if (sInstance == null) {
+                sInstance = FindObjectOfType (typeof(EventManager)) as EventManager;
             }
-            return s_Instance;
+            return sInstance;
         }
     }
 
-    private EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : GameEvent {
-        // Early-out if we've already registered this delegate
-        if (delegateLookup.ContainsKey(del))
+    EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : GameEvent {
+        if (delegateDictionary.ContainsKey(del))
             return null;
+        
+        EventDelegate internalDelegate = e => del((T)e);
+        delegateDictionary[del] = internalDelegate;
 
-        // Create a new non-generic delegate which calls our generic one.
-        // This is the delegate we actually invoke.
-        EventDelegate internalDelegate = (e) => del((T)e);
-        delegateLookup[del] = internalDelegate;
-
-        EventDelegate tempDel;
-        if (delegates.TryGetValue(typeof(T), out tempDel)) {
-            delegates[typeof(T)] = tempDel += internalDelegate; 
-        } else {
-            delegates[typeof(T)] = internalDelegate;
-        }
+        if (delegates.TryGetValue(typeof(T), out EventDelegate tempDel)) {
+            delegates[typeof(T)] = tempDel + internalDelegate; 
+        } else delegates[typeof(T)] = internalDelegate;
 
         return internalDelegate;
     }
 
     public void AddListener<T> (EventDelegate<T> del) where T : GameEvent {
-        AddDelegate<T>(del);
+        AddDelegate(del);
     }
 
     public void AddListenerOnce<T> (EventDelegate<T> del) where T : GameEvent {
-        EventDelegate result = AddDelegate<T>(del);
+        EventDelegate result = AddDelegate(del);
 
-        if(result != null){
-            // remember this is only called once
-            onceLookups[result] = del;
-        }
+        if(result != null) onceLookups[result] = del;
     }
 
-    public void RemoveListener<T> (EventDelegate<T> del) where T : GameEvent {
-        EventDelegate internalDelegate;
-        if (delegateLookup.TryGetValue(del, out internalDelegate)) {
-            EventDelegate tempDel;
-            if (delegates.TryGetValue(typeof(T), out tempDel)){
-                tempDel -= internalDelegate;
-                if (tempDel == null){
-                    delegates.Remove(typeof(T));
-                } else {
-                    delegates[typeof(T)] = tempDel;
-                }
-            }
-
-            delegateLookup.Remove(del);
+    public void RemoveListener<T> (EventDelegate<T> del) where T : GameEvent
+    {
+        if (!delegateDictionary.TryGetValue(del, out EventDelegate internalDelegate)) return;
+        if (delegates.TryGetValue(typeof(T), out EventDelegate tempDel)){
+            tempDel -= internalDelegate;
+            if (tempDel == null) delegates.Remove(typeof(T));
+            else delegates[typeof(T)] = tempDel;
         }
+
+        delegateDictionary.Remove(del);
     }
 
-    public void RemoveAll(){
+    void RemoveAll(){
         delegates.Clear();
-        delegateLookup.Clear();
+        delegateDictionary.Clear();
         onceLookups.Clear();
     }
 
-    public bool HasListener<T> (EventDelegate<T> del) where T : GameEvent {
-        return delegateLookup.ContainsKey(del);
-    }
+    /*public bool HasListener<T> (EventDelegate<T> del) where T : GameEvent {
+        return delegateDictionary.ContainsKey(del);
+    }*/
 
-    public void TriggerEvent (GameEvent e) {
-        EventDelegate del;
-        if (delegates.TryGetValue(e.GetType(), out del)) {
+    void TriggerEvent (GameEvent e) {
+        if (delegates.TryGetValue(e.GetType(), out EventDelegate del)) {
             del.Invoke(e);
 
             // remove listeners which should only be called once
-            foreach(EventDelegate k in delegates[e.GetType()].GetInvocationList()){
-                if(onceLookups.ContainsKey(k)){
-                    delegates[e.GetType()] -= k;
+            foreach(Delegate @delegate in delegates[e.GetType()].GetInvocationList())
+            {
+                EventDelegate k = (EventDelegate)@delegate;
+                if (!onceLookups.ContainsKey(k)) continue;
+                delegates[e.GetType()] -= k;
 
-                    if(delegates[e.GetType()] == null)
-                    {
-                        delegates.Remove(e.GetType());
-                    }
+                if(delegates[e.GetType()] == null) delegates.Remove(e.GetType());
 
-                    delegateLookup.Remove(onceLookups[k]);
-                    onceLookups.Remove(k);
-                }
+                delegateDictionary.Remove(onceLookups[k]);
+                onceLookups.Remove(k);
             }
         } else {
             Debug.LogWarning("Event: " + e.GetType() + " has no listeners");
@@ -137,7 +99,7 @@ public class EventManager : MonoBehaviour {
             return false;
         }
 
-        m_eventQueue.Enqueue(evt);
+        mEventQueue.Enqueue(evt);
         return true;
     }
 
@@ -146,23 +108,23 @@ public class EventManager : MonoBehaviour {
     //to be processed next update loop.
     void Update() {
         float timer = 0.0f;
-        while (m_eventQueue.Count > 0) {
-            if (LimitQueueProcesing) {
-                if (timer > QueueProcessTime)
+        while (mEventQueue.Count > 0) {
+            if (limitQueueProcessing) {
+                if (timer > queueProcessTime)
                     return;
             }
 
-            GameEvent evt = m_eventQueue.Dequeue() as GameEvent;
+            GameEvent evt = mEventQueue.Dequeue() as GameEvent;
             TriggerEvent(evt);
 
-            if (LimitQueueProcesing)
+            if (limitQueueProcessing)
                 timer += Time.deltaTime;
         }
     }
 
     public void OnApplicationQuit(){
         RemoveAll();
-        m_eventQueue.Clear();
-        s_Instance = null;
+        mEventQueue.Clear();
+        sInstance = null;
     }
 }

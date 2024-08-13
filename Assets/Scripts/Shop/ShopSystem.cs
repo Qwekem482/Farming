@@ -52,11 +52,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     {
         
         UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(() =>
-        {
-            CloseShop();
-            UICurtain.Instance.TurnOff();
-        });
+        UICurtain.Instance.AssignOnClickOnce(CloseShop);
     }
 
     void OpenShop()
