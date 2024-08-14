@@ -22,6 +22,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     [SerializeField] Image[] upgradeToolIcons = new Image[3];
     [SerializeField] TextMeshProUGUI[] upgradeToolTexts = new TextMeshProUGUI[3];
     [SerializeField] Button upgradeButton;
+    [SerializeField] TextMeshProUGUI upgradeButtonText;
     [SerializeField] TextMeshProUGUI newCapacityText;
     
     protected override void Awake()
@@ -29,6 +30,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         base.Awake();
         closeButton.onClick.AddListener(() => UICurtain.Instance.InvokeAndClose());
         changeView.onClick.AddListener(() => SetStorageViewState(!storageView.gameObject.activeSelf));
+        upgradeButton.onClick.AddListener(StorageSystem.Instance.OnClickUpgrade);
         SetStorageViewState(false);
     }
 
@@ -62,14 +64,19 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
 
     public void LoadUpgradeData(Item[] tools, int maxCapacity)
     {
+        int lackAmount = 0;
         for(int i = 0; i < 3; i++)
         {
+            int storageToolAmount = StorageSystem.Instance.GetCollectibleStoreAmount(tools[i].collectible);
+            lackAmount += tools[i].amount - storageToolAmount;
             upgradeToolIcons[i].sprite = tools[i].collectible.icon;
-            upgradeToolTexts[i].text = StorageSystem.Instance.GetCollectibleStoreAmount(tools[i].collectible)
-                                       + "/" + tools[i].amount;
+            upgradeToolTexts[i].text = storageToolAmount +
+                                       "/" +
+                                       tools[i].amount;
         }
 
-        newCapacityText.text = "Max Capacity To " + (maxCapacity + 50);
+        upgradeButtonText.text = "Upgrade Now: " + lackAmount * 10;
+        newCapacityText.text = "Increase Capacity To " + (maxCapacity + 50);
     }
 
     void Generate(Dictionary<Collectible, int> itemList)

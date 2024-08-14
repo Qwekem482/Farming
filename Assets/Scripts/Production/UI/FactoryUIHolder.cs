@@ -69,7 +69,11 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
     void OpenCurtain()
     {
         UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(() => gameObject.SetActive(false));
+        UICurtain.Instance.AssignOnClickOnce(() =>
+        {
+            currentFactory = null;
+            gameObject.SetActive(false);
+        });
     }
 
     void OnDisable()

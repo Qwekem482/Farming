@@ -8,8 +8,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Collectible", menuName = "CustomObject/Collectibles/Collectible")]
 public class Collectible : ScriptableObject
 {
+    public string id;
     public string itemName;
     public Sprite icon;
+
+    void OnValidate()
+    {
+        if (char.IsDigit(id[0])) id = "C" + id;
+    }
 }
 
 [Serializable]
@@ -54,8 +60,8 @@ public class Item
         return itemList.ToDictionary(item => item.collectible, item => item.amount);
     }
 
-    public static Item ConvertToNegativeAmount(Item item)
+    public Item ConvertToNegativeAmount()
     {
-        return new Item(item.collectible, -item.amount);
+        return new Item(collectible, -amount);
     }
 }

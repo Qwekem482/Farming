@@ -19,6 +19,8 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
     ProductionBuilding factory;
     public bool isOpen;
 
+    bool buildingIsField;
+
     void Start()
     {
         gameObject.SetActive(false);
@@ -34,6 +36,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
     {
         if (isOpen) return;
         isOpen = true;
+        buildingIsField = isField;
         factory = currentFactory;
         gameObject.SetActive(true);
         Generate(currentFactory, isField);
@@ -55,7 +58,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
             });
     }
 
-    void Generate(ProductionBuilding currentFactory, bool isField)
+    public void Generate(ProductionBuilding currentFactory, bool isField)
     {
         ProductionBuildingData factoryData;
         
@@ -79,7 +82,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         });
     }
 
-    void Clear()
+    public void Clear()
     {
         scroller.Clear();
     }

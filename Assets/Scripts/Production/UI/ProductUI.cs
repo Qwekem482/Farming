@@ -43,13 +43,6 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnDrag(PointerEventData eventData)
     {
         rectTrans.anchoredPosition += eventData.delta / canvas.scaleFactor;
-        
-        //Poor logic
-        if(ProductScroller.Instance.isOpen && 
-           rectTrans.anchoredPosition.x > - canvas.gameObject.GetComponent<RectTransform>().sizeDelta.x * 2 / 3)
-        {
-            ProductScroller.Instance.CloseScroller();
-        }
     }
     
     public void OnEndDrag(PointerEventData eventData)

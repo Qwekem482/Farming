@@ -94,19 +94,18 @@ public class Field : ProductionBuilding
     {
         WaitForSecondsRealtime processingTime = new WaitForSecondsRealtime(cropData.processingTime.ToSecond());
         Timer.CreateTimer(gameObject, cropData.product.itemName,
-            cropData.processingTime, OnSkipProcessingProduct, timeLeft);
+            cropData.processingTime, null, OnSkipProcessingProduct, timeLeft);
         
         state = ProductionBuildingState.Processing;
         spriteRenderer.sprite = cropData.processingSprite;
-        
+
         yield return processingTime;
-        
         OnCompleteProcessingProduct();
     }
 
     protected override void OnSkipProcessingProduct()
     {
-        StopCoroutine(processingCoroutine);
+        if (processingCoroutine != null) StopCoroutine(processingCoroutine);
         OnCompleteProcessingProduct();
     }
 

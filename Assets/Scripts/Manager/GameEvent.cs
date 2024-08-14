@@ -31,8 +31,8 @@ public class InsufficientCurrencyEvent : GameEvent
 
 public class SufficientCurrencyEvent : GameEvent
 {
-    public int amount;
-    public CurrencyType currencyType;
+    public readonly int amount;
+    public readonly CurrencyType currencyType;
 
     public SufficientCurrencyEvent(int amount, CurrencyType currencyType)
     {
@@ -111,6 +111,9 @@ public class SufficientCapacityEvent : GameEvent
     }
 }
 
+#region SaveEvent
+
+#region SaveBuildingEvent
 
 public class SaveBuildingDataEvent : GameEvent
 {
@@ -180,10 +183,44 @@ public class SaveFieldDataEvent : SaveBuildingDataEvent
         processing = null;
     }
     
-    
     public SavedFieldData CreateSavedFieldData()
     {
         return new SavedFieldData(buildingID, buildingDataID, position, 
             area, processing);
     }
 }
+
+#endregion
+
+#region OtherSaveEvent
+
+public class SaveStorageCapacityEvent : GameEvent
+{
+    public readonly int capacity;
+    public readonly int level;
+    
+    public SaveStorageCapacityEvent(int capacity, int level)
+    {
+        this.capacity = capacity;
+        this.level = level;
+    }
+}
+
+public class SaveCurrencyEvent : GameEvent
+{
+    public readonly int silver;
+    public readonly int gold;
+
+    public SaveCurrencyEvent(int silver, int gold)
+    {
+        this.silver = silver;
+        this.gold = gold;
+    }
+}
+
+
+
+#endregion
+
+#endregion
+

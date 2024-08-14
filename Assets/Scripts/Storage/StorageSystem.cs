@@ -10,7 +10,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     
     [SerializeField] Collectible[] upgradeTools = new Collectible[3];
     
-    int maxCapacity = 10;
+    int maxCapacity = 50;
     int currentCapacity;
     int level;
     
@@ -21,20 +21,25 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
         base.Awake();
         EventManager.Instance.AddListener<InsufficientCapacityEvent>(OnInsufficientCapacity);
         EventManager.Instance.AddListener<StorageItemChangeEvent>(OnStorageChange);
+        
     }
 
     public void StartingSystem()
     {
-        LoadItemFromDisk();
         StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
         StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
     }
+    
 
-    public void LoadSavedData()
+    public void LoadSavedData(int loadCapacity, int loadLevel)
     {
         //TODO: Load
-        
+        maxCapacity = loadCapacity > 50 ?
+            loadCapacity :
+            50;
+        level = loadLevel;
         existingItems = GetExistingItem();
+        foreach(int amount in existingItems.Values) currentCapacity += amount;
     }
     
     #endregion
@@ -60,26 +65,6 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     #endregion
 
     #region Logic
-    
-    public void IncreaseCapacity()
-    {
-        if (upgradeTools.Any(tool => !IsSufficient(new Item(tool, level + 1))))
-        {
-            Debug.Log("Insufficient");
-            return;
-        }
-        
-        maxCapacity += 50;
-
-        foreach(Collectible tool in upgradeTools)
-        {
-            EventManager.Instance.QueueEvent(new StorageItemChangeEvent(new Item(tool, (level + 1))));
-        }
-        
-        level++;
-        
-        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
-    }
 
     bool IsSufficient(Item item)
     {
@@ -126,12 +111,17 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
         CalcRemainingItem(info);
     }
     
-    void LoadItemFromDisk()
+    public void LoadItemFromDisk()
     {
         foreach(Collectible collectible in ResourceManager.Instance.allCollectibles)
         {
-            allItems.Add(collectible, 0);
+            allItems.Add(collectible,
+                SaveLoadSystem.Instance.HasItem(collectible) ?
+                    SaveLoadSystem.Instance.Amount(collectible) :
+                    0);
         }
+        
+        foreach(KeyValuePair<Collectible, int> item in allItems) Debug.Log(item.Key + "|" + item.Value);
     }
 
     void CalcRemainingItem(StorageItemChangeEvent info)
@@ -149,7 +139,51 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     }
     
     #endregion
+
+    #region Upgrade
+
+    public void OnClickUpgrade()
+    {
+        int lackAmount = 0;
+        foreach(Collectible tool in upgradeTools)
+        {
+            int storageToolAmount = GetCollectibleStoreAmount(tool);
+            if (storageToolAmount < level + 1) lackAmount += level + 1 - storageToolAmount;
+        }
+
+        EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-lackAmount * 10, CurrencyType.Gold));
+        EventManager.Instance.AddListenerOnce<InsufficientCurrencyEvent>(OnInsufficientUpgradeGold);
+        EventManager.Instance.AddListenerOnce<SufficientCurrencyEvent>(OnSufficientUpgradeGold);
+    }
     
+    void IncreaseCapacity()
+    {
+        maxCapacity += 50;
+        level++;
+        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
+        EventManager.Instance.QueueEvent(new SaveStorageCapacityEvent(maxCapacity, level));
+    }
+
+    void OnInsufficientUpgradeGold(InsufficientCurrencyEvent info)
+    {
+    }
+    
+    void OnSufficientUpgradeGold(SufficientCurrencyEvent info)
+    {
+        foreach(Collectible tool in upgradeTools)
+        {
+            int storageToolAmount = GetCollectibleStoreAmount(tool);
+            EventManager.Instance.QueueEvent(
+                storageToolAmount < level + 1 ?
+                    new StorageItemChangeEvent(new Item(tool, storageToolAmount)) :
+                    new StorageItemChangeEvent(new Item(tool, level + 1)));
+            
+        }
+        
+        IncreaseCapacity();
+    }
+
+    #endregion
 }
 
 

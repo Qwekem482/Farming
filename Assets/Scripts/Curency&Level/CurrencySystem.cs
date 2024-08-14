@@ -25,16 +25,15 @@ public class CurrencySystem : SingletonMonoBehavior<CurrencySystem>, IGameSystem
 
     public void LoadCurrency(int silver, int gold)
     {
-        currencyAmounts.Add(CurrencyType.Silver, silver); //import from player's save
-        currencyAmounts.Add(CurrencyType.Gold, gold); //import from player's save
-        
+        currencyAmounts.Add(CurrencyType.Silver, silver);
+        currencyAmounts.Add(CurrencyType.Gold, gold);
         ChangeCurrencyText(CurrencyType.Silver);
         ChangeCurrencyText(CurrencyType.Gold);
     }
 
     void OnCurrencyChange(CurrencyChangeEvent info)
     {
-        if (info.amount < 0)
+        if (info.amount <= 0)
         {
             if (currencyAmounts[info.currencyType] < Math.Abs(info.amount))
             {
@@ -55,6 +54,9 @@ public class CurrencySystem : SingletonMonoBehavior<CurrencySystem>, IGameSystem
     {
         currencyAmounts[info.currencyType] += info.amount;
         ChangeCurrencyText(info.currencyType);
+        EventManager.Instance.QueueEvent(new SaveCurrencyEvent(
+                currencyAmounts[CurrencyType.Silver], 
+                currencyAmounts[CurrencyType.Gold]));
     }
 
     void ChangeCurrencyText(CurrencyType type)

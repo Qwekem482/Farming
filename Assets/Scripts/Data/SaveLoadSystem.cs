@@ -20,6 +20,10 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     {
         EventManager.Instance.AddListener<SaveFactoryDataEvent>(saveData.AddFactoryData);
         EventManager.Instance.AddListener<SaveFieldDataEvent>(saveData.AddFieldData);
+        EventManager.Instance.AddListener<SufficientCapacityEvent>(saveData.ModifyStorageData);
+        EventManager.Instance.AddListener<SufficientItemsEvent>(saveData.ModifyStorageData);
+        EventManager.Instance.AddListener<SaveStorageCapacityEvent>(saveData.UpdateStorageCapacity);
+        EventManager.Instance.AddListener<SaveCurrencyEvent>(saveData.UpdateCurrency);
     }
 
     #region LoadSave
@@ -32,11 +36,12 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         LoadCurrency();
         LoadFactoryData();
         LoadFieldData();
+        LoadStorageData();
     }
 
     void LoadCurrency()
     {
-        CurrencySystem.Instance.LoadCurrency(1000, 1000);
+        CurrencySystem.Instance.LoadCurrency(saveData.silver, saveData.gold);
     }
 
     void LoadFactoryData()
@@ -55,9 +60,15 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         }
     }
 
+    void LoadStorageData()
+    {
+        StorageSystem.Instance.LoadItemFromDisk();
+        StorageSystem.Instance.LoadSavedData(saveData.storageCapacity, saveData.storageLevel);
+    }
+
     #endregion
 
-    #region CreateGameObject
+    #region LoadBuilding
 
     void CreateFactory(SavedFactoryData data)
     {
@@ -122,9 +133,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
         return emptyBuilding;
     }
-
-    #endregion
-
+    
     #region CreateFactorySupport
     Queue<ProductData>[] InitializeProductionQueue(Queue<SavedProcessingData> savedProcessing, Queue<string> savedCompleted)
     {
@@ -134,7 +143,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         while (savedProcessing.Count != 0 && savedProcessing.Peek().completedDateTime < DateTime.Now)
         {
             savedCompleted.Enqueue(savedProcessing.Dequeue().productDataID);
-            if (savedProcessing.Count == 0) break;
+            //if (savedProcessing.Count == 0) break;
         }
 
         if (savedProcessing.Count != 0)
@@ -146,7 +155,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             }
         }
         
-        if (completedProductData.Count != 0)
+        if (savedCompleted.Count != 0)
         {
             foreach(string completedData in savedCompleted)
             {
@@ -161,21 +170,39 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     TimeSpan TimeDifference(Queue<SavedProcessingData> savedProcessing)
     {
         TimeSpan toReturn = default;
-        while (savedProcessing.Count != 0 && savedProcessing.Peek().completedDateTime < DateTime.Now)
+        while (savedProcessing.Count != 0)
         {
-            toReturn = savedProcessing.Dequeue().completedDateTime - DateTime.Now;
-            
-            if (savedProcessing.Count == 0)
+            if (savedProcessing.Peek().completedDateTime < DateTime.Now)
             {
-                toReturn = default;
-                break;
+                savedProcessing.Dequeue();
+                continue;
             }
+            toReturn = savedProcessing.Dequeue().completedDateTime - DateTime.Now;
+            break;
         }
 
         return toReturn;
     }
 
     #endregion
+
+    #endregion
+
+    #region LoadStorage
+
+    public bool HasItem(Collectible collectible)
+    {
+        return saveData.storageData.ContainsKey(collectible.id);
+    }
+
+    public int Amount(Collectible collectible)
+    {
+        return saveData.storageData[collectible.id];
+    }
+
+    #endregion
+
+
 
     /*void OnApplicationPause(bool pauseStatus)
     {

@@ -14,6 +14,7 @@ public class Timer : MonoBehaviour
     DateTime finishTime;
     public TimeSpan duration;
     public UnityEvent onComplete;
+    public UnityEvent onSkip;
     public double TimeLeft { get; private set; }
     public int SkipPrice { get; private set; }
 
@@ -24,7 +25,13 @@ public class Timer : MonoBehaviour
         duration = timerDuration;
         finishTime = start.Add(timerDuration);
         onComplete = new UnityEvent();
-        onComplete.AddListener(() => Destroy(this));
+        onComplete.AddListener(() =>
+        {
+            UICurtain.Instance.InvokeAndClose();
+            Destroy(this);
+        });
+        onSkip = new UnityEvent();
+        onSkip.AddListener(onComplete.Invoke);
     }
 
     void TimerBegin(TimeSpan timeLeft)
@@ -65,21 +72,18 @@ public class Timer : MonoBehaviour
     {
         TimeLeft = 0;
         finishTime = DateTime.Now;
-        onComplete.Invoke();
+        onSkip.Invoke();
     }
 
-    public static Timer CreateTimer(GameObject source, string processName, TimePeriod period, UnityAction onCompleteEvent, TimeSpan timeLeft = default)
+    public static Timer CreateTimer(GameObject source, string processName, TimePeriod period,
+        UnityAction onCompleteEvent, UnityAction onSkipEvent = null, TimeSpan timeLeft = default)
     {
         Timer timer = source.AddComponent<Timer>();
         timer.InitTimer(processName, DateTime.Now, period.ConvertToTimeSpan());
         timer.TimerBegin(timeLeft == default ? period.ConvertToTimeSpan() : timeLeft);
         timer.onComplete.AddListener(() => onCompleteEvent?.Invoke());
+        timer.onSkip.AddListener(() => onSkipEvent?.Invoke());
         return timer;
-    }
-
-    void OnDestroy()
-    {
-        Debug.Log("Destroyed");
     }
 }
 
