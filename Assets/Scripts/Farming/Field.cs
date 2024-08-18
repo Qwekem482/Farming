@@ -129,7 +129,7 @@ public class Field : ProductionBuilding
         
         EventManager.Instance.AddListenerOnce<SufficientCurrencyEvent>(OnSufficientCurrency);
         EventManager.Instance.AddListenerOnce<InsufficientCurrencyEvent>(OnInsufficientCurrency);
-        EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-cropData.price, CurrencyType.Silver));
+        EventManager.Instance.QueueEvent(new CurrencyChangeEvent(-cropData.inputPrice, CurrencyType.Silver));
     }
 
     public void HarvestProduct()

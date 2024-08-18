@@ -17,8 +17,8 @@ MonoBehaviour:
   processingTime:
     days: 0
     hours: 0
-    minutes: 5
-    seconds: 0
+    minutes: 2
+    seconds: 10
   price: 1
   processingSprite: {fileID: 21300000, guid: e24c1c5d3e0ceaf448cbb10f715fd571, type: 3}
   completeSprite: {fileID: 21300000, guid: 1495253840d498a4689b27ff4c1c26e7, type: 3}

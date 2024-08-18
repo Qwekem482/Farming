@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2234c8efb32b4eb4b8c2391bf9f42526, type: 3}
   m_Name: glutinous_rice_collect
   m_EditorClassIdentifier: 
+  id: C3
   itemName: "L\xFAa N\u1EBFp"
   icon: {fileID: 21300000, guid: 0ab7730f5e8fe8b4896d175689962b5f, type: 3}

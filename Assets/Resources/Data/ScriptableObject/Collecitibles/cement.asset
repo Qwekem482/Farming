@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2234c8efb32b4eb4b8c2391bf9f42526, type: 3}
   m_Name: cement
   m_EditorClassIdentifier: 
+  id: C1
   itemName: "T\xFAi Xi M\u1EB1ng"
   icon: {fileID: 21300000, guid: 02f29e4beb3b3614582e53dc9445f448, type: 3}

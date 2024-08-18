@@ -72,7 +72,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void CreateFactory(SavedFactoryData data)
     {
-        BuildingData buildingData = ResourceManager.Instance.allBuildingData[data.buildingDataID];
+        BuildingData buildingData = ResourceManager.Instance.buildingData[data.buildingDataID];
         GameObject emptyBuilding = CreateBuildingGameObject(
             buildingData.buildingName,
             data.position,
@@ -95,7 +95,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void CreateField(SavedFieldData data)
     {
-        BuildingData buildingData = ResourceManager.Instance.allBuildingData[data.buildingDataID];
+        BuildingData buildingData = ResourceManager.Instance.buildingData[data.buildingDataID];
         GameObject emptyBuilding = CreateBuildingGameObject(
             buildingData.buildingName,
             data.position,

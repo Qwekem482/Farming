@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2234c8efb32b4eb4b8c2391bf9f42526, type: 3}
   m_Name: round_sticky_rice_cake
   m_EditorClassIdentifier: 
+  id: C6
   itemName: "B\xE1nh D\xE0y"
   icon: {fileID: 21300000, guid: 5ff7f4e5751d3c64481eaa6de709a044, type: 3}

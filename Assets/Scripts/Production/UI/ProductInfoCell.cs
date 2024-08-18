@@ -42,7 +42,7 @@ public class ProductInfoCell : RegularCell
         }
 
         materials.ElementAt(0).Key.sprite = coin;
-        materials.ElementAt(0).Value.text = data.price.ToString();
+        materials.ElementAt(0).Value.text = data.inputPrice.ToString();
         
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
         CropUI crop = productIcon.gameObject.AddComponent<CropUI>();

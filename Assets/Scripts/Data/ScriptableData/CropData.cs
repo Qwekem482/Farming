@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Crop", menuName = "CustomObject/Collectibles/Crop")]
 public class CropData : ProductionOutputData
 {
-    public int price;
+    public int inputPrice;
     public Sprite processingSprite;
     public Sprite completeSprite;
 
@@ -14,6 +15,8 @@ public class CropData : ProductionOutputData
     {
         FixInput();
         FixID();
+
+        outputValue = inputPrice + (int)processingTime.ToSecond() / 30;
     }
     protected override void FixID()
     {
@@ -21,7 +24,7 @@ public class CropData : ProductionOutputData
     }
     protected override void FixInput()
     {
-        if (price > 0) return;
-        price = 1;
+        if (inputPrice > 0) return;
+        inputPrice = 1;
     }
 }

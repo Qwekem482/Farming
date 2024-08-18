@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2234c8efb32b4eb4b8c2391bf9f42526, type: 3}
   m_Name: plain_sticky_rice
   m_EditorClassIdentifier: 
+  id: C5
   itemName: "X\xF4i Tr\u1EAFng"
   icon: {fileID: 21300000, guid: f2c35a06343c0ef49b204876093da7d6, type: 3}

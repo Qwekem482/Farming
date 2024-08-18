@@ -1,0 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class OrderGenerator
+{
+    const float SILVER_MIN_WEIGHT = 1f;
+    const float SILVER_MAX_WEIGHT = 1.5f;
+    const float GOLD_MIN_WEIGHT = 0.1f;
+    const float GOLD_MAX_WEIGHT = 0.5f;
+    const float EXP_MIN_WEIGHT = 1.2f;
+    const float EXP_MAX_WEIGHT = 2f;
+    const float GOLDEN_ORDER_RATE = 0.05f; //5% golden order rate
+    
+    public Order Generate()
+    {
+        int itemQuantity = Random.Range(1, 4);
+        Dictionary<Collectible, Item> requestItems = new Dictionary<Collectible, Item>(itemQuantity);
+        int totalCurrencyReward = 0;
+        int totalExpReward = 0;
+        bool isGoldenOrder = Random.Range(0f, 1f) < GOLDEN_ORDER_RATE;
+        
+        for (int i = 0; i < itemQuantity; i++)
+        {
+            Collectible collectible = GetRandomCollectible();
+            if (requestItems.ContainsKey(collectible)) continue;
+            int amount = GetRandomAmount();
+            float outputValue = CalcOutputValue(collectible, amount);
+
+            totalExpReward += GenerateRewardValue(outputValue, EXP_MIN_WEIGHT, EXP_MAX_WEIGHT);
+            if (isGoldenOrder) totalCurrencyReward += GenerateRewardValue(outputValue, GOLD_MIN_WEIGHT, GOLD_MAX_WEIGHT);
+            totalCurrencyReward += GenerateRewardValue(outputValue, SILVER_MIN_WEIGHT, SILVER_MAX_WEIGHT);
+            requestItems.Add(collectible, new Item(collectible, amount));
+        }
+        
+        return new Order(requestItems.Values.ToArray(), totalExpReward, totalCurrencyReward, isGoldenOrder);
+    }
+
+    Collectible GetRandomCollectible()
+    {
+        int index = Random.Range(0, LevelSystem.Instance.unlockedCollectibles.Count);
+        return LevelSystem.Instance.unlockedCollectibles[index];
+    }
+
+    int GetRandomAmount()
+    {
+        return Random.Range(0, LevelSystem.Instance.currentLevel);
+    }
+
+    int GenerateRewardValue(float outputValue, float minWeight, float maxWeight)
+    {
+        if (Random.Range(minWeight, maxWeight) * outputValue <= 0) return 1;
+        return (int)(Random.Range(minWeight, maxWeight) * outputValue);
+    }
+
+    float CalcOutputValue(Collectible collectible, int amount)
+    {
+        return (from productionOutputData
+                    in ResourceManager.Instance.productData.Values
+                where collectible.id == productionOutputData.product.id
+                select productionOutputData.outputValue).FirstOrDefault() 
+               * amount;
+    }
+}

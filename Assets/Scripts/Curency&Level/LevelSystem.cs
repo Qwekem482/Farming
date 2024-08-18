@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,9 +7,10 @@ using UnityEngine.UI;
 public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
 {
     int currentExp;
-    int currentLevel;
+    public int currentLevel;
     int expNeeded;
     LevelList levelList;
+    public List<Collectible> unlockedCollectibles;
 
     [SerializeField] TextAsset levelAsset;
     [SerializeField] Slider expSlider;

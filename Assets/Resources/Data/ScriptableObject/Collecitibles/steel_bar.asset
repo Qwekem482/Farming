@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2234c8efb32b4eb4b8c2391bf9f42526, type: 3}
   m_Name: steel_bar
   m_EditorClassIdentifier: 
+  id: C2
   itemName: "Thanh Th\xE9p"
   icon: {fileID: 21300000, guid: cd9cc34f09cb27045bf59a2b99e8428b, type: 3}
