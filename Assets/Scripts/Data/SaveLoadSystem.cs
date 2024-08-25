@@ -24,6 +24,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         EventManager.Instance.AddListener<SufficientItemsEvent>(saveData.ModifyStorageData);
         EventManager.Instance.AddListener<SaveStorageCapacityEvent>(saveData.UpdateStorageCapacity);
         EventManager.Instance.AddListener<SaveCurrencyEvent>(saveData.UpdateCurrency);
+        EventManager.Instance.AddListener<SaveOrderEvent>(saveData.UpdateOrder);
     }
 
     #region LoadSave
@@ -64,6 +65,11 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     {
         StorageSystem.Instance.LoadItemFromDisk();
         StorageSystem.Instance.LoadSavedData(saveData.storageCapacity, saveData.storageLevel);
+    }
+
+    void LoadOrderData()
+    {
+        OrderSystem.Instance.Load(saveData.orders);
     }
 
     #endregion

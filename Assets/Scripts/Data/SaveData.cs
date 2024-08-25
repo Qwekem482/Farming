@@ -17,6 +17,7 @@ public class SaveData
     public Dictionary<string, int> storageData = new Dictionary<string, int>();
     public Dictionary<string, SavedFactoryData> factoryData = new Dictionary<string, SavedFactoryData>();
     public Dictionary<string, SavedFieldData> fieldData = new Dictionary<string, SavedFieldData>();
+    public Order[] orders = new Order[9];
     public static string GenerateUniqueID()
     {
         return Guid.NewGuid().ToString();
@@ -61,7 +62,11 @@ public class SaveData
         gold = info.gold;
         silver = info.silver;
     }
-    
+
+    public void UpdateOrder(SaveOrderEvent info)
+    {
+        orders[info.index] = info.order;
+    }
 
     public override string ToString()
     {

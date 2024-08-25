@@ -14,6 +14,8 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
     public readonly Dictionary<string, BuildingData> buildingData = new Dictionary<string, BuildingData>();
     public readonly Dictionary<string, ProductionOutputData> productData = new Dictionary<string, ProductionOutputData>();
     public SerializedDictionary<BuildingType, ShopItemData[]> shopItems;
+    public Sprite silverSprite;
+    public Sprite goldSprite;
 
     public void Initialization()
     {

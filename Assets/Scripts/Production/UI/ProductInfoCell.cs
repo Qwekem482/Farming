@@ -21,7 +21,7 @@ public class ProductInfoCell : RegularCell
             if (data.materials.Length > i)
             {
                 materials.ElementAt(i).Key.sprite = data.materials[i].collectible.icon;
-                int storageAmount = StorageSystem.Instance.GetCollectibleStoreAmount(data.materials[i].collectible);
+                int storageAmount = StorageSystem.Instance.GetStoreAmount(data.materials[i].collectible);
                 materials.ElementAt(i).Value.text = storageAmount + "/" + data.materials[i].amount;
             } else
             {

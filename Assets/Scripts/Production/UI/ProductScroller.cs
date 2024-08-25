@@ -14,7 +14,6 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
     [SerializeField] GameObject cell;
     [SerializeField] RectTransform rectTrans;
     [SerializeField] Canvas canvas;
-    [SerializeField] Sprite coin;
 
     ProductionBuilding factory;
     public bool isOpen;
@@ -77,7 +76,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
             ProductInfoCell infoCell = iCell as ProductInfoCell;
             if (infoCell == null) return;
             if (isField)
-                infoCell.AssignData(factoryData.productData[index] as CropData, canvas, coin);
+                infoCell.AssignData(factoryData.productData[index] as CropData, canvas, ResourceManager.Instance.silverSprite);
             else infoCell.AssignData(factoryData.productData[index] as ProductData, canvas, factory as Factory);
         });
     }

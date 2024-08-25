@@ -68,15 +68,15 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
 
     bool IsSufficient(Item item)
     {
-        return GetCollectibleStoreAmount(item.collectible) >= item.amount;
+        return GetStoreAmount(item.collectible) >= item.amount;
     }
 
     public bool IsSufficient(IEnumerable<Item> items)
     {
-        return items.All(item => GetCollectibleStoreAmount(item.collectible) >= item.amount);
+        return items.All(item => GetStoreAmount(item.collectible) >= item.amount);
     }
     
-    public int GetCollectibleStoreAmount(Collectible collectible)
+    public int GetStoreAmount(Collectible collectible)
     {
         return allItems[collectible];
     }
@@ -147,7 +147,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
         int lackAmount = 0;
         foreach(Collectible tool in upgradeTools)
         {
-            int storageToolAmount = GetCollectibleStoreAmount(tool);
+            int storageToolAmount = GetStoreAmount(tool);
             if (storageToolAmount < level + 1) lackAmount += level + 1 - storageToolAmount;
         }
 
@@ -172,7 +172,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     {
         foreach(Collectible tool in upgradeTools)
         {
-            int storageToolAmount = GetCollectibleStoreAmount(tool);
+            int storageToolAmount = GetStoreAmount(tool);
             EventManager.Instance.QueueEvent(
                 storageToolAmount < level + 1 ?
                     new StorageItemChangeEvent(new Item(tool, storageToolAmount)) :

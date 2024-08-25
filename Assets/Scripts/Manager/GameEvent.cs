@@ -218,6 +218,18 @@ public class SaveCurrencyEvent : GameEvent
     }
 }
 
+public class SaveOrderEvent : GameEvent
+{
+    public readonly int index;
+    public readonly Order order;
+
+    public SaveOrderEvent(int index, Order order)
+    {
+        this.index = index;
+        this.order = order;
+    }
+}
+
 
 
 #endregion

@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class OrderGenerator
 {
@@ -13,7 +14,7 @@ public class OrderGenerator
     const float EXP_MAX_WEIGHT = 2f;
     const float GOLDEN_ORDER_RATE = 0.05f; //5% golden order rate
     
-    public Order Generate()
+    public Order Generate(bool setResetTime = false)
     {
         int itemQuantity = Random.Range(1, 4);
         Dictionary<Collectible, Item> requestItems = new Dictionary<Collectible, Item>(itemQuantity);
@@ -33,8 +34,17 @@ public class OrderGenerator
             totalCurrencyReward += GenerateRewardValue(outputValue, SILVER_MIN_WEIGHT, SILVER_MAX_WEIGHT);
             requestItems.Add(collectible, new Item(collectible, amount));
         }
-        
-        return new Order(requestItems.Values.ToArray(), totalExpReward, totalCurrencyReward, isGoldenOrder);
+
+        return setResetTime ?
+            new Order(requestItems.Values.ToArray(),
+                totalExpReward,
+                totalCurrencyReward,
+                isGoldenOrder, 
+                DateTime.Now + TimeSpan.FromMinutes(15)) :
+            new Order(requestItems.Values.ToArray(),
+                totalExpReward,
+                totalCurrencyReward,
+                isGoldenOrder);
     }
 
     Collectible GetRandomCollectible()

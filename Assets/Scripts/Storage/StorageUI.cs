@@ -67,7 +67,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         int lackAmount = 0;
         for(int i = 0; i < 3; i++)
         {
-            int storageToolAmount = StorageSystem.Instance.GetCollectibleStoreAmount(tools[i].collectible);
+            int storageToolAmount = StorageSystem.Instance.GetStoreAmount(tools[i].collectible);
             lackAmount += tools[i].amount - storageToolAmount;
             upgradeToolIcons[i].sprite = tools[i].collectible.icon;
             upgradeToolTexts[i].text = storageToolAmount +

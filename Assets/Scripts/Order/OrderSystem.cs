@@ -1,54 +1,44 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
 {
-    public List<Order> orderList;
-    public int orderQuantity;
+    [NonSerialized]public Order[] orders = new Order[9];
+    [NonSerialized]public int orderQuantity = 9;
 
-    OrderGenerator generator = new OrderGenerator();
+    [NonSerialized]readonly OrderGenerator generator = new OrderGenerator();
     
 
     public void StartingSystem()
     {
-        orderQuantity = Mathf.Clamp(LevelSystem.Instance.currentLevel, 1, 9);
-    }
-
-    public void SaveState()
-    {
         
     }
-
-    public void LoadState()
+    
+    void Save(int index)
     {
-        
+        EventManager.Instance.QueueEvent(new SaveOrderEvent(index, orders[index]));
+    }
+    
+    public void Load(Order[] orderArray)
+    {
+        orders = orderArray;
     }
 
-    public void CancelOrder(Order order)
+    public void CancelOrder(int index)
     {
-        ClearOrder(order);
+        CreateNewOrder(index);
     }
 
-    public Order DeliveryOrder(Order order)
+    public void DeliveryOrder(int index)
     {
-        order.DeliveryOrder();
-        ClearOrder(order);
-        Order newOrder = generator.Generate();
-        orderList.Add(newOrder);
-        return newOrder;
+        if (!orders[index].CanBeDelivery()) return;
+        CreateNewOrder(index);
     }
 
-    #region PrivateMethod
-
-    void GenerateOrder()
+    void CreateNewOrder(int index)
     {
-        orderList.Add(generator.Generate());
+        orders[index] = generator.Generate(true);
+        Save(index);
     }
-
-    void ClearOrder(Order order)
-    {
-        if (orderList.Contains(order)) orderList.Remove(order);
-    }
-
-    #endregion
 }
