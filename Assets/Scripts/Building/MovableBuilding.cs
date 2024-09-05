@@ -14,10 +14,10 @@ public class MovableBuilding : MonoBehaviour
     public string buildingName;
     public bool IsPlaced { get; private set; }
 
-    public virtual void Init(BuildingData data)
+    public virtual void Init(BuildingData data, BoundsInt area)
     {
         buildingData = data;
-        buildingArea = data.area;
+        buildingArea = area;
         buildingName = buildingData.buildingName;
     }
 
@@ -43,7 +43,8 @@ public class MovableBuilding : MonoBehaviour
             0);
 
         IsPlaced = true;
-        BuildingSystem.Instance.SetTileBaseArrayValue(areaTemp, TileType.White);
+        BuildingSystem.Instance.tempMap.SetTilesBlock(areaTemp,
+            BuildingSystem.Instance.SetTileBaseArrayValue(areaTemp, TileType.White));
         
         CameraSystem.Instance.Unfollow();
     }

@@ -25,12 +25,6 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         gameObject.SetActive(false);
     }
 
-    void OpenCurtain()
-    {
-        UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(CloseScroller);
-    }
-
     public void OpenScroller(ProductionBuilding currentFactory, bool isField)
     {
         if (isOpen) return;
@@ -39,7 +33,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         factory = currentFactory;
         gameObject.SetActive(true);
         Generate(currentFactory, isField);
-        OpenCurtain();
+        UICurtain.Instance.AddListener(CloseScroller);
         rectTrans.DOAnchorPosX(rectTrans.anchoredPosition.x + rectTrans.sizeDelta.x, 0.2f);
     }
     
@@ -55,6 +49,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
                 Clear();
                 gameObject.SetActive(false);
             });
+        UICurtain.Instance.RemoveListener(CloseScroller);
     }
 
     public void Generate(ProductionBuilding currentFactory, bool isField)

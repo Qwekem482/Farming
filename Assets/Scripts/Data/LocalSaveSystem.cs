@@ -57,10 +57,12 @@ public static class LocalSaveSystem
     public static T LoadData<T>()
     {
         if (!File.Exists(FilePath)) Init();
-
+        string content = !string.IsNullOrEmpty(File.ReadAllText(FilePath)) ?
+            File.ReadAllText(FilePath) :
+            "{\n  \"storageCapacity\": 50,\n  \"storageLevel\": 1,\n  \"exp\": 0,\n  \"level\": 1,\n  \"gold\": 5,\n  \"silver\": 50,\n}";
         try
         {
-            T data = JsonConvert.DeserializeObject<T>(File.ReadAllText(FilePath), new JsonSerializerSettings
+            T data = JsonConvert.DeserializeObject<T>(content, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             });

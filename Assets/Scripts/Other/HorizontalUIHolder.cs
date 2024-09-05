@@ -36,7 +36,7 @@ public class HorizontalUIHolder : SingletonMonoBehavior<HorizontalUIHolder>
         SetSickleViewState(isSickle);
         gameObject.SetActive(true);
         rectTransform.DOAnchorPosY(rectTransform.anchoredPosition.y + rectTransform.sizeDelta.y, 0.2f);
-        UICurtain.Instance.AssignOnClickOnce(CloseUI);
+        UICurtain.Instance.onClick.AddListener(CloseUI);
     }
 
     public void CloseUI()
@@ -46,7 +46,8 @@ public class HorizontalUIHolder : SingletonMonoBehavior<HorizontalUIHolder>
             .OnComplete(() =>
             {
                 gameObject.SetActive(false);
+                isOpen = false;
             });
-        isOpen = false;
+        UICurtain.Instance.onClick.RemoveListener(CloseUI);
     }
 }

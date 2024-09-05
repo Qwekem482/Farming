@@ -27,7 +27,6 @@ public class Timer : MonoBehaviour
         onComplete = new UnityEvent();
         onComplete.AddListener(() =>
         {
-            UICurtain.Instance.InvokeAndClose();
             Destroy(this);
         });
         onSkip = new UnityEvent();

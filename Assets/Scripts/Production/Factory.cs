@@ -21,10 +21,11 @@ public class Factory : ProductionBuilding
         completeQueue = new List<ProductData>();
     }
     
-    public override void Init(BuildingData data)
+    public override void Init(BuildingData data, BoundsInt area)
     {
-        base.Init(data);
+        base.Init(data, area);
         uniqueID = SaveData.GenerateUniqueID();
+        Debug.Log(buildingData.area);
         SaveState();
     }
     

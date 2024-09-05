@@ -96,6 +96,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         BuildingSystem.Instance.StartingSystem();
         StorageSystem.Instance.StartingSystem();
         SaveLoadSystem.Instance.StartingSystem();
+        BuildingSystem.Instance.StartingSystem();
         ChangeState(GameState.EnteringGame);
     }
 

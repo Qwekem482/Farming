@@ -120,8 +120,6 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
                     SaveLoadSystem.Instance.Amount(collectible) :
                     0);
         }
-        
-        foreach(KeyValuePair<Collectible, int> item in allItems) Debug.Log(item.Key + "|" + item.Value);
     }
 
     void CalcRemainingItem(StorageItemChangeEvent info)

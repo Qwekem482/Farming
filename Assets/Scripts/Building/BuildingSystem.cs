@@ -1,18 +1,14 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
 {
     public GridLayout layout;
-    [SerializeField] Tilemap mainMap;
-    [SerializeField] Tilemap tempMap;
+    [SerializeField]public Tilemap tempMap;
     [SerializeField] Camera mainCam;
 
     [SerializedDictionary("Type", "Tile Sample")]
@@ -111,7 +107,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         sRenderer.color = new Color(255, 255, 255, 128);
         
         BuildableBuilding construction = emptyBuilding.AddComponent<BuildableBuilding>();
-        construction.Init(data);
+        construction.Init(data, data.area);
         tempBuilding = construction;
         
         TileFollowBuilding();
@@ -181,7 +177,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     {
         TileBase[] toReturn = new TileBase[area.size.x * area.size.y * area.size.z];
         FillTiles(toReturn, type);
-
+        Debug.Log("Type: " + type + "|Area: " + area);
         return toReturn;
     }
 

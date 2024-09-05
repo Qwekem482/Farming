@@ -28,7 +28,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     protected override void Awake()
     {
         base.Awake();
-        closeButton.onClick.AddListener(() => UICurtain.Instance.InvokeAndClose());
+        closeButton.onClick.AddListener(CloseStorageUI);
         changeView.onClick.AddListener(() => SetStorageViewState(!storageView.gameObject.activeSelf));
         upgradeButton.onClick.AddListener(StorageSystem.Instance.OnClickUpgrade);
         SetStorageViewState(false);
@@ -42,14 +42,13 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
 
     public void OpenStorageUI()
     {
-        UICurtain.Instance.DarkFade();
-        UICurtain.Instance.AssignOnClickOnce(CloseStorageUI);
-        
+        UICurtain.Instance.AddListener(CloseStorageUI, false);
         gameObject.SetActive(true);
     }
     
     void CloseStorageUI()
     {
+        UICurtain.Instance.RemoveListener(CloseStorageUI);
         gameObject.SetActive(false);
     }
 

@@ -47,20 +47,14 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
             CloseShop();
         }
     }
-
-    void OpenCurtain()
-    {
-        
-        UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(CloseShop);
-    }
+    
 
     void OpenShop()
     {
         if (isOpen) return;
         shop.gameObject.SetActive(true);
         typeButtons[BuildingType.Factory].thisButton.onClick.Invoke();
-        OpenCurtain();
+        UICurtain.Instance.AddListener(CloseShop);
         shop.DOAnchorPosX(shop.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         isOpen = true;
@@ -69,6 +63,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     public void CloseShop()
     {
         if (!isOpen) return;
+        UICurtain.Instance.RemoveListener(CloseShop);
         shop.DOAnchorPosX(shop.anchoredPosition.x - shop.sizeDelta.x, 0.2f)
             .OnComplete(() => shop.gameObject.SetActive(false));
         shopButtonRect.DOAnchorPosX(shopButtonRect.anchoredPosition.x - shop.sizeDelta.x, 0.2f);

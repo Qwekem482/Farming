@@ -18,9 +18,9 @@ public class Field : ProductionBuilding
         cropData = null;
     }
     
-    public override void Init(BuildingData data)
+    public override void Init(BuildingData data, BoundsInt area)
     {
-        base.Init(data);
+        base.Init(data, area);
         freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
         uniqueID = SaveData.GenerateUniqueID();
         SaveState();

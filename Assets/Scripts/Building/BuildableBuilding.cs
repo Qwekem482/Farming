@@ -11,9 +11,9 @@ public class BuildableBuilding : MovableBuilding
     TimePeriod buildingPeriod;
     readonly static int GREYSCALE = Shader.PropertyToID("_Greyscale");
 
-    public override void Init(BuildingData data)
+    public override void Init(BuildingData data, BoundsInt area)
     {
-        base.Init(data);
+        base.Init(data, area);
         buildingPeriod = data.constructionTime;
     }
     
@@ -63,13 +63,13 @@ public class BuildableBuilding : MovableBuilding
         {
             case ProductionBuildingType.Field:
                 Field field = gameObject.AddComponent<Field>();
-                field.Init(buildingData);
+                field.Init(buildingData, buildingArea);
                 break;
             case ProductionBuildingType.Grinder:
             case ProductionBuildingType.SteamStation:
             default:
                 Factory tempFactory = gameObject.AddComponent<Factory>();
-                tempFactory.Init(buildingData);
+                tempFactory.Init(buildingData, buildingArea);
                 break;
         }
 

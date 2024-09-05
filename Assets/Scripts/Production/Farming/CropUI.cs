@@ -27,7 +27,6 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
            rectTrans.anchoredPosition.x > - canvas.gameObject.GetComponent<RectTransform>().sizeDelta.x * 2 / 3)
         {
             ProductScroller.Instance.CloseScroller();
-            UICurtain.Instance.InvokeAndClose();
         }
         
         TryPlant();

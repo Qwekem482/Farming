@@ -86,7 +86,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             buildingData.sprite);
         
         Factory emptyFactory = emptyBuilding.AddComponent<Factory>();
-        emptyFactory.Init(buildingData);
+        emptyFactory.Init(buildingData, data.area);
         emptyFactory.queueCapacity = data.queueCapacity;
         
         Queue<ProductData>[] productDataQueue = InitializeProductionQueue
@@ -109,7 +109,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             buildingData.sprite);
 
         Field emptyField = emptyBuilding.AddComponent<Field>();
-        emptyField.Init(buildingData);
+        emptyField.Init(buildingData, data.area);
 
         TimeSpan difference = default;
         if (data.processingData != null && data.processingData.completedDateTime > DateTime.Now) 

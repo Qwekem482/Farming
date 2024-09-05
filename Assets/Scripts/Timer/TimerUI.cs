@@ -53,22 +53,16 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
 
         countdown = true;
         FixedUpdate();
-        OpenCurtain();
+        UICurtain.Instance.AddListener(HideTimer);
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     void HideTimer()
     {
+        UICurtain.Instance.RemoveListener(HideTimer);
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
         timer = null;
         countdown = false;
-    }
-    
-    void OpenCurtain()
-    {
-        
-        UICurtain.Instance.Transparent();
-        UICurtain.Instance.AssignOnClickOnce(HideTimer);
     }
 
     void FixedUpdate()
@@ -97,7 +91,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     {
         timer.Skip();
         skipButton.gameObject.SetActive(false);
-        UICurtain.Instance.InvokeAndClose();
+        UICurtain.Instance.RemoveListener(HideTimer);
         EventManager.Instance.RemoveListener<InsufficientCurrencyEvent>(OnInsufficientCurrency);
     }
 
