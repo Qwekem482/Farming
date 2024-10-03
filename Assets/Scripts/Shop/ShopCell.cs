@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.UI;
 using UnlimitedScrollUI;
@@ -13,24 +14,52 @@ public class ShopCell : RegularCell
     [SerializeField] TextMeshProUGUI itemName;
     [SerializeField] Image icon;
     [SerializeField] Image unit;
-    [SerializeField] bool isGem;
     [SerializeField] TextMeshProUGUI price;
-    ShopItemData itemData;
+    
+    bool isGem;
+    bool isUnlocked;
+    ShopBuildingData itemData;
+
+    public bool IsUnlocked
+    {
+        get
+        {
+            return isUnlocked;
+        }
+
+        set
+        {
+            isUnlocked = value;
+            thisButton.interactable = value;
+            
+            Color cellColor = value ? Color.white : Color.gray;
+            itemName.color = cellColor;
+            icon.color = cellColor;
+            unit.color = cellColor;
+            price.color = cellColor;
+        }
+    }
 
     void Awake()
     {
         thisButton.onClick.AddListener(BuyItem);
+        icon.preserveAspect = true;
+        IsUnlocked = false;
     }
 
-    public void AssignData(ShopItemData shopItem)
+    public void AssignData(ShopBuildingData shopItem)
     {
         itemName.text = shopItem.itemName;
         icon.sprite = shopItem.icon;
         isGem = shopItem.currencyType == CurrencyType.Gold;
         price.text = shopItem.price.ToString();
         itemData = shopItem;
-
-        if (!isGem) unit.sprite = ShopSystem.Instance.coin;
+        
+        unit.sprite = !isGem ?
+            ResourceManager.Instance.silverSprite :
+            ResourceManager.Instance.goldSprite;
+        
+        IsUnlocked = LevelSystem.Instance.currentLevel >= shopItem.level;
     }
 
     void BuyItem()

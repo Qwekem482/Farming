@@ -1,17 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public abstract class ProductionOutputData : ScriptableObject
 {
-    public string id;
+    public string productID;
     public Collectible product;
+    public int level;
     public TimePeriod processingTime;
     public int outputValue;
     
+#if UNITY_EDITOR
     protected abstract void OnValidate();
     protected abstract void FixID();
-    protected abstract void FixInput();
+#endif
 }

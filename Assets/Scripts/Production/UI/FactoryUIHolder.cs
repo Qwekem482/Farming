@@ -70,10 +70,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
     {
         currentFactory = null;
         gameObject.SetActive(false);
-    }
-
-    void OnDisable()
-    {
+        
         for (int i = 0; i < 9; i++)
         {
             processing[i].Hide();
@@ -86,6 +83,21 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         UICurtain.Instance.RemoveListener(OnCloseUI);
         addButton.gameObject.SetActive(false);
     }
+
+    /*void OnDisable()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            processing[i].Hide();
+            completed[i].Hide();
+            
+            processing[i].gameObject.SetActive(false);
+            completed[i].gameObject.SetActive(false);
+        }
+        
+        UICurtain.Instance.RemoveListener(OnCloseUI);
+        addButton.gameObject.SetActive(false);
+    }*/
 
     void OnClickAddButton()
     {

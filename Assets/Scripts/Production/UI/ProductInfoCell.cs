@@ -13,6 +13,24 @@ public class ProductInfoCell : RegularCell
     [SerializeField] SerializedDictionary<Image, TextMeshProUGUI> materials;
     [SerializeField] TextMeshProUGUI processTime;
     [SerializeField] Image productIcon;
+    [SerializeField] Image clockIcon;
+    [SerializeField] Image background;
+
+    bool isUnlocked;
+
+    public bool IsUnlocked
+    {
+        get
+        {
+            return isUnlocked;
+        }
+
+        set
+        {
+            isUnlocked = value;
+            ChangeCellState(value);
+        }
+    }
 
     public void AssignData(ProductData data, Canvas canvas, Factory currentFactory)
     {
@@ -32,6 +50,8 @@ public class ProductInfoCell : RegularCell
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
         ProductUI product = productIcon.gameObject.AddComponent<ProductUI>();
         product.Init(canvas, data, currentFactory, this);
+        
+        IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
     }
     
     public void AssignData(CropData data, Canvas canvas, Sprite coin)
@@ -47,5 +67,24 @@ public class ProductInfoCell : RegularCell
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
         CropUI crop = productIcon.gameObject.AddComponent<CropUI>();
         crop.Init(canvas, data, this);
+
+        IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
+    }
+
+    void ChangeCellState(bool state)
+    {
+        Color cellColor = state ? Color.white : Color.gray;
+
+        foreach(KeyValuePair<Image,TextMeshProUGUI> material in materials)
+        {
+            material.Key.color = cellColor;
+            material.Value.color = cellColor;
+        }
+
+        processTime.color = cellColor;
+        productIcon.color = cellColor;
+        clockIcon.color = cellColor;
+        background.color = cellColor;
+        gameObject.GetComponent<ProductUI>().enabled = state;
     }
 }

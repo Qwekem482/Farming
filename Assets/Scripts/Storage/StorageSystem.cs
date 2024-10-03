@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+// ReSharper disable All
 
 public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
 {
@@ -11,7 +12,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     [SerializeField] Collectible[] upgradeTools = new Collectible[3];
     
     int maxCapacity = 50;
-    int currentCapacity;
+    int currentCapacity = 0;
     int level;
     
     #region MonoBehavior
@@ -113,7 +114,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     
     public void LoadItemFromDisk()
     {
-        foreach(Collectible collectible in ResourceManager.Instance.allCollectibles)
+        foreach(Collectible collectible in ResourceManager.Instance.collectiblesData.Values)
         {
             allItems.Add(collectible,
                 SaveLoadSystem.Instance.HasItem(collectible) ?
@@ -132,8 +133,14 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     
     Dictionary<Collectible, int> GetExistingItem()
     {
-        return allItems.Where(item => item.Value > 0)
-            .ToDictionary(item => item.Key, item => item.Value);
+        Dictionary<Collectible, int> toReturn = new Dictionary<Collectible, int>();
+        
+        foreach(KeyValuePair<Collectible,int> item in allItems)
+        {
+            if(item.Value > 0) toReturn.Add(item.Key, item.Value);
+        }
+
+        return toReturn;
     }
     
     #endregion

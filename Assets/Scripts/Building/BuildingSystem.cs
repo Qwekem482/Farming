@@ -104,7 +104,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         SpriteRenderer sRenderer = emptyBuilding.AddComponent<SpriteRenderer>();
         sRenderer.sprite = data.sprite;
         sRenderer.material = grayscale;
-        sRenderer.color = new Color(255, 255, 255, 128);
+        sRenderer.color = new Color(255, 255, 255, 0.5f);
         
         BuildableBuilding construction = emptyBuilding.AddComponent<BuildableBuilding>();
         construction.Init(data, data.area);
@@ -177,7 +177,6 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     {
         TileBase[] toReturn = new TileBase[area.size.x * area.size.y * area.size.z];
         FillTiles(toReturn, type);
-        Debug.Log("Type: " + type + "|Area: " + area);
         return toReturn;
     }
 

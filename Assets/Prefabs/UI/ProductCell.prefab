@@ -905,6 +905,8 @@ MonoBehaviour:
       Value: {fileID: 7630441828735409658}
   processTime: {fileID: 3174409658662046584}
   productIcon: {fileID: 2753736365833353453}
+  clockIcon: {fileID: 8892735613945582498}
+  background: {fileID: 8660889876557161502}
 --- !u!1 &6301403118822889576
 GameObject:
   m_ObjectHideFlags: 0

@@ -65,7 +65,7 @@ public class Field : ProductionBuilding
             
             EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
                 uniqueID, buildingData.id, transform.position,
-                buildingArea, new SavedProcessingData(cropData.id, completedDateTime)));
+                buildingArea, new SavedProcessingData(cropData.productID, completedDateTime)));
         }
     }
 

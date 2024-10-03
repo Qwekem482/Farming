@@ -9,10 +9,7 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
     int currentExp;
     public int currentLevel;
     int expNeeded;
-    LevelList levelList;
-    public List<Collectible> unlockedCollectibles;
-
-    [SerializeField] TextAsset levelAsset;
+    
     [SerializeField] Slider expSlider;
     [SerializeField] TextMeshProUGUI expText;
     [SerializeField] TextMeshProUGUI levelText;
@@ -33,7 +30,6 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
     protected override void Awake()
     {
         base.Awake();
-        levelList ??= GetLevels();
         EventManager.Instance.AddListener<ExpAddedEvent>(OnExpAdded);
         EventManager.Instance.AddListener<LevelUpEvent>(OnLevelUp);
     }
@@ -43,18 +39,13 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
 
     }
 
-    public void LoadData()
+    public void Load(int exp, int level)
     {
-        currentExp = 0; //read from player's save
-        currentLevel = 0;  //read from player's save
-        expNeeded = levelList.levels[currentLevel].expNeeded;
+        currentExp = exp;
+        currentLevel = level;
+        expNeeded = ResourceManager.Instance.levelData[currentLevel].expNeeded;
         
         UpdateUI();
-    }
-
-    LevelList GetLevels()
-    {
-        return JsonUtility.FromJson<LevelList>(levelAsset.text);
     }
 
     void UpdateUI()
@@ -81,27 +72,19 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
     void OnLevelUp(LevelUpEvent eventInfo)
     {
         currentExp -= expNeeded;
-        expNeeded = levelList.levels[eventInfo.nextLv].expNeeded;
+        expNeeded = ResourceManager.Instance.levelData[eventInfo.nextLv].expNeeded;
         
         //Init a level up windows
         Debug.Log("Level Up");
 
         CurrencyChangeEvent addSilver = new CurrencyChangeEvent(
-            levelList.levels[eventInfo.nextLv].currencyReward[0], CurrencyType.Silver);
+            ResourceManager.Instance.levelData[eventInfo.nextLv].silver, CurrencyType.Silver);
         EventManager.Instance.QueueEvent(addSilver);
         
         CurrencyChangeEvent addGold = new CurrencyChangeEvent(
-            levelList.levels[eventInfo.nextLv].currencyReward[1], CurrencyType.Gold);
+            ResourceManager.Instance.levelData[eventInfo.nextLv].gold, CurrencyType.Gold);
         EventManager.Instance.QueueEvent(addGold);
         
         UpdateUI();
     }
-}
-
-
-
-[Serializable]
-public class LevelList
-{
-    public LevelData[] levels;
 }

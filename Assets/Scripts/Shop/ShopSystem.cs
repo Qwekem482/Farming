@@ -17,9 +17,6 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
 
     [SerializedDictionary("Type", "Button")] 
     public SerializedDictionary<BuildingType, TabButton> typeButtons;
-    
-
-    public Sprite coin;
 
     bool isOpen = false;
     bool isDragging;
@@ -28,7 +25,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     {
         base.Awake();
         shopButton.onClick.AddListener(OnClickShopButton);
-        EventManager.Instance.AddListener<LevelUpEvent>(OnLevelChanged);
+        //EventManager.Instance.AddListener<LevelUpEvent>(OnLevelChanged);
     }
     
     public void StartingSystem()
@@ -75,24 +72,6 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
         foreach(BuildingType type in ResourceManager.Instance.shopItems.Keys)
         {
             typeButtons[type].SetUp(ResourceManager.Instance.shopItems[type].ToList());
-        }
-    }
-
-    //Dirty Code
-    void OnLevelChanged(LevelUpEvent info)
-    {
-        for (int i = 0; i < ResourceManager.Instance.shopItems.Keys.Count; i++)
-        {
-            BuildingType key = ResourceManager.Instance.shopItems.Keys.ToArray()[i];
-            for (int j = 0; j < ResourceManager.Instance.shopItems[key].Length; j++)
-            {
-                ShopItemData item = ResourceManager.Instance.shopItems[key][j];
-
-                if (item.level == info.nextLv)
-                {
-                    //unlock
-                }
-            }
         }
     }
 }

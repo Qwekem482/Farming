@@ -31,9 +31,6 @@ public class GameManager : SingletonMonoBehavior<GameManager>
             case GameState.DownloadingSave:
                 DownloadingSave();
                 break;
-            case GameState.InitializingResource:
-                InitializingResource();
-                break;
             case GameState.LoadingSave:
                 LoadingSave();
                 break;
@@ -70,12 +67,6 @@ public class GameManager : SingletonMonoBehavior<GameManager>
 
     void DownloadingSave()
     {
-        ChangeState(GameState.InitializingResource);
-    }
-
-    void InitializingResource()
-    {
-        ResourceManager.Instance.Initialization();
         ChangeState(GameState.LoadingSave);
     }
     
@@ -97,6 +88,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
         StorageSystem.Instance.StartingSystem();
         SaveLoadSystem.Instance.StartingSystem();
         BuildingSystem.Instance.StartingSystem();
+        OrderSystem.Instance.StartingSystem();
         ChangeState(GameState.EnteringGame);
     }
 
@@ -112,7 +104,6 @@ public enum GameState {
     Starting,
     DownloadingAssets,
     DownloadingSave,
-    InitializingResource,
     LoadingSave,
     StartingSystems,
     EnteringGame,

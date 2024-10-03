@@ -384,7 +384,6 @@ MonoBehaviour:
   itemName: {fileID: 8462454356826166244}
   icon: {fileID: 456778416768657260}
   unit: {fileID: 3274236969832722717}
-  isGem: 0
   price: {fileID: 5762623683231498287}
 --- !u!1 &3211897448526842904
 GameObject:
@@ -662,7 +661,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

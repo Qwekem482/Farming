@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class Order
@@ -10,7 +7,7 @@ public class Order
     public readonly int exp;
     public readonly int silver = 0;
     public readonly int gold = 0;
-    public DateTime resetTime = default;
+    public DateTime resetTime;
 
     public bool CanBeDelivery()
     {
@@ -31,20 +28,22 @@ public class Order
         EventManager.Instance.QueueEvent(new CurrencyChangeEvent(gold, CurrencyType.Gold));
     }
 
-    public Order(Item[] requestItems, int exp, int currencyReward, bool isGoldenOrder)
+    /*public Order(Item[] requestItems, int exp, int currencyReward, bool isGoldenOrder)
     {
         this.requestItems = requestItems;
         this.exp = exp;
         if (isGoldenOrder) gold = currencyReward;
         else silver = currencyReward;
-    }
+        resetTime = default;
+    }*/
     
-    public Order(Item[] requestItems, int exp, int currencyReward, bool isGoldenOrder, DateTime resetTime)
+    public Order(Item[] requestItems, int exp, int currencyReward, bool isGoldenOrder, DateTime resetTime = default)
     {
         this.requestItems = requestItems;
         this.exp = exp;
         if (isGoldenOrder) gold = currencyReward;
         else silver = currencyReward;
+        this.resetTime = resetTime;
     }
     
 }

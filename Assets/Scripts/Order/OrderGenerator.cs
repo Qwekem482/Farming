@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class OrderGenerator
@@ -14,7 +15,9 @@ public class OrderGenerator
     const float EXP_MAX_WEIGHT = 2f;
     const float GOLDEN_ORDER_RATE = 0.05f; //5% golden order rate
     
-    public Order Generate(bool setResetTime = false)
+    
+    
+    public Order Generate(List<Collectible> collectibles, bool setResetTime = false)
     {
         int itemQuantity = Random.Range(1, 4);
         Dictionary<Collectible, Item> requestItems = new Dictionary<Collectible, Item>(itemQuantity);
@@ -24,7 +27,7 @@ public class OrderGenerator
         
         for (int i = 0; i < itemQuantity; i++)
         {
-            Collectible collectible = GetRandomCollectible();
+            Collectible collectible = GetRandomCollectible(collectibles);
             if (requestItems.ContainsKey(collectible)) continue;
             int amount = GetRandomAmount();
             float outputValue = CalcOutputValue(collectible, amount);
@@ -34,6 +37,8 @@ public class OrderGenerator
             totalCurrencyReward += GenerateRewardValue(outputValue, SILVER_MIN_WEIGHT, SILVER_MAX_WEIGHT);
             requestItems.Add(collectible, new Item(collectible, amount));
         }
+        
+        
 
         return setResetTime ?
             new Order(requestItems.Values.ToArray(),
@@ -47,15 +52,15 @@ public class OrderGenerator
                 isGoldenOrder);
     }
 
-    Collectible GetRandomCollectible()
+    Collectible GetRandomCollectible(List<Collectible> collectibles)
     {
-        int index = Random.Range(0, LevelSystem.Instance.unlockedCollectibles.Count);
-        return LevelSystem.Instance.unlockedCollectibles[index];
+        int index = Random.Range(0, collectibles.Count - 1);
+        return collectibles[index];
     }
 
     int GetRandomAmount()
     {
-        return Random.Range(0, LevelSystem.Instance.currentLevel);
+        return Random.Range(1, LevelSystem.Instance.currentLevel + 10);
     }
 
     int GenerateRewardValue(float outputValue, float minWeight, float maxWeight)
@@ -72,4 +77,6 @@ public class OrderGenerator
                 select productionOutputData.outputValue).FirstOrDefault() 
                * amount;
     }
+    
+    
 }

@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OrderUI : SingletonMonoBehavior<OrderUI>
@@ -18,11 +15,24 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     [SerializeField] Button cancelOrderButton;
     [SerializeField] Button deliveryOrderButton;
 
-    void OnEnable()
+    void Start()
     {
-        SetupAllOrderButtons();
+        gameObject.SetActive(false);
     }
 
+    public void OpenUI()
+    {
+        SetupAllOrderButtons();
+        orderSlots[0].button.onClick.Invoke();
+        gameObject.SetActive(true);
+        UICurtain.Instance.AddListener(CloseUI);
+    }
+
+    void CloseUI()
+    {
+        gameObject.SetActive(false);
+        UICurtain.Instance.RemoveListener(CloseUI);
+    }
 
     #region SetupButton
 
@@ -41,18 +51,14 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         Order order = OrderSystem.Instance.orders[index];
         orderSlots[index].button.onClick.AddListener(() =>
         {
-            Debug.Log("Setup order: #" + index);
             SetupOrderInfo(order);
             SetupDeliveryButton(order, index);
             SetupCancelButton(index);
 
             cancelOrderButton.interactable = true;
         });
-
-        DateTime resetTime = order.resetTime;
-        if(resetTime != default) orderSlots[index].Init(OrderSlotState.Abort, resetTime);
-        else if(order.CanBeDelivery()) orderSlots[index].Init(OrderSlotState.CanBeDelivery, resetTime);
-        else orderSlots[index].Init(OrderSlotState.InProgress, resetTime);
+        
+        SetupOrderButtonState(order, index);
     }
     
     //Assign delivery and cancel button
@@ -61,12 +67,13 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         cancelOrderButton.onClick.RemoveAllListeners();
         cancelOrderButton.onClick.AddListener(() =>
         {
-            Debug.Log("Cancel order: #" + index);
             OrderSystem.Instance.CancelOrder(index);
-            orderSlots[index].SlotState = OrderSlotState.Abort;
             
             InfoOnClickCancel();
             ButtonOnClickCancel();
+            SetupOrderButton(index);
+            
+            //orderSlots[index].SlotState = OrderSlotState.Abort;
         });
     }
 
@@ -81,6 +88,13 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
             SetupOrderButton(index);
             orderSlots[index].button.onClick.Invoke();
         });
+    }
+
+    void SetupOrderButtonState(Order order, int index)
+    {
+        if(order.resetTime != default && order.resetTime > DateTime.Now) orderSlots[index].Init(OrderSlotState.Abort, order.resetTime);
+        else if(order.CanBeDelivery()) orderSlots[index].Init(OrderSlotState.CanBeDelivery, default);
+        else orderSlots[index].Init(OrderSlotState.InProgress, default);
     }
 
     void ButtonOnClickCancel()

@@ -11,7 +11,7 @@ public class TabButton : MonoBehaviour
     [SerializeField] GameObject cell;
     int totalCount = 0;
 
-    List<ShopItemData> shopItems;
+    List<ShopBuildingData> shopItems;
     public Button thisButton;
 
     void Awake()
@@ -19,7 +19,7 @@ public class TabButton : MonoBehaviour
         thisButton.onClick.AddListener(OnClick);
     }
 
-    public void SetUp(List<ShopItemData> items)
+    public void SetUp(List<ShopBuildingData> items)
     {
         shopItems = items;
         totalCount = shopItems.Count;

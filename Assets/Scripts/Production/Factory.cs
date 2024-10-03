@@ -25,7 +25,6 @@ public class Factory : ProductionBuilding
     {
         base.Init(data, area);
         uniqueID = SaveData.GenerateUniqueID();
-        Debug.Log(buildingData.area);
         SaveState();
     }
     
@@ -72,7 +71,7 @@ public class Factory : ProductionBuilding
                 }
                 
                 index++;
-                saveProcessing.Enqueue(new SavedProcessingData(productData.id, productCompletedTime));
+                saveProcessing.Enqueue(new SavedProcessingData(productData.productID, productCompletedTime));
             }
         }
         
@@ -80,7 +79,7 @@ public class Factory : ProductionBuilding
         {
             foreach(ProductData productData in completeQueue)
             {
-                saveCompleted.Enqueue(productData.id);
+                saveCompleted.Enqueue(productData.productID);
             }
         }
         
