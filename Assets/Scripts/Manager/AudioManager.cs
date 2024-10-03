@@ -27,11 +27,9 @@ public class AudioManager : SingletonMonoBehavior<AudioManager>
 
     public void PlayEffectClip(int clipIndex)
     {
-        if(!effectAudio.isPlaying)
-        {
-            effectAudio.clip = effectClip[clipIndex];
-            effectAudio.Play();
-        }
+        if (effectAudio.isPlaying) return;
+        effectAudio.clip = effectClip[clipIndex];
+        effectAudio.Play();
     }
 
     public void ChangeBackgroundVolume(float volume)
