@@ -1,21 +1,3 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections
-{
-    [Conditional("UNITY_EDITOR")]
-    public class SerializedDictionaryAttribute : Attribute
-    {
-        public readonly string KeyName;
-        public readonly string ValueName;
-
-        public SerializedDictionaryAttribute(string keyName = null, string valueName = null)
-        {
-            KeyName = keyName;
-            ValueName = valueName;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ecc09c093758e9aaff3774a1b66c358c0816554e6d0e9677c649bfd67c4478b5
+size 558

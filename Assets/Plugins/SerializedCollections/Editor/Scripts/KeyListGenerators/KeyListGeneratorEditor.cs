@@ -1,26 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
-namespace AYellowpaper.SerializedCollections.KeysGenerators
-{
-    [CustomEditor(typeof(KeyListGenerator), true)]
-    public class KeyListGeneratorEditor : UnityEditor.Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            var iterator = serializedObject.GetIterator();
-            if (iterator.Next(true))
-            {
-                // skip script name
-                iterator.NextVisible(true);
-                while (iterator.NextVisible(true))
-                {
-                    EditorGUILayout.PropertyField(iterator);
-                }
-            }
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:94a258bed8c4a6d047e5a0d7c8de6212c01c7a6c29499f97d121d3292288eecb
+size 788

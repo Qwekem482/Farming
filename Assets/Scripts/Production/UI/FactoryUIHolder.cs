@@ -17,7 +17,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
     protected override void Awake()
     {
         base.Awake();
-        addButton.onClick.AddListener(OnClickAddButton);
+        //addButton.onClick.AddListener(OnClickAddButton);
     }
 
     void Start()
@@ -59,7 +59,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
             //End of fix
         }
         
-        if (currentFactory.queueCapacity < 9) addButton.gameObject.SetActive(true);
+        //if (currentFactory.queueCapacity < 9) addButton.gameObject.SetActive(true);
         price.text = (3 + currentFactory.queueCapacity * 2).ToString();
 
         UICurtain.Instance.AddListener(OnCloseUI);
@@ -81,7 +81,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         }
         
         UICurtain.Instance.RemoveListener(OnCloseUI);
-        addButton.gameObject.SetActive(false);
+        //addButton.gameObject.SetActive(false);
     }
 
     /*void OnDisable()
@@ -99,11 +99,11 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         addButton.gameObject.SetActive(false);
     }*/
 
-    void OnClickAddButton()
+    /*void OnClickAddButton()
     {
         currentFactory.queueCapacity++;
         currentFactory.ReloadFactoryUIHolder();
         
         if (currentFactory.queueCapacity == 9) addButton.gameObject.SetActive(false);
-    }
+    }*/
 }

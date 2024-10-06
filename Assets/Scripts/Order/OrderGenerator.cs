@@ -8,14 +8,12 @@ using Random = UnityEngine.Random;
 public class OrderGenerator
 {
     const float SILVER_MIN_WEIGHT = 1f;
-    const float SILVER_MAX_WEIGHT = 1.5f;
-    const float GOLD_MIN_WEIGHT = 0.1f;
-    const float GOLD_MAX_WEIGHT = 0.5f;
-    const float EXP_MIN_WEIGHT = 1.2f;
-    const float EXP_MAX_WEIGHT = 2f;
-    const float GOLDEN_ORDER_RATE = 0.05f; //5% golden order rate
-    
-    
+    const float SILVER_MAX_WEIGHT = 1.3f;
+    const float GOLD_MIN_WEIGHT = 0.001f;
+    const float GOLD_MAX_WEIGHT = 0.01f;
+    const float EXP_MIN_WEIGHT = 0.1f;
+    const float EXP_MAX_WEIGHT = 1f;
+    const float GOLDEN_ORDER_RATE = 0.01f; //1% golden order rate
     
     public Order Generate(List<Collectible> collectibles, bool setResetTime = false)
     {
@@ -65,8 +63,8 @@ public class OrderGenerator
 
     int GenerateRewardValue(float outputValue, float minWeight, float maxWeight)
     {
-        if (Random.Range(minWeight, maxWeight) * outputValue <= 0) return 1;
-        return (int)(Random.Range(minWeight, maxWeight) * outputValue);
+        int returnValue = (int)(Random.Range(minWeight, maxWeight) * outputValue);
+        return returnValue <= 0 ? 1 : returnValue;
     }
 
     float CalcOutputValue(Collectible collectible, int amount)

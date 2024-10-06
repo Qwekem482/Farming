@@ -16,12 +16,12 @@ public class AudioManager : SingletonMonoBehavior<AudioManager>
 
     public void PlayBackgroundClip(int clipIndex)
     {
-        DOTween.To(() => backgroundAudio.volume, x => backgroundAudio.volume = x, 0, 0.5f)
+        backgroundAudio.DOFade(0, 0.5f)
             .OnComplete(() =>
             {
                 backgroundAudio.clip = backgroundClip[clipIndex];
                 backgroundAudio.Play();
-                DOTween.To(() => backgroundAudio.volume, x => backgroundAudio.volume = x, BackgroundVolume, 0.5f);
+                backgroundAudio.DOFade(BackgroundVolume, 0.5f);
             });
     }
 

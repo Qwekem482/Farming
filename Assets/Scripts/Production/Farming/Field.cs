@@ -21,6 +21,7 @@ public class Field : ProductionBuilding
     public override void Init(BuildingData data, BoundsInt area)
     {
         base.Init(data, area);
+        IsPlaced = true;
         freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
         uniqueID = SaveData.GenerateUniqueID();
         SaveState();
@@ -28,7 +29,9 @@ public class Field : ProductionBuilding
 
     protected override void OnMouseUp()
     {
+        base.OnMouseUp();
         if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (!IsPlaced) return;
 
         switch (state)
         {
@@ -73,6 +76,7 @@ public class Field : ProductionBuilding
     {
         uniqueID = fieldID;
         cropData = data;
+        IsPlaced = true;
 
         if (cropData == null)
         {

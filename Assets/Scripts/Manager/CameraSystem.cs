@@ -29,6 +29,7 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
     // Update is called once per frame
     void Update()
     {
+        if (followObjectTransform != null) return;
         switch (Input.touchCount)
         {
             case <= 0:

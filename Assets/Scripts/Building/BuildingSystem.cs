@@ -33,6 +33,18 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     #endregion
 
     #region Controller
+    
+    public void MoveBuilding(MovableBuilding building)
+    {
+        tempBuilding = building;
+        prevArea = building.buildingArea;
+        
+        OpenBuildingMode();
+        TileFollowBuilding();
+        SetupBuild();
+        
+        CameraSystem.Instance.SetupFollow(tempBuilding.transform);
+    }
 
     public void SetupBuild(/*MovableBuilding building*/)
     {

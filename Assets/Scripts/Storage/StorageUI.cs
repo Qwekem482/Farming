@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,6 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
 {
     [SerializeField] TextMeshProUGUI capacityText;
     [SerializeField] Button changeView;
-    [SerializeField] Button closeButton;
     [SerializeField] Slider capacitySlider;
     
     [SerializeField] GameObject storageView;
@@ -28,7 +28,6 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     protected override void Awake()
     {
         base.Awake();
-        closeButton.onClick.AddListener(CloseStorageUI);
         changeView.onClick.AddListener(() => SetStorageViewState(!storageView.gameObject.activeSelf));
         upgradeButton.onClick.AddListener(StorageSystem.Instance.OnClickUpgrade);
         SetStorageViewState(false);
@@ -37,6 +36,8 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     void Start()
     {
         gameObject.SetActive(false);
+        gameObject.transform.localScale = new Vector3(0, 0, 0);
+
         //upgradeButton.onClick.AddListener(StorageSystem.Instance.IncreaseCapacity);
     }
 
@@ -44,12 +45,14 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     {
         UICurtain.Instance.AddListener(CloseStorageUI, false);
         gameObject.SetActive(true);
+        gameObject.transform.DOScale(1, 0.2f);
     }
     
     void CloseStorageUI()
     {
         UICurtain.Instance.RemoveListener(CloseStorageUI);
-        gameObject.SetActive(false);
+        gameObject.transform.DOScale(0, 0.2f)
+            .OnComplete(() => gameObject.SetActive(false));
     }
 
     public void LoadStoringData(int currentCap, int maxCap, Dictionary<Collectible, int> items)

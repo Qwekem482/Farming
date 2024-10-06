@@ -1,19 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections
-{
-    public class SerializedDictionarySampleTwo : MonoBehaviour
-    {
-        [SerializedDictionary("ID", "Person")]
-        public SerializedDictionary<int, Person> People;
-
-        [System.Serializable]
-        public class Person
-        {
-            public string FirstName;
-            public string LastName;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:eff3a509d15ab22ace391ed93009848acfe2a2597619a87d1606e902da4d3d37
+size 477
