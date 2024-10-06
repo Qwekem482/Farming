@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+// ReSharper disable All
 
 public class OrderUI : SingletonMonoBehavior<OrderUI>
 {
@@ -18,6 +20,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     void Start()
     {
         gameObject.SetActive(false);
+        gameObject.transform.localScale = new Vector3(0, 0, 0);
     }
 
     public void OpenUI()
@@ -25,12 +28,14 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         SetupAllOrderButtons();
         orderSlots[0].button.onClick.Invoke();
         gameObject.SetActive(true);
+        gameObject.transform.DOScale(1, 0.2f);
         UICurtain.Instance.AddListener(CloseUI);
     }
 
     void CloseUI()
     {
-        gameObject.SetActive(false);
+        gameObject.transform.DOScale(0, 0.2f)
+            .OnComplete(() => gameObject.SetActive(false));
         UICurtain.Instance.RemoveListener(CloseUI);
     }
 

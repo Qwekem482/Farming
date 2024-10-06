@@ -1,13 +1,3 @@
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace UnlimitedScrollUI.Example {
-    public class Popup : MonoBehaviour {
-        public Text text;
-        public Button btn;
-
-        private void Start() {
-            btn.onClick.AddListener(() => Destroy(gameObject));
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:9243fb35f17be43d5e34ef371ab4e61b1957e0544d07deba70d7e85033de879f
+size 301

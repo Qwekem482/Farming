@@ -1,20 +1,3 @@
-namespace UnlimitedScrollUI {
-    /// <summary>
-    /// <para>If you want to have your own script for cell, implement this interface.</para>
-    /// </summary>
-    public interface ICell {
-        /// <summary>
-        /// Called when the cell become visible.
-        /// </summary>
-        /// <param name="side">The side that this cell become visible. For example, <c>side = ScrollerPanelSide.Right</c> means
-        /// that the player is dragging the panel to left so that this cell appears from right.</param>
-        void OnBecomeVisible(ScrollerPanelSide side);
-        
-        /// <summary>
-        /// Called when the cell become invisible.
-        /// </summary>
-        /// <param name="side">The side that this cell become invisible. For example, <c>side = ScrollerPanelSide.Right</c> means
-        /// that the player is dragging the panel to right so that this cell disappears to right.</param>
-        void OnBecomeInvisible(ScrollerPanelSide side);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4c2c03ba100b5601a1bbb7fa37e1b01a3ac521eed91300dcc1d50ade03f98979
+size 994

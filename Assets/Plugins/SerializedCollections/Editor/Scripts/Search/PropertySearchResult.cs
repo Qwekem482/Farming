@@ -1,22 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections.Editor.Search
-{
-    public class PropertySearchResult
-    {
-        public SerializedProperty Property;
-
-        public PropertySearchResult(SerializedProperty property)
-        {
-            Property = property;
-        }
-
-        public override string ToString()
-        {
-            return $"Found match in in {Property.propertyPath}";
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:32300b3279088d6a4a555544e09aa466445d34a974b141a88b014b9d6d626d6d
+size 523

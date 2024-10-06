@@ -1,20 +1,3 @@
-using UnityEditor;
-
-namespace AYellowpaper.SerializedCollections.Editor.Search
-{
-    public abstract class Matcher
-    {
-        public string SearchString { get; private set; }
-
-        public void Prepare(string searchString)
-        {
-            SearchString = ProcessSearchString(searchString);
-        }
-
-        public virtual string ProcessSearchString(string searchString)
-        {
-            return searchString;
-        }
-        public abstract bool IsMatch(SerializedProperty property);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:38c6bf82701969d6513f24ae5fe695ee23ba59ce4f1ae9a6a432919251f6bd16
+size 528

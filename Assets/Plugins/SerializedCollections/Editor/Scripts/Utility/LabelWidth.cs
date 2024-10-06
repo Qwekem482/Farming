@@ -1,24 +1,3 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections.Editor
-{
-    public struct LabelWidth : IDisposable
-    {
-        public float PreviousWidth { get; }
-
-        public LabelWidth(float width)
-        {
-            PreviousWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = width;
-        }
-
-        public void Dispose()
-        {
-            EditorGUIUtility.labelWidth = PreviousWidth;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:dba8b1431ca2d59d6d5730ba4691b779f412b4a04aa632491d2562d03334ad3b
+size 567

@@ -27,7 +27,6 @@ public class SaveData
         if (factoriesData.ContainsKey(info.buildingID)) 
             factoriesData[info.buildingID] = info.CreateSavedFactoryData();
         else factoriesData.Add(info.buildingID, info.CreateSavedFactoryData());
-        Debug.Log(info.buildingID + ": " + info.area);
     }
     
     public void AddFieldData(SaveFieldDataEvent info)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Grinder
   m_EditorClassIdentifier: 
   id: F1
-  buildingName: "M\xE1y xay"
+  buildingName: "Khu xay x\xE1t"
   sprite: {fileID: 21300000, guid: a6cd105adea2e7c4dbcccfa379cd7da0, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}
@@ -21,7 +21,7 @@ MonoBehaviour:
   constructionTime:
     days: 0
     hours: 0
-    minutes: 0
+    minutes: 1
     seconds: 0
   buildingType: 1
   type: 0

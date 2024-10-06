@@ -12,7 +12,7 @@ public class Factory : ProductionBuilding
     Queue<ProductData> processingQueue;
     List<ProductData> completeQueue;
     
-    public int queueCapacity = 3;
+    public int queueCapacity = 6;
 
     Timer timer;
     void Awake()
@@ -24,13 +24,16 @@ public class Factory : ProductionBuilding
     public override void Init(BuildingData data, BoundsInt area)
     {
         base.Init(data, area);
+        IsPlaced = true;
         uniqueID = SaveData.GenerateUniqueID();
         SaveState();
     }
     
     protected override void OnMouseUp()
     {
+        base.OnMouseUp();
         if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (!IsPlaced) return;
         if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         
         ReloadFactoryUIHolder(false);
@@ -92,6 +95,7 @@ public class Factory : ProductionBuilding
         IEnumerable<ProductData> savedCompleted, TimeSpan timeLeft = default)
     {
         uniqueID = factoryID;
+        IsPlaced = true;
         queueCapacity = queueCap;
         processingQueue = savedProcessing;
         completeQueue = savedCompleted.ToList();

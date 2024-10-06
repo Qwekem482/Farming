@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -12,7 +13,10 @@ public class MovableBuilding : MonoBehaviour
     public BuildingData buildingData;
     public BoundsInt buildingArea;
     public string buildingName;
-    public bool IsPlaced { get; private set; }
+    public bool IsPlaced { get; protected set; }
+    
+    bool isMouseDown;
+    float mouseDownTime;
 
     public virtual void Init(BuildingData data, BoundsInt area)
     {
@@ -51,11 +55,32 @@ public class MovableBuilding : MonoBehaviour
 
     protected virtual void OnMouseUp()
     {
+        isMouseDown = false;
+        mouseDownTime = 0;
+    }
+
+    void OnMouseDown()
+    {
+        isMouseDown = true;
+        mouseDownTime = Time.time;
     }
 
     protected void OnMouseDrag()
     {
+        if (GetType() != typeof(BuildableBuilding) && isMouseDown && Time.time - mouseDownTime >= 2)
+        {
+            MoveBuilding();
+            isMouseDown = false;
+        }
+        
         BuildingSystem.Instance.SetupBuild();
+    }
+
+    void MoveBuilding()
+    {
+        Debug.Log("MoveBuilding");
+        IsPlaced = false;
+        BuildingSystem.Instance.MoveBuilding(this);
     }
 
 }

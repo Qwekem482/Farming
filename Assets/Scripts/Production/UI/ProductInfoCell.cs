@@ -48,10 +48,10 @@ public class ProductInfoCell : RegularCell
         }
 
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
+        IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
+        
         ProductUI product = productIcon.gameObject.AddComponent<ProductUI>();
         product.Init(canvas, data, currentFactory, this);
-        
-        IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
     }
     
     public void AssignData(CropData data, Canvas canvas, Sprite coin)
@@ -65,10 +65,10 @@ public class ProductInfoCell : RegularCell
         materials.ElementAt(0).Value.text = data.inputPrice.ToString();
         
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
+        IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
+        
         CropUI crop = productIcon.gameObject.AddComponent<CropUI>();
         crop.Init(canvas, data, this);
-
-        IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
     }
 
     void ChangeCellState(bool state)
@@ -85,6 +85,6 @@ public class ProductInfoCell : RegularCell
         productIcon.color = cellColor;
         clockIcon.color = cellColor;
         background.color = cellColor;
-        gameObject.GetComponent<ProductUI>().enabled = state;
+        Debug.Log("InfoCell: " + state);
     }
 }

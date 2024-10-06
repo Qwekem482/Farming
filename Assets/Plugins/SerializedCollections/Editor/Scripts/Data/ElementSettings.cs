@@ -1,15 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections.Editor.Data
-{
-    public class ElementSettings
-    {
-        public const string DefaultName = "Not Set";
-
-        public string DisplayName { get; set; } = DefaultName;
-        public DisplayType DisplayType { get; set; } = DisplayType.PropertyNoLabel;
-        public bool HasListDrawerToggle { get; set; } = false;
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:571f78eb81a0677a885160094c0953ddd2223a8781c079bdf817d68577610d2d
+size 466

@@ -1,29 +1,3 @@
-using UnityEditor;
-using UnityEditor.UI;
-
-namespace UnlimitedScrollUI.Editor {
-    [CustomEditor(typeof(HorizontalUnlimitedScroller), true)]
-    [CanEditMultipleObjects]
-    public class HorizontalUnlimitedScrollerEditor : HorizontalOrVerticalLayoutGroupEditor {
-        private SerializedProperty cacheSize;
-        private SerializedProperty scrollRect;
-
-        protected override void OnEnable() {
-            base.OnEnable();
-
-            cacheSize = serializedObject.FindProperty("cacheSize");
-            scrollRect = serializedObject.FindProperty("scrollRect");
-        }
-
-        public override void OnInspectorGUI() {
-            base.OnInspectorGUI();
-
-            EditorGUILayout.Space();
-            
-            EditorGUILayout.PropertyField(cacheSize, true);
-            EditorGUILayout.PropertyField(scrollRect, true);
-
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ed110afc7d5925a2a37bf88f64cba9936517d88bb85acd5928e45f522d4a78dc
+size 940

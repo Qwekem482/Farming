@@ -1,27 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections
-{
-    public static class SerializedCollectionsUtility
-    {
-        public static bool IsValidKey(object obj)
-        {
-            // we catch this error if we are not on the main thread and simply return false as we assume the object is null
-            try
-            {
-                return !(obj == null || (obj is Object unityObject && unityObject == null));
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static bool KeysAreEqual<T>(T key, object otherKey)
-        {
-            return (object)key == otherKey || key.Equals(otherKey);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:677288c9deb096a5cf2d10680fd2c8cea2d2f329c5a2386c2003915d3d8885c3
+size 785

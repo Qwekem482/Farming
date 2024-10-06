@@ -1,15 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace AYellowpaper.SerializedCollections.KeysGenerators
-{
-    [KeyListGenerator("Populate Enum", typeof(System.Enum), false)]
-    public class EnumGenerator : KeyListGenerator
-    {
-        public override IEnumerable GetKeys(System.Type type)
-        {
-            return System.Enum.GetValues(type);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:c882a57b36d7db76ff6fae404f9b51c22b1b1cd0a70350c91bf8552d131ec898
+size 420
