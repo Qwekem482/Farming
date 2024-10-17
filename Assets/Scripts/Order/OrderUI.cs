@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -11,9 +10,6 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     [SerializeField] OrderSlot[] orderSlots = new OrderSlot[9];
     [SerializeField] Image[] requestItemImages = new Image[4];
     [SerializeField] TextMeshProUGUI[] requestAmountTexts = new TextMeshProUGUI[4];
-    [SerializeField] TextMeshProUGUI expReward;
-    [SerializeField] TextMeshProUGUI currencyReward;
-    [SerializeField] Image currencyUnit;
     [SerializeField] Button cancelOrderButton;
     [SerializeField] Button deliveryOrderButton;
 
@@ -25,7 +21,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
 
     public void OpenUI()
     {
-        SetupAllOrderButtons();
+        SetAllOrderButtons();
         orderSlots[0].button.onClick.Invoke();
         gameObject.SetActive(true);
         gameObject.transform.DOScale(1, 0.2f);
@@ -38,140 +34,83 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
             .OnComplete(() => gameObject.SetActive(false));
         UICurtain.Instance.RemoveListener(CloseUI);
     }
-
-    #region SetupButton
-
-    //Assign each active orderButton to order in system
-    //Show orderButton
-    void SetupAllOrderButtons()
+    
+    void SetAllOrderButtons()
     {
         for (int i = 0; i < 9; i++)
         {
-            SetupOrderButton(i);
+            orderSlots[i].Init(i);
         }
     }
-    
-    void SetupOrderButton(int index)
-    {
-        Order order = OrderSystem.Instance.orders[index];
-        orderSlots[index].button.onClick.AddListener(() =>
-        {
-            SetupOrderInfo(order);
-            SetupDeliveryButton(order, index);
-            SetupCancelButton(index);
 
-            cancelOrderButton.interactable = true;
-        });
-        
-        SetupOrderButtonState(order, index);
+    public void SetOnClick(int index)
+    {
+        OnClickOrderInfo(index);
+        OnClickDeliveryButton(index);
+        OnClickCancelButton(index);
     }
     
-    //Assign delivery and cancel button
-    void SetupCancelButton(int index)
+    void OnClickCancelButton(int index)
     {
         cancelOrderButton.onClick.RemoveAllListeners();
         cancelOrderButton.onClick.AddListener(() =>
         {
             OrderSystem.Instance.CancelOrder(index);
-            
-            InfoOnClickCancel();
+            orderSlots[index].Init(index);
             ButtonOnClickCancel();
-            SetupOrderButton(index);
-            
-            //orderSlots[index].SlotState = OrderSlotState.Abort;
+            SetAllOrderButtons();
         });
     }
-
-    void SetupDeliveryButton(Order order, int index)
+    
+    void OnClickDeliveryButton(int index)
     {
         deliveryOrderButton.onClick.RemoveAllListeners();
-        deliveryOrderButton.interactable = order.CanBeDelivery();
+        deliveryOrderButton.interactable = OrderSystem.Instance.orders[index].CanBeDelivery();
         deliveryOrderButton.onClick.AddListener(() =>
         {
-            Debug.Log("Delivery order: #" + index);
             OrderSystem.Instance.DeliveryOrder(index);
-            SetupOrderButton(index);
+            orderSlots[index].Init(index);
             orderSlots[index].button.onClick.Invoke();
+            SetAllOrderButtons();
         });
     }
 
-    void SetupOrderButtonState(Order order, int index)
+    void OnClickOrderInfo(int index)
     {
-        if(order.resetTime != default && order.resetTime > DateTime.Now) orderSlots[index].Init(OrderSlotState.Abort, order.resetTime);
-        else if(order.CanBeDelivery()) orderSlots[index].Init(OrderSlotState.CanBeDelivery, default);
-        else orderSlots[index].Init(OrderSlotState.InProgress, default);
-    }
+        Item[] requirements = OrderSystem.Instance.orders[index].requestItems;
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (requirements[i] == null)
+            {
+                requestAmountTexts[i].gameObject.SetActive(false);
+                requestItemImages[i].gameObject.SetActive(false);
+                continue;
+            }
 
+            requestAmountTexts[i].gameObject.SetActive(true);
+            requestItemImages[i].gameObject.SetActive(true);
+            requestItemImages[i].sprite = requirements[i].collectible.icon;
+            
+            requestAmountTexts[i].text = StorageSystem.Instance.GetStoreAmount(requirements[i].collectible)
+                                         + "/"
+                                         + requirements[i].amount;
+        }
+    }
+    
     void ButtonOnClickCancel()
     {
         deliveryOrderButton.interactable = false;
         cancelOrderButton.interactable = false;
-    }
 
-    #endregion
-
-    #region DisplayInfo
-
-    void SetupOrderInfo(Order order)
-    {
-        SetupRewardInfo(order.exp, order.silver, order.gold);
-        SetupRequirement(order.requestItems);
-    }
-    
-    //Assign data to show order reward detail
-    void SetupRewardInfo(int exp, int silver, int gold)
-    {
-        expReward.text = exp.ToString();
-        if (silver == 0)
+        for (int i = 0; i < 9; i++)
         {
-            currencyReward.text = gold.ToString();
-            currencyUnit.sprite = ResourceManager.Instance.goldSprite;
-        } else
-        {
-            currencyReward.text = silver.ToString();
-            currencyUnit.sprite = ResourceManager.Instance.silverSprite;
-        }
-    }
-    
-    //Assign data to show order requirement detail
-    void SetupRequirement(IReadOnlyList<Item> items)
-    {
-        for (int i = 0; i < items.Count; i++)
-        {
-            requestAmountTexts[i].text = StorageSystem.Instance.GetStoreAmount(items[i].collectible) + "/" + items[i].amount;
-            requestItemImages[i].sprite = items[i].collectible.icon;
-        }
-        
-        ChangeArrayState(requestItemImages, 4, false);
-        ChangeArrayState(requestAmountTexts, 4, false);
-        ChangeArrayState(requestAmountTexts, items.Count, true);
-        ChangeArrayState(requestItemImages, items.Count, true);
-    }
-
-    void InfoOnClickCancel()
-    {
-        ChangeArrayState(requestItemImages, 4, false);
-        ChangeArrayState(requestAmountTexts, 4, false);
-        currencyReward.text = "";
-        expReward.text = "";
-    }
-    #endregion
-    
-    //Code to change active state of all the component that hold info
-    void ChangeArrayState<T>(IReadOnlyList<T> array, int quantity, bool state) where T : Component
-    {
-        try
-        {
-            for (int i = 0; i < quantity; i++)
+            if (!(OrderSystem.Instance.orders[i].resetTime != default
+                  && OrderSystem.Instance.orders[i].resetTime > DateTime.Now))
             {
-                array[i].gameObject.SetActive(state);
+                orderSlots[i].button.onClick.Invoke();
+                break;
             }
         }
-        catch (Exception e)
-        {
-            Debug.Log("Cannot setup array state, maybe quantity error:\n" + e.Message + "\n" + e.StackTrace);
-            throw;
-        }
     }
-    
 }

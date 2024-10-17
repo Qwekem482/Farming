@@ -11,7 +11,6 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
     int expNeeded;
     
     [SerializeField] Slider expSlider;
-    [SerializeField] TextMeshProUGUI expText;
     [SerializeField] TextMeshProUGUI levelText;
     
     /*"levels":
@@ -52,7 +51,6 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
     {
         expSlider.maxValue = expNeeded;
         expSlider.value = currentExp;
-        expText.text = currentExp + "/" + expNeeded;
         levelText.text = currentLevel.ToString();
     }
 

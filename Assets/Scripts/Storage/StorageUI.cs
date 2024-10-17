@@ -23,7 +23,6 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     [SerializeField] TextMeshProUGUI[] upgradeToolTexts = new TextMeshProUGUI[3];
     [SerializeField] Button upgradeButton;
     [SerializeField] TextMeshProUGUI upgradeButtonText;
-    [SerializeField] TextMeshProUGUI newCapacityText;
     
     protected override void Awake()
     {
@@ -78,7 +77,6 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         }
 
         upgradeButtonText.text = "Upgrade Now: " + lackAmount * 10;
-        newCapacityText.text = "Increase Capacity To " + (maxCapacity + 50);
     }
 
     void Generate(Dictionary<Collectible, int> itemList)

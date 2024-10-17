@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: F0
   buildingName: "Ru\u1ED9ng"
-  sprite: {fileID: 21300000, guid: 2f88f7f856604bc4fa4999faaaeb81ea, type: 3}
+  sprite: {fileID: 21300000, guid: 8bea85406e7360441a72b1bcc267cda8, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 2, y: 2, z: 1}
+    m_Size: {x: 1, y: 1, z: 1}
   constructionTime:
     days: 0
     hours: 0

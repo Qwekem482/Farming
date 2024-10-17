@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
 {
     [SerializeField] Image curtain;
-    readonly Color transparent = new Color(255, 255, 255, 0);
-    readonly Color darkFade = new Color(0, 0, 0, 128);
     public readonly UnityEvent onClick = new UnityEvent();
 
     void Start()
