@@ -36,7 +36,7 @@ public class OrderSlot : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (order.requestItems[i] == null)
+            if (i >= order.requestItems.Length)
             {
                 requestIcon[i].gameObject.SetActive(false);
                 continue;

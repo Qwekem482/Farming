@@ -140,7 +140,7 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
         followObjectTransform = null;
     }
 
-    public void Focus(Vector3 focusPosition, UnityAction onComplete = null)
+    public void Focus(Vector3 focusPosition, UnityEvent onComplete = null)
     {
         Vector3 camPosition = mainCam.transform.position;
         Vector3 position = new Vector3(focusPosition.x, focusPosition.y, camPosition.z);

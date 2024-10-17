@@ -14,12 +14,6 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
     
     public Factory currentFactory;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        //addButton.onClick.AddListener(OnClickAddButton);
-    }
-
     void Start()
     {
         gameObject.SetActive(false);
@@ -31,8 +25,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         Queue<ProductData> completeData = complete != null ? new Queue<ProductData>(complete) : new Queue<ProductData>();
         
         currentFactory = factory;
-
-        rectTrans.anchoredPosition = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
+        SetPos(currentFactory);
         
         for (int i = 0; i < factory.queueCapacity; i++)
         {
@@ -59,9 +52,7 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
             //End of fix
         }
         
-        //if (currentFactory.queueCapacity < 9) addButton.gameObject.SetActive(true);
         price.text = (3 + currentFactory.queueCapacity * 2).ToString();
-
         UICurtain.Instance.AddListener(OnCloseUI);
         gameObject.SetActive(true);
     }
@@ -84,26 +75,24 @@ public class FactoryUIHolder : SingletonMonoBehavior<FactoryUIHolder>
         //addButton.gameObject.SetActive(false);
     }
 
-    /*void OnDisable()
+    void SetPos(Factory factory)
     {
-        for (int i = 0; i < 9; i++)
+        factory.TryGetComponent(out Collider2D collid2D);
+        
+        if (collid2D != null)
         {
-            processing[i].Hide();
-            completed[i].Hide();
+            Bounds bound = collid2D.bounds;
+            Vector3 bottomPos = new Vector3(bound.center.x, bound.center.y, bound.center.z);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(bottomPos);
             
-            processing[i].gameObject.SetActive(false);
-            completed[i].gameObject.SetActive(false);
-        }
-        
-        UICurtain.Instance.RemoveListener(OnCloseUI);
-        addButton.gameObject.SetActive(false);
-    }*/
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                transform.parent as RectTransform, 
+                screenPos, 
+                null, 
+                out Vector2 uiPos
+            );
 
-    /*void OnClickAddButton()
-    {
-        currentFactory.queueCapacity++;
-        currentFactory.ReloadFactoryUIHolder();
-        
-        if (currentFactory.queueCapacity == 9) addButton.gameObject.SetActive(false);
-    }*/
+            rectTrans.anchoredPosition = uiPos + new Vector2(0, -30);
+        }
+    }
 }

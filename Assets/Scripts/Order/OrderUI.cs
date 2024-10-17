@@ -12,6 +12,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     [SerializeField] TextMeshProUGUI[] requestAmountTexts = new TextMeshProUGUI[4];
     [SerializeField] Button cancelOrderButton;
     [SerializeField] Button deliveryOrderButton;
+    [SerializeField] RectTransform content;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     public void OpenUI()
     {
         SetAllOrderButtons();
+        SetContentSize();
         orderSlots[0].button.onClick.Invoke();
         gameObject.SetActive(true);
         gameObject.transform.DOScale(1, 0.2f);
@@ -81,7 +83,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         
         for (int i = 0; i < 4; i++)
         {
-            if (requirements[i] == null)
+            if (i >= requirements.Length)
             {
                 requestAmountTexts[i].gameObject.SetActive(false);
                 requestItemImages[i].gameObject.SetActive(false);
@@ -96,6 +98,15 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
                                          + "/"
                                          + requirements[i].amount;
         }
+    }
+
+    void SetContentSize()
+    {
+        int activeChild = 0;
+        foreach(Transform child in content) if (child.gameObject.activeSelf) activeChild++;
+        Debug.Log(activeChild);
+        Vector2 newSize = new Vector2(content.sizeDelta.x, activeChild * 165 + 20);
+        content.sizeDelta = newSize;
     }
     
     void ButtonOnClickCancel()

@@ -12,7 +12,7 @@ public class Factory : ProductionBuilding
     Queue<ProductData> processingQueue;
     List<ProductData> completeQueue;
     
-    public int queueCapacity = 6;
+    public int queueCapacity = 3;
 
     Timer timer;
     void Awake()
@@ -34,21 +34,23 @@ public class Factory : ProductionBuilding
         base.OnMouseUp();
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (!IsPlaced) return;
-        if (!ProductScroller.Instance.isOpen) ProductScroller.Instance.OpenScroller(this, false);
         
-        ReloadFactoryUIHolder(false);
-        
-        UnityAction onCompleteFocus = null;
+        UnityEvent onCompleteFocus = new UnityEvent();
+        onCompleteFocus.AddListener(() =>
+        {
+            if (!ProductScroller.Instance.isOpen) 
+                ProductScroller.Instance.OpenScroller(this, false);
+            ReloadFactoryUIHolder(false);
+        });
 
         if (state == ProductionBuildingState.Processing)
         {
-            onCompleteFocus = () =>
+            onCompleteFocus.AddListener(() =>
             {
-                if (timer != null)
-                    TimerUI.Instance.ShowTimer(gameObject);
-            };
+                if (timer != null) TimerUI.Instance.ShowTimer(gameObject);
+            });
         }
-        
+
         CameraSystem.Instance.Focus(
             transform.position, 
             onCompleteFocus);

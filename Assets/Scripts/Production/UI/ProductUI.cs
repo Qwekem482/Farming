@@ -22,7 +22,7 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         icon = gameObject.GetComponent<Image>();
     }
     
-    public void Init(Canvas gameCanvas, ProductData productData, Factory currentFactory, ProductInfoCell parent)
+    public void Init(Canvas gameCanvas, ProductData productData, Factory currentFactory, FactoryProductInfoCell parent)
     {
         rectTrans = gameObject.GetComponent<RectTransform>();
         icon = gameObject.GetComponent<Image>();
@@ -31,7 +31,6 @@ public class ProductUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         icon.sprite = productData.product.icon;
         factory = currentFactory;
         cellParent = parent;
-        Debug.Log(productData.product.itemName + ": " + parent.IsUnlocked);
         enabled = parent.IsUnlocked;
     }
     

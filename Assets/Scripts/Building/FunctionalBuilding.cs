@@ -6,6 +6,5 @@ public class FunctionalBuilding : MonoBehaviour
 {
     protected virtual void OnMouseUp()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
     }
 }

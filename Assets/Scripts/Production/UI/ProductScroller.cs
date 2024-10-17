@@ -6,12 +6,14 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnlimitedScrollUI;
 
 public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 {
     [SerializeField] VerticalUnlimitedScroller scroller;
-    [SerializeField] GameObject cell;
+    [SerializeField] GameObject factoryCell;
+    [SerializeField] GameObject fieldCell;
     [SerializeField] RectTransform rectTrans;
     [SerializeField] Canvas canvas;
 
@@ -54,26 +56,37 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
 
     public void Generate(ProductionBuilding currentFactory, bool isField)
     {
-        ProductionBuildingData factoryData;
+        ProductionBuildingData data;
         
         try
         {
-            factoryData = (ProductionBuildingData) currentFactory.buildingData;
+            data = (ProductionBuildingData) currentFactory.buildingData;
         }
         catch (Exception e)
         {
             Debug.LogError("Cannot cast to FactoryData" + "\n" + e.Message + "\n" + e.StackTrace);
             throw;
         }
-            
-        scroller.Generate(cell, factoryData.productData.Count, (index, iCell) =>
+
+        if (isField)
         {
-            ProductInfoCell infoCell = iCell as ProductInfoCell;
-            if (infoCell == null) return;
-            if (isField)
-                infoCell.AssignData(factoryData.productData[index] as CropData, canvas, ResourceManager.Instance.silverSprite);
-            else infoCell.AssignData(factoryData.productData[index] as ProductData, canvas, factory as Factory);
-        });
+            scroller.Generate(fieldCell, data.productData.Count, (index, iCell) =>
+            {
+                FieldProductInfoCell infoCell = iCell as FieldProductInfoCell;
+                if (infoCell == null) return; 
+                infoCell.AssignData(data.productData[index] as CropData, canvas);
+            });
+        } else
+        {
+            scroller.Generate(factoryCell, data.productData.Count, (index, iCell) =>
+            {
+                Debug.Log("iCell: " + iCell);
+                FactoryProductInfoCell infoCell = iCell as FactoryProductInfoCell;
+                Debug.Log("infoCell: " + infoCell);
+                if (infoCell == null) return;
+                infoCell.AssignData(data.productData[index] as ProductData, canvas, factory as Factory);
+            });
+        }
     }
 
     public void Clear()

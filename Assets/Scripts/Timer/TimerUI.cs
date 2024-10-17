@@ -14,6 +14,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     [SerializeField] TextMeshProUGUI timeLeft;
     [SerializeField] Button skipButton;
     [SerializeField] TextMeshProUGUI skipPriceText;
+    [SerializeField] RectTransform rectTransform;
     
     bool countdown;
     Timer timer;
@@ -36,19 +37,25 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
         skipButton.gameObject.SetActive(true);
 
         triggerObject.TryGetComponent(out Collider2D collid2D);
-        Vector3 objectPosition = triggerObject.transform.position;
         
         if (collid2D != null)
         {
-            Vector3 position = new Vector3(objectPosition.x,
-                objectPosition.y - collid2D.bounds.size.y,
-                objectPosition.z);
-            transform.position = mainCam.WorldToScreenPoint(position);
+            Bounds bound = collid2D.bounds;
+            Vector3 bottomPos = new Vector3(bound.center.x, bound.min.y, bound.center.z);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(bottomPos);
+            
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                transform.parent as RectTransform, 
+                screenPos, 
+                null, 
+                out Vector2 uiPos
+            );
+
+            rectTransform.anchoredPosition = uiPos;
         } else
         {
             transform.position = mainCam.WorldToScreenPoint
                 (triggerObject.transform.position + Vector3.down);
-
         }
 
         countdown = true;

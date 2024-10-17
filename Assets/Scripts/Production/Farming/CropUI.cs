@@ -7,7 +7,7 @@ public class CropUI : ProductUI, IDragHandler, IEndDragHandler
 {
     CropData data;
     
-    public void Init(Canvas gameCanvas, CropData cropData, ProductInfoCell parent)
+    public void Init(Canvas gameCanvas, CropData cropData, FieldProductInfoCell parent)
     {
         rectTrans = gameObject.GetComponent<RectTransform>();
         icon = gameObject.GetComponent<Image>();

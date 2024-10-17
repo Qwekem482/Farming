@@ -12,11 +12,10 @@ using UnityEngine.UI;
 public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
 {
     [SerializeField] RectTransform shop;
-    [SerializeField] RectTransform shopButtonRect;
     [SerializeField] Button shopButton;
 
     [SerializedDictionary("Type", "Button")] 
-    public SerializedDictionary<BuildingType, TabButton> typeButtons;
+    public SerializedDictionary<BuildingType, TabButton> tabButtons;
 
     bool isOpen = false;
     bool isDragging;
@@ -30,7 +29,6 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     
     public void StartingSystem()
     {
-        InitShopItem();
         shop.gameObject.SetActive(false);
     }
 
@@ -50,7 +48,8 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     {
         if (isOpen) return;
         shop.gameObject.SetActive(true);
-        typeButtons[BuildingType.Factory].thisButton.onClick.Invoke();
+        InitShopItem();
+        tabButtons[BuildingType.Factory].button.onClick.Invoke();
         UICurtain.Instance.AddListener(CloseShop);
         shop.DOAnchorPosX(shop.anchoredPosition.x + shop.sizeDelta.x, 0.2f);
         isOpen = true;
@@ -69,7 +68,7 @@ public class ShopSystem : SingletonMonoBehavior<ShopSystem>, IGameSystem
     {
         foreach(BuildingType type in ResourceManager.Instance.shopItems.Keys)
         {
-            typeButtons[type].SetUp(ResourceManager.Instance.shopItems[type].ToList());
+            tabButtons[type].SetUp(ResourceManager.Instance.shopItems[type].ToList());
         }
     }
 }
