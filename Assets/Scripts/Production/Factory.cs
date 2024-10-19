@@ -179,12 +179,8 @@ public class Factory : ProductionBuilding
 
     protected override void OnSkipProcessingProduct()
     {
-        OnCompleteProcessingProduct();
-        
         state = ProductionBuildingState.Idle;
-        StopCoroutine(processingCoroutine);
-        processingCoroutine = null;
-        processingCoroutine ??= StartCoroutine(ProcessingProduct());
+        OnCompleteProcessingProduct();
     }
 
     protected override void OnCompleteProcessingProduct()
@@ -192,6 +188,10 @@ public class Factory : ProductionBuilding
         completeQueue.Add(processingQueue.Dequeue());
         SaveState();
         if (ReferenceEquals(FactoryUIHolder.Instance.currentFactory, this)) ReloadFactoryUIHolder();
+        
+        StopCoroutine(processingCoroutine);
+        processingCoroutine = null;
+        processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
 
     public void ReloadFactoryUIHolder(bool showTimer = true)

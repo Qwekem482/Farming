@@ -47,6 +47,7 @@ public class MovableBuilding : MonoBehaviour
             0);
 
         IsPlaced = true;
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
         BuildingSystem.Instance.tempMap.SetTilesBlock(areaTemp,
             BuildingSystem.Instance.SetTileBaseArrayValue(areaTemp, TileType.White));
         
@@ -57,9 +58,10 @@ public class MovableBuilding : MonoBehaviour
     {
         isMouseDown = false;
         mouseDownTime = 0;
+        AudioManager.Instance.PlayEffectClip(0);
     }
 
-    void OnMouseDown()
+    protected virtual void OnMouseDown()
     {
         isMouseDown = true;
         mouseDownTime = Time.time;

@@ -13,7 +13,7 @@ public class OrderGenerator
     const float GOLD_MAX_WEIGHT = 0.01f;
     const float EXP_MIN_WEIGHT = 0.1f;
     const float EXP_MAX_WEIGHT = 1f;
-    const float GOLDEN_ORDER_RATE = 0.01f; //1% golden order rate
+    const float GOLDEN_ORDER_RATE = 0.05f; //5% golden order rate
     
     public Order Generate(List<Collectible> collectibles, bool setResetTime = false)
     {

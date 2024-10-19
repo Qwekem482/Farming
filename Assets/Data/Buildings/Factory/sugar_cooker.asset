@@ -21,8 +21,10 @@ MonoBehaviour:
   constructionTime:
     days: 0
     hours: 0
-    minutes: 1
+    minutes: 10
     seconds: 0
   buildingType: 1
   type: 3
-  productData: []
+  productData:
+  - {fileID: 11400000, guid: 766a339a83611ac458758da6ef9153c6, type: 2}
+  - {fileID: 11400000, guid: 2283e6342393aa241a3bd5ce47ced807, type: 2}

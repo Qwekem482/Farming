@@ -39,7 +39,6 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     
     void SetAllOrderButtons()
     {
-        Debug.Log("SetAllOrderButton");
         for (int i = 0; i < 9; i++)
         {
             orderSlots[i].Init(i);
@@ -88,6 +87,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
             {
                 requestAmountTexts[i].gameObject.SetActive(false);
                 requestItemImages[i].gameObject.SetActive(false);
+                requestItemImages[i].preserveAspect = true;
                 continue;
             }
 

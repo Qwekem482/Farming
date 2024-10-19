@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c60778a4b286749aa9d40110ff86d6, type: 3}
   m_Name: banyan_tree
   m_EditorClassIdentifier: 
-  itemName: Banyan Tree
-  price: 10
-  level: 1
-  currencyType: 0
+  itemName: "C\xE2y \u0110a"
+  price: 100
+  level: 10
+  currencyType: 1
   icon: {fileID: 21300000, guid: 44aece14eaa84da4ca28e1bb367a1316, type: 3}
   building: {fileID: 11400000, guid: 46fd73ed930938d4f9a2ad1befbd1319, type: 2}

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022ad81ef22c6f641a852bc6277b5bf7, type: 3}
   m_Name: sugarcane
   m_EditorClassIdentifier: 
-  productID: P1
+  productID: P4
   product: {fileID: 11400000, guid: 98099379a1f06754c9c95838b44eeb3b, type: 2}
-  level: 1
+  level: 2
   processingTime:
     days: 0
     hours: 0
-    minutes: 5
+    minutes: 3
     seconds: 0
-  outputValue: 6
+  outputValue: 5
   processingSprite: {fileID: 21300000, guid: fbe37842d72e21849987050e2c974c92, type: 3}
   completeSprite: {fileID: 21300000, guid: 19a691d706b8ec047919e1e3b0fe2417, type: 3}

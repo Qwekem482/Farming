@@ -112,6 +112,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
             transform =
             {
                 parent = buildingParent,
+                position = new Vector3(-1, -1, 0)
             },
             name = data.buildingName,
         };
@@ -119,6 +120,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         SpriteRenderer sRenderer = emptyBuilding.AddComponent<SpriteRenderer>();
         sRenderer.sprite = data.sprite;
         sRenderer.material = grayscale;
+        sRenderer.sortingOrder = 1;
         sRenderer.color = new Color(255, 255, 255, 0.5f);
         
         BuildableBuilding construction = emptyBuilding.AddComponent<BuildableBuilding>();

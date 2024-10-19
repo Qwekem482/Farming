@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnlimitedScrollUI;
 
@@ -12,6 +13,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
 {
     [SerializeField] TextMeshProUGUI capacityText;
     [SerializeField] Button changeView;
+    [SerializeField] TextMeshProUGUI changeViewLabel;
     [SerializeField] Slider capacitySlider;
     
     [SerializeField] GameObject storageView;
@@ -22,7 +24,8 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     [SerializeField] Image[] upgradeToolIcons = new Image[3];
     [SerializeField] TextMeshProUGUI[] upgradeToolTexts = new TextMeshProUGUI[3];
     [SerializeField] Button upgradeButton;
-    [SerializeField] TextMeshProUGUI upgradeButtonText;
+    [SerializeField] GameObject buyUpgrade;
+    [SerializeField] TextMeshProUGUI lackText;
     
     protected override void Awake()
     {
@@ -35,7 +38,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     void Start()
     {
         gameObject.SetActive(false);
-        gameObject.transform.localScale = new Vector3(0, 0, 0);
+        transform.localScale = new Vector3(0, 0, 0);
 
         //upgradeButton.onClick.AddListener(StorageSystem.Instance.IncreaseCapacity);
     }
@@ -44,26 +47,28 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     {
         UICurtain.Instance.AddListener(CloseStorageUI, false);
         gameObject.SetActive(true);
-        gameObject.transform.DOScale(1, 0.2f);
+        gameObject.transform.DOScale(1, 0.2f)
+            .SetEase(Ease.OutBack);
     }
     
     void CloseStorageUI()
     {
         UICurtain.Instance.RemoveListener(CloseStorageUI);
         gameObject.transform.DOScale(0, 0.2f)
-            .OnComplete(() => gameObject.SetActive(false));
+            .OnComplete(() => gameObject.SetActive(false))
+            .SetEase(Ease.InBack);
     }
 
     public void LoadStoringData(int currentCap, int maxCap, Dictionary<Collectible, int> items)
     {
-        capacityText.text = "Capacity: " + currentCap + "/" + maxCap;
+        capacityText.text = currentCap + "/" + maxCap;
         capacitySlider.maxValue = maxCap;
         capacitySlider.value = currentCap;
         
         if (items.Count > 0) Generate(items);
     }
 
-    public void LoadUpgradeData(Item[] tools, int maxCapacity)
+    public void LoadUpgradeData(Item[] tools)
     {
         int lackAmount = 0;
         for(int i = 0; i < 3; i++)
@@ -76,7 +81,7 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
                                        tools[i].amount;
         }
 
-        upgradeButtonText.text = "Upgrade Now: " + lackAmount * 10;
+        lackText.text = (lackAmount * 10).ToString();
     }
 
     void Generate(Dictionary<Collectible, int> itemList)
@@ -93,6 +98,9 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
     void SetStorageViewState(bool state)
     {
         upgradeView.gameObject.SetActive(!state);
+        buyUpgrade.SetActive(state);
         storageView.gameObject.SetActive(state);
+
+        changeViewLabel.text = state ? "Storage" : "Upgrade";
     }
 }

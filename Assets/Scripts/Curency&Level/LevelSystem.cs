@@ -52,8 +52,6 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
         expSlider.maxValue = expNeeded;
         expSlider.value = currentExp;
         levelText.text = currentLevel.ToString();
-        
-        Debug.Log("Level: " + currentLevel + "|" + currentExp);
     }
 
     void OnExpAdded(ExpAddedEvent eventInfo)

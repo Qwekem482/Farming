@@ -21,7 +21,7 @@ MonoBehaviour:
   constructionTime:
     days: 0
     hours: 0
-    minutes: 1
+    minutes: 15
     seconds: 0
   buildingType: 1
   type: 1

@@ -57,6 +57,11 @@ public class GameManager : SingletonMonoBehavior<GameManager>
 
     void Starting()
     {
+        AudioManager.Instance.ChangeBackgroundVolume(1f);
+        AudioManager.Instance.ChangeEffectVolume(1f);
+        AudioManager.Instance.PlayBackgroundClip(0);
+        
+        //TODO: Loading Scene
         ChangeState(GameState.DownloadingAssets);
     }
 
@@ -96,6 +101,7 @@ public class GameManager : SingletonMonoBehavior<GameManager>
     {
         
     }
+    
 
 }
 

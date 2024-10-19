@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sugar_cooker
   m_EditorClassIdentifier: 
   itemName: "N\u1EA5u \u0110\u01B0\u1EDDng"
-  price: 10
-  level: 1
+  price: 750
+  level: 3
   currencyType: 0
   icon: {fileID: 21300000, guid: 7c04b8597c9842d45bbe6bd94c2dc313, type: 3}
   building: {fileID: 11400000, guid: 71ee55e913dca2e42b4b7155f8161cea, type: 2}

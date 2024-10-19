@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
 {
     [NonSerialized] public Order[] orders = new Order[9];
-
-
     readonly List<Collectible> availableCollectibles = new List<Collectible>();
     readonly OrderGenerator generator = new OrderGenerator();
-    
+    const float TOOL_ORDER_RATE = 0.01f;
 
     public void StartingSystem()
     {
@@ -48,7 +47,15 @@ public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
         
         foreach(Item item in orders[index].requestItems)
         {
-            EventManager.Instance.QueueEvent(new StorageItemChangeEvent(item.ConvertToNegativeAmount()));
+            EventManager.Instance.QueueEvent(
+                new StorageItemChangeEvent(item.ConvertToNegativeAmount()));
+        }
+
+        if (Random.Range(0f, 1f) < TOOL_ORDER_RATE)
+        {
+            EventManager.Instance.QueueEvent(
+                new StorageItemChangeEvent(
+                    new Item(StorageSystem.Instance.upgradeTools[Random.Range(0, 3)], 1)));
         }
 
         EventManager.Instance.QueueEvent(

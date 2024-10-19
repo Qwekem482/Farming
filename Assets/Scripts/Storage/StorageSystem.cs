@@ -9,7 +9,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     readonly Dictionary<Collectible, int> allItems = new Dictionary<Collectible, int>();
     Dictionary<Collectible, int> existingItems = new Dictionary<Collectible, int>();
     
-    [SerializeField] Collectible[] upgradeTools = new Collectible[3];
+    public Collectible[] upgradeTools = new Collectible[3];
     
     int maxCapacity = 50;
     int currentCapacity = 0;
@@ -28,13 +28,12 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     public void StartingSystem()
     {
         StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
-        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
+        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)));
     }
     
 
     public void LoadSavedData(int loadCapacity, int loadLevel)
     {
-        //TODO: Load
         maxCapacity = loadCapacity > 50 ?
             loadCapacity :
             50;
@@ -129,6 +128,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
         currentCapacity += info.item.amount;
         existingItems = GetExistingItem();
         StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
+        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1))); //For resetting display amount
     }
     
     Dictionary<Collectible, int> GetExistingItem()
@@ -165,7 +165,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
     {
         maxCapacity += 50;
         level++;
-        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)), maxCapacity);
+        StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)));
         EventManager.Instance.QueueEvent(new SaveStorageCapacityEvent(maxCapacity, level));
     }
 
