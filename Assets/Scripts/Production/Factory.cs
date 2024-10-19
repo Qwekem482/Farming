@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -32,8 +33,12 @@ public class Factory : ProductionBuilding
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-        if (!IsPlaced) return;
+        if (EventSystem.current.IsPointerOverGameObject()
+            || BuildingSystem.Instance.isBuildingMode) return;
+
+        gameObject.GetComponent<SpriteRenderer>().DOColor(
+                new Color((float)182 / 255, (float)182 / 255, (float)182 / 255), 0.1f)
+            .SetLoops(2, LoopType.Yoyo);
         
         UnityEvent onCompleteFocus = new UnityEvent();
         onCompleteFocus.AddListener(() =>
@@ -161,7 +166,8 @@ public class Factory : ProductionBuilding
             timeLeft = default;
             
             yield return new WaitForFixedUpdate();
-            ReloadFactoryUIHolder();
+            
+            if(FactoryUIHolder.Instance.gameObject.activeSelf) ReloadFactoryUIHolder();
             SaveState();
             
             yield return processingTime;
@@ -173,12 +179,12 @@ public class Factory : ProductionBuilding
 
     protected override void OnSkipProcessingProduct()
     {
-        if (processingCoroutine != null) StopCoroutine(processingCoroutine);
         OnCompleteProcessingProduct();
         
-        /*state = ProductionBuildingState.Idle;
+        state = ProductionBuildingState.Idle;
+        StopCoroutine(processingCoroutine);
         processingCoroutine = null;
-        processingCoroutine ??= StartCoroutine(ProcessingProduct());*/
+        processingCoroutine ??= StartCoroutine(ProcessingProduct());
     }
 
     protected override void OnCompleteProcessingProduct()

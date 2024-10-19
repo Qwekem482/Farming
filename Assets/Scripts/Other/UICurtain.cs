@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
 {
     [SerializeField] Image curtain;
-    public readonly UnityEvent onClick = new UnityEvent();
+    readonly UnityEvent onClick = new UnityEvent();
+    int listenerCount = 0;
 
     void Start()
     {
@@ -28,6 +29,7 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
     public void AddListener(UnityAction call, bool isTransparent = true)
     {
         onClick.AddListener(call);
+        listenerCount++;
         gameObject.SetActive(true);
         curtain.color = isTransparent ? Color.clear : new Color(0, 0, 0, 0.5f);
     }
@@ -35,12 +37,15 @@ public class UICurtain : SingletonMonoBehavior<UICurtain>, IPointerClickHandler
     public void RemoveListener(UnityAction call)
     {
         onClick.RemoveListener(call);
-        gameObject.SetActive(false);
+        listenerCount--;
+        if (listenerCount == 0) TurnOff();
     }
 
-    public void Invoke()
+    void Invoke()
     {
         onClick.Invoke();
+        onClick.RemoveAllListeners();
+        listenerCount = 0;
         TurnOff();
     }
 }

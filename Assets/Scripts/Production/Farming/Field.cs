@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -30,17 +32,29 @@ public class Field : ProductionBuilding
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-        if (!IsPlaced) return;
+        if (EventSystem.current.IsPointerOverGameObject()
+            || BuildingSystem.Instance.isBuildingMode) return;
 
+        gameObject.GetComponent<SpriteRenderer>().DOColor(
+                new Color((float)182 / 255, (float)182 / 255, (float)182 / 255), 0.1f)
+            .SetLoops(2, LoopType.Yoyo);
+        
+        UnityEvent onCompleteFocus = new UnityEvent();
+        
         switch (state)
         {
             case ProductionBuildingState.Idle:
-                if (!ProductScroller.Instance.isOpen) 
-                    ProductScroller.Instance.OpenScroller(this, true);
+                onCompleteFocus.AddListener(() =>
+                {
+                    if (!ProductScroller.Instance.isOpen) 
+                        ProductScroller.Instance.OpenScroller(this, true);
+                });
                 break;
             case ProductionBuildingState.Processing:
-                TimerUI.Instance.ShowTimer(gameObject);
+                onCompleteFocus.AddListener(() =>
+                {
+                    TimerUI.Instance.ShowTimer(gameObject);
+                });
                 break;
             case ProductionBuildingState.Complete:
                 HorizontalUIHolder.Instance.OpenUI(true);
@@ -49,6 +63,10 @@ public class Field : ProductionBuilding
                 Debug.Log("OutOfRange");
                 break;
         }
+        
+        CameraSystem.Instance.Focus(
+            transform.position, 
+            onCompleteFocus);
     }
     
     protected override void SaveState()

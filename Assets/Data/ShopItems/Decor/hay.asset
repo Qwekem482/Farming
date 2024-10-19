@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51c60778a4b286749aa9d40110ff86d6, type: 3}
-  m_Name: SteamStation
+  m_Name: hay
   m_EditorClassIdentifier: 
-  itemName: "X\u1EEDng H\u1EA5p"
-  level: 0
-  price: 1
+  itemName: "\u0110\u1ED1ng Rom"
+  price: 10
+  level: 1
   currencyType: 0
-  itemType: 1
-  icon: {fileID: 21300000, guid: 1a8ae830e6c30a74bab9742020d6033d, type: 3}
-  building: {fileID: 11400000, guid: 4bf7a7f27a515e449a81a7ef6ff01755, type: 2}
+  icon: {fileID: 21300000, guid: e5311c3dd0b701a48a74f92ac0df3199, type: 3}
+  building: {fileID: 11400000, guid: 8a995793aadb13e41ac6c2d5558386e0, type: 2}

@@ -52,25 +52,28 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
         expSlider.maxValue = expNeeded;
         expSlider.value = currentExp;
         levelText.text = currentLevel.ToString();
+        
+        Debug.Log("Level: " + currentLevel + "|" + currentExp);
     }
 
     void OnExpAdded(ExpAddedEvent eventInfo)
     {
         currentExp += eventInfo.amount;
 
-        if (currentExp >= expNeeded) {
+        while (currentExp >= expNeeded)
+        {
             currentLevel++;
-            LevelUpEvent levelUpEvent = new LevelUpEvent(currentLevel);
-            EventManager.Instance.QueueEvent(levelUpEvent);
+            currentExp -= expNeeded; 
+            expNeeded = ResourceManager.Instance.levelData[currentLevel].expNeeded;
+            
+            EventManager.Instance.QueueEvent(new LevelUpEvent(currentLevel));
         }
-        
+        EventManager.Instance.QueueEvent(new SaveExpEvent(currentLevel, currentExp));
         UpdateUI();
     }
 
     void OnLevelUp(LevelUpEvent eventInfo)
     {
-        currentExp -= expNeeded;
-        expNeeded = ResourceManager.Instance.levelData[eventInfo.nextLv].expNeeded;
         
         //Init a level up windows
         Debug.Log("Level Up");
@@ -82,7 +85,5 @@ public class LevelSystem : SingletonMonoBehavior<LevelSystem>, IGameSystem
         CurrencyChangeEvent addGold = new CurrencyChangeEvent(
             ResourceManager.Instance.levelData[eventInfo.nextLv].gold, CurrencyType.Gold);
         EventManager.Instance.QueueEvent(addGold);
-        
-        UpdateUI();
     }
 }

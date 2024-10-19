@@ -16,6 +16,7 @@ public class SaveData
     public Dictionary<string, int> storageData = new Dictionary<string, int>();
     public Dictionary<string, SavedFactoryData> factoriesData = new Dictionary<string, SavedFactoryData>();
     public Dictionary<string, SavedFieldData> fieldsData = new Dictionary<string, SavedFieldData>();
+    public Dictionary<string, SavedBuildingData> decorsData = new Dictionary<string, SavedBuildingData>();
     public SavedOrderData[] ordersData = new SavedOrderData[9];
     public static string GenerateUniqueID()
     {
@@ -34,6 +35,13 @@ public class SaveData
         if (fieldsData.ContainsKey(info.buildingID)) 
             fieldsData[info.buildingID] = info.CreateSavedFieldData();
         else fieldsData.Add(info.buildingID, info.CreateSavedFieldData());
+    }
+
+    public void AddDecorationData(SaveDecorDataEvent info)
+    {
+        if (decorsData.ContainsKey(info.buildingID))
+            decorsData[info.buildingID] = info.CreateSavedFactoryData();
+        else decorsData.Add(info.buildingID, info.CreateSavedFactoryData());
     }
 
     public void ModifyStorageData(SufficientCapacityEvent info)
@@ -61,6 +69,13 @@ public class SaveData
         gold = info.gold;
         silver = info.silver;
     }
+    
+    public void UpdateExp(SaveExpEvent info)
+    {
+        exp = info.currentExp;
+        level = info.level;
+    }
+    
 
     public void UpdateOrder(SaveOrderEvent info)
     {

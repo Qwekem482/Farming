@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: C2
   itemName: "Thanh Th\xE9p"
-  icon: {fileID: 21300000, guid: cd9cc34f09cb27045bf59a2b99e8428b, type: 3}
+  icon: {fileID: 21300000, guid: 68d1ba33b70277b4a83ec4697596123c, type: 3}

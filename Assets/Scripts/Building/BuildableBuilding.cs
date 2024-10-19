@@ -52,27 +52,30 @@ public class BuildableBuilding : MovableBuilding
     {
         StartCoroutine(ChangeSpriteColor(1, 0));
         
-        if(buildingData.GetType() == typeof(ProductionBuildingData)) AssignFactory((ProductionBuildingData) buildingData);
+        switch (buildingData.buildingType)
+        {
+            case BuildingType.Factory:
+                AssignFactory((ProductionBuildingData) buildingData);
+                break;
+            case BuildingType.Decors:
+                Decoration building = gameObject.AddComponent<Decoration>();
+                building.Init(buildingData, buildingArea);
+                break;
+        }
        
         enabled = false;
     }
 
     void AssignFactory(ProductionBuildingData factoryData)
     {
-        switch (factoryData.type)
+        if (factoryData.type == ProductionBuildingType.Field)
         {
-            case ProductionBuildingType.Field:
-                Field field = gameObject.AddComponent<Field>();
-                field.Init(buildingData, buildingArea);
-                break;
-            case ProductionBuildingType.Grinder:
-            case ProductionBuildingType.SteamStation:
-            default:
-                Factory tempFactory = gameObject.AddComponent<Factory>();
-                tempFactory.Init(buildingData, buildingArea);
-                break;
+            Field field = gameObject.AddComponent<Field>();
+            field.Init(buildingData, buildingArea);
+            return;
         }
-
-        enabled = false;
+        
+        Factory tempFactory = gameObject.AddComponent<Factory>();
+        tempFactory.Init(buildingData, buildingArea);
     }
 }

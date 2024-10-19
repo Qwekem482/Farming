@@ -18,7 +18,6 @@ public class OrderSlot : MonoBehaviour
     public void Init(int index)
     {
         Order order = OrderSystem.Instance.orders[index];
-        
         if (order.resetTime != default && order.resetTime > DateTime.Now) gameObject.SetActive(false);
         else if (order.CanBeDelivery()) background.color = new Color(0, 1, 0, 0.75f);
         else background.color = new Color(1, 1, 1, 0.75f);

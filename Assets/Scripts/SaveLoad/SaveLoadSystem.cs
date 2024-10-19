@@ -19,11 +19,13 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     {
         EventManager.Instance.AddListener<SaveFactoryDataEvent>(saveData.AddFactoryData);
         EventManager.Instance.AddListener<SaveFieldDataEvent>(saveData.AddFieldData);
+        EventManager.Instance.AddListener<SaveDecorDataEvent>(saveData.AddDecorationData);
         EventManager.Instance.AddListener<SufficientCapacityEvent>(saveData.ModifyStorageData);
         EventManager.Instance.AddListener<SufficientItemsEvent>(saveData.ModifyStorageData);
         EventManager.Instance.AddListener<SaveStorageCapacityEvent>(saveData.UpdateStorageCapacity);
         EventManager.Instance.AddListener<SaveCurrencyEvent>(saveData.UpdateCurrency);
         EventManager.Instance.AddListener<SaveOrderEvent>(saveData.UpdateOrder);
+        EventManager.Instance.AddListener<SaveExpEvent>(saveData.UpdateExp);
     }
 
     #region LoadSave
@@ -37,6 +39,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         LoadLevel();
         LoadFactoryData();
         LoadFieldData();
+        LoadDecorData();
         LoadStorageData();
         LoadOrderData();
     }
@@ -53,17 +56,25 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void LoadFactoryData()
     {
-        foreach(SavedFactoryData savedFactoryData in saveData.factoriesData.Values)
+        foreach(SavedFactoryData savedData in saveData.factoriesData.Values)
         {
-            CreateFactory(savedFactoryData);
+            CreateFactory(savedData);
         }
     }
 
     void LoadFieldData()
     {
-        foreach(SavedFieldData savedFieldData in saveData.fieldsData.Values)
+        foreach(SavedFieldData savedData in saveData.fieldsData.Values)
         {
-            CreateField(savedFieldData);
+            CreateField(savedData);
+        }
+    }
+
+    void LoadDecorData()
+    {
+        foreach(SavedBuildingData savedData in saveData.decorsData.Values)
+        {
+            CreateDecor(savedData);
         }
     }
 
@@ -144,6 +155,19 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             ResourceManager.Instance.TranslateToProductData
                 (data.processingData?.productDataID) as CropData,
             difference);
+    }
+
+    void CreateDecor(SavedBuildingData data)
+    {
+        BuildingData buildingData = ResourceManager.Instance.buildingData[data.buildingDataID];
+        GameObject emptyBuilding = CreateBuildingGameObject(
+            buildingData.buildingName,
+            data.position,
+            data.area,
+            buildingData.sprite);
+        
+        Decoration decoration = emptyBuilding.AddComponent<Decoration>();
+        decoration.Init(buildingData, data.area);
     }
 
     GameObject CreateBuildingGameObject(string objectName, Vector3 position, BoundsInt area, Sprite sprite)
@@ -234,7 +258,6 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     void OnApplicationPause(bool pauseStatus)
     {
-        Debug.Log("Pause: " + pauseStatus);
         if (isLoaded && pauseStatus) SaveData();
     }
 

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2234c8efb32b4eb4b8c2391bf9f42526, type: 3}
-  m_Name: sickle
+  m_Name: sugarcane
   m_EditorClassIdentifier: 
   id: C7
-  itemName: "C\xE1i Li\u1EC1m"
-  icon: {fileID: 21300000, guid: 0a68114982d772a469c6795b62406e13, type: 3}
+  itemName: "C\xE2y M\xEDa"
+  icon: {fileID: 21300000, guid: 057257f39d5105b4482891d4255d9ed1, type: 3}

@@ -80,9 +80,7 @@ public class ProductScroller : SingletonMonoBehavior<ProductScroller>
         {
             scroller.Generate(factoryCell, data.productData.Count, (index, iCell) =>
             {
-                Debug.Log("iCell: " + iCell);
                 FactoryProductInfoCell infoCell = iCell as FactoryProductInfoCell;
-                Debug.Log("infoCell: " + infoCell);
                 if (infoCell == null) return;
                 infoCell.AssignData(data.productData[index] as ProductData, canvas, factory as Factory);
             });

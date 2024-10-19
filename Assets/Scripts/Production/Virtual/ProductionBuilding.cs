@@ -6,8 +6,7 @@ public abstract class ProductionBuilding : MovableBuilding
 {
     public ProductionBuildingState state;
     protected Coroutine processingCoroutine;
-
-    protected abstract void SaveState();
+    
     public abstract void AddProduct(ProductionOutputData inputData);
     protected abstract IEnumerator ProcessingProduct(TimeSpan timeLeft = default);
     protected abstract void OnSkipProcessingProduct();

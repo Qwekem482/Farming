@@ -123,6 +123,24 @@ public class SaveBuildingDataEvent : GameEvent
     public BoundsInt area;
 }
 
+public class SaveDecorDataEvent : SaveBuildingDataEvent
+{
+    public SaveDecorDataEvent(string buildingID, string buildingDataID, Vector3 position, BoundsInt area)
+    {
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
+        this.position = position;
+        this.area = area;
+    }
+
+    
+    public SavedBuildingData CreateSavedFactoryData()
+    {
+        return new SavedBuildingData(buildingID, buildingDataID, position, 
+            area);
+    }
+}
+
 public class SaveFactoryDataEvent : SaveBuildingDataEvent
 {
     readonly int queueCapacity;
@@ -203,6 +221,18 @@ public class SaveCurrencyEvent : GameEvent
     {
         this.silver = silver;
         this.gold = gold;
+    }
+}
+
+public class SaveExpEvent : GameEvent
+{
+    public readonly int level;
+    public readonly int currentExp;
+
+    public SaveExpEvent(int level, int currentExp)
+    {
+        this.level = level;
+        this.currentExp = currentExp;
     }
 }
 

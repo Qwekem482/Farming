@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: C0
   itemName: "Vi\xEAn g\u1EA1ch"
-  icon: {fileID: 21300000, guid: 236a1d022595b704fa6e2adb06580d74, type: 3}
+  icon: {fileID: 21300000, guid: 2f15d07521e3a254d913120e63f96c88, type: 3}

@@ -15,6 +15,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     [SerializeField] SerializedDictionary<TileType, TileBase> tileBases;
     
     public Material grayscale;
+    public bool isBuildingMode;
     [SerializeField] Transform buildingParent;
     
     MovableBuilding tempBuilding;
@@ -87,12 +88,14 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     void OpenBuildingMode()
     {
         HorizontalUIHolder.Instance.OpenUI(false);
+        isBuildingMode = true;
         tempMap.gameObject.SetActive(true);
     }
 
     void CloseBuildingMode()
     {
         HorizontalUIHolder.Instance.CloseUI();
+        isBuildingMode = false;
         tempMap.gameObject.SetActive(false);
     }
 
@@ -140,8 +143,8 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         tempBuilding.buildingArea.position =
             layout.WorldToCell(tempBuilding.gameObject.transform.position) -
             new Vector3Int(
-                Mathf.CeilToInt((float)tempBuilding.buildingArea.size.x / 2),
-                Mathf.CeilToInt((float)tempBuilding.buildingArea.size.y / 2),
+                Mathf.CeilToInt((float)tempBuilding.buildingArea.size.x),
+                Mathf.CeilToInt((float)tempBuilding.buildingArea.size.y),
                 0);
         
         TileBase[] baseArray = tempMap.GetTilesBlock(tempBuilding.buildingArea);

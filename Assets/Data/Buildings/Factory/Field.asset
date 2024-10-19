@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9032f4508c1009c4bb19261f2c559e57, type: 3}
-  m_Name: Field
+  m_Name: field
   m_EditorClassIdentifier: 
   id: F0
   buildingName: "Ru\u1ED9ng"
@@ -27,3 +27,4 @@ MonoBehaviour:
   type: 2
   productData:
   - {fileID: 11400000, guid: 9e58b8a7bbbb08b429940dbc8d8b2979, type: 2}
+  - {fileID: 11400000, guid: 83bc34fe52220134fbddf474b674574a, type: 2}

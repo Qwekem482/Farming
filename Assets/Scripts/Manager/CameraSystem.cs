@@ -151,7 +151,8 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
             return;
         }
         
-        mainCam.transform.DOMove(position, 0.5f)
+        mainCam.transform.DOMove(position, 0.4f)
+            .SetEase(Ease.OutExpo)
             .OnComplete(() => onComplete?.Invoke());
         ClampCamera();
         touchPosition = camPosition;

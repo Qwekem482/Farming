@@ -39,11 +39,24 @@ public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
     public void CancelOrder(int index)
     {
         CreateNewOrder(index, true);
+        Debug.Log("CompletedCancel");
     }
 
     public void DeliveryOrder(int index)
     {
         if (!orders[index].CanBeDelivery()) return;
+        
+        foreach(Item item in orders[index].requestItems)
+        {
+            EventManager.Instance.QueueEvent(new StorageItemChangeEvent(item.ConvertToNegativeAmount()));
+        }
+
+        EventManager.Instance.QueueEvent(
+            orders[index].gold == 0
+                ? new CurrencyChangeEvent(orders[index].silver, CurrencyType.Silver)
+                : new CurrencyChangeEvent(orders[index].gold, CurrencyType.Gold));
+        EventManager.Instance.QueueEvent(new ExpAddedEvent(orders[index].exp));
+
         CreateNewOrder(index, false);
     }
 
@@ -52,4 +65,6 @@ public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
         orders[index] = generator.Generate(availableCollectibles, isCooldown);
         Save(index);
     }
+    
+    
 }

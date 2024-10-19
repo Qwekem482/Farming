@@ -16,6 +16,7 @@ public class ProductionBuildingData : BuildingData
 public enum ProductionBuildingType
 {
     Grinder,
-    SteamStation,
+    Steamer,
     Field,
+    SugarCooker,
 }

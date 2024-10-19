@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: banyan_tree
   m_EditorClassIdentifier: 
   id: B0
-  buildingName: Banyan Tree
+  buildingName: "C\xE2y \u0110a"
   sprite: {fileID: 21300000, guid: 44aece14eaa84da4ca28e1bb367a1316, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}

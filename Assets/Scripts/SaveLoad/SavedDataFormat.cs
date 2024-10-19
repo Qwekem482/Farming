@@ -5,12 +5,24 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 [Serializable]
-public abstract class SavedBuildingData
+public class SavedBuildingData
 {
     public string buildingID;
     public string buildingDataID;
     public Vector3 position;
     public BoundsInt area;
+
+    public SavedBuildingData()
+    {
+    }
+    
+    public SavedBuildingData(string buildingID, string buildingDataID, Vector3 position, BoundsInt area)
+    {
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
+        this.position = position;
+        this.area = area;
+    }
 }
 
 [Serializable]
@@ -123,13 +135,4 @@ public class SavedOrderData
         this.goldReward = goldReward;
         this.resetTime = resetTime;
     }
-
-    /*public Order ConvertBack()
-    {
-        List<Item> orderRequests = new List<Item>();
-        foreach(KeyValuePair<string,int> item in requestItems)
-        {
-            orderRequests.Add(ResourceManager.Instance.TranslateToProductData());
-        }
-    }*/
 }

@@ -27,7 +27,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         orderSlots[0].button.onClick.Invoke();
         gameObject.SetActive(true);
         gameObject.transform.DOScale(1, 0.2f);
-        UICurtain.Instance.AddListener(CloseUI);
+        UICurtain.Instance.AddListener(CloseUI, false);
     }
 
     void CloseUI()
@@ -39,6 +39,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     
     void SetAllOrderButtons()
     {
+        Debug.Log("SetAllOrderButton");
         for (int i = 0; i < 9; i++)
         {
             orderSlots[i].Init(i);
@@ -59,8 +60,8 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         {
             OrderSystem.Instance.CancelOrder(index);
             orderSlots[index].Init(index);
-            ButtonOnClickCancel();
-            SetAllOrderButtons();
+            Invoke(nameof(ResetInfoUI), 0.05f);
+            Invoke(nameof(SetAllOrderButtons), 0.05f);
         });
     }
     
@@ -72,8 +73,8 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         {
             OrderSystem.Instance.DeliveryOrder(index);
             orderSlots[index].Init(index);
-            orderSlots[index].button.onClick.Invoke();
-            SetAllOrderButtons();
+            Invoke(nameof(ResetInfoUI), 0.05f);
+            Invoke(nameof(SetAllOrderButtons), 0.05f);
         });
     }
 
@@ -104,16 +105,12 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     {
         int activeChild = 0;
         foreach(Transform child in content) if (child.gameObject.activeSelf) activeChild++;
-        Debug.Log(activeChild);
         Vector2 newSize = new Vector2(content.sizeDelta.x, activeChild * 165 + 20);
         content.sizeDelta = newSize;
     }
     
-    void ButtonOnClickCancel()
+    void ResetInfoUI()
     {
-        deliveryOrderButton.interactable = false;
-        cancelOrderButton.interactable = false;
-
         for (int i = 0; i < 9; i++)
         {
             if (!(OrderSystem.Instance.orders[i].resetTime != default

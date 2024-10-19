@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tilte_Map_Green
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 29c4a2e03db70bf4eaf3882387375e43, type: 3}
-  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 0.5019608}
   m_Transform:
     e00: 1
     e01: 0

@@ -30,8 +30,8 @@ public class MovableBuilding : MonoBehaviour
         BoundsInt areaTemp = buildingArea;
         areaTemp.position = BuildingSystem.Instance.layout.LocalToCell(transform.position);
         areaTemp.position -= new Vector3Int(
-            Mathf.CeilToInt((float)areaTemp.size.x / 2),
-            Mathf.CeilToInt((float)areaTemp.size.y / 2),
+            Mathf.CeilToInt((float)areaTemp.size.x),
+            Mathf.CeilToInt((float)areaTemp.size.y),
             0);
 
         return BuildingSystem.Instance.ValidArea(areaTemp);
@@ -42,8 +42,8 @@ public class MovableBuilding : MonoBehaviour
         BoundsInt areaTemp = buildingArea;
         areaTemp.position = BuildingSystem.Instance.layout.LocalToCell(transform.position);
         areaTemp.position -= new Vector3Int(
-            Mathf.CeilToInt((float)areaTemp.size.x / 2),
-            Mathf.CeilToInt((float)areaTemp.size.y / 2),
+            Mathf.CeilToInt((float)areaTemp.size.x),
+            Mathf.CeilToInt((float)areaTemp.size.y),
             0);
 
         IsPlaced = true;
@@ -74,6 +74,10 @@ public class MovableBuilding : MonoBehaviour
         }
         
         BuildingSystem.Instance.SetupBuild();
+    }
+
+    protected virtual void SaveState()
+    {
     }
 
     void MoveBuilding()

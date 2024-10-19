@@ -34,7 +34,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
 
         nameText.text = timer.TimerName;
         skipPriceText.text = timer.SkipPrice.ToString();
-        skipButton.gameObject.SetActive(true);
+        gameObject.SetActive(true);
 
         triggerObject.TryGetComponent(out Collider2D collid2D);
         
@@ -67,7 +67,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     void HideTimer()
     {
         UICurtain.Instance.RemoveListener(HideTimer);
-        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.SetActive(false);
         timer = null;
         countdown = false;
     }
@@ -97,8 +97,7 @@ public class TimerUI : SingletonMonoBehavior<TimerUI>
     void OnSufficientCurrency(SufficientCurrencyEvent info)
     {
         timer.Skip();
-        skipButton.gameObject.SetActive(false);
-        UICurtain.Instance.RemoveListener(HideTimer);
+        HideTimer();
         EventManager.Instance.RemoveListener<InsufficientCurrencyEvent>(OnInsufficientCurrency);
     }
 
