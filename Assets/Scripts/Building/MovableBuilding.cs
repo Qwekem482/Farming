@@ -13,7 +13,18 @@ public class MovableBuilding : MonoBehaviour
     public BuildingData buildingData;
     public BoundsInt buildingArea;
     public string buildingName;
-    public bool IsPlaced { get; protected set; }
+    protected bool isPlaced;
+    
+    public virtual bool IsPlaced {
+        get
+        {
+            return isPlaced;
+        }
+        protected set
+        {
+            isPlaced = value;
+        }
+    }
     
     bool isMouseDown;
     float mouseDownTime;
@@ -84,7 +95,6 @@ public class MovableBuilding : MonoBehaviour
 
     void MoveBuilding()
     {
-        Debug.Log("MoveBuilding");
         IsPlaced = false;
         BuildingSystem.Instance.MoveBuilding(this);
     }

@@ -10,6 +10,7 @@ public class SettingUI : SingletonMonoBehavior<SettingUI>
     [SerializeField] Button settingButton;
     [SerializeField] Slider musicVolume;
     [SerializeField] Slider soundVolume;
+    [SerializeField] Button quitGame;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class SettingUI : SingletonMonoBehavior<SettingUI>
         soundVolume.onValueChanged.AddListener(_ => 
             AudioManager.Instance.ChangeEffectVolume(soundVolume.value));
         settingButton.onClick.AddListener(OpenSetting);
+        quitGame.onClick.AddListener(Application.Quit);
         
         gameObject.SetActive(false);
         transform.localScale = new Vector3(0, 0, 0);

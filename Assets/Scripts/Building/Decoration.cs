@@ -6,6 +6,19 @@ using UnityEngine.EventSystems;
 
 public class Decoration : MovableBuilding
 {
+    public override bool IsPlaced
+    {
+        get
+        {
+            return isPlaced;
+        }
+        protected set
+        {
+            isPlaced = value;
+            SaveState();
+        }
+    }
+    
     public override void Init(BuildingData data, BoundsInt area)
     {
         base.Init(data, area);

@@ -14,6 +14,19 @@ public class Factory : ProductionBuilding
     List<ProductData> completeQueue;
     
     public int queueCapacity = 3;
+    
+    public override bool IsPlaced
+    {
+        get
+        {
+            return isPlaced;
+        }
+        protected set
+        {
+            isPlaced = value;
+            SaveState();
+        }
+    }
 
     Timer timer;
     void Awake()

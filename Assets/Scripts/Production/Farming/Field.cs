@@ -11,6 +11,19 @@ public class Field : ProductionBuilding
 {
     public Sprite freeSprite;
     SpriteRenderer spriteRenderer;
+
+    public override bool IsPlaced
+    {
+        get
+        {
+            return isPlaced;
+        }
+        protected set
+        {
+            isPlaced = value;
+            SaveState();
+        }
+    }
     
     CropData cropData;
 

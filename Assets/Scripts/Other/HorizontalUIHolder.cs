@@ -11,14 +11,12 @@ public class HorizontalUIHolder : SingletonMonoBehavior<HorizontalUIHolder>
     [SerializeField] RectTransform sicklePanel;
     
     [SerializeField] RectTransform buildingConfirmPanel;
-    [SerializeField] Button confirmButton;
-    [SerializeField] Button cancelButton;
+    public Button confirmButton;
+    public Button cancelButton;
 
     bool isOpen;
     void Start()
     {
-        confirmButton.onClick.AddListener(BuildingSystem.Instance.ConfirmBuild);
-        cancelButton.onClick.AddListener(BuildingSystem.Instance.CancelBuild);
         SetSickleViewState(false);
         gameObject.SetActive(false);
     }
@@ -49,5 +47,7 @@ public class HorizontalUIHolder : SingletonMonoBehavior<HorizontalUIHolder>
                 isOpen = false;
             });
         UICurtain.Instance.RemoveListener(CloseUI);
+        confirmButton.onClick.RemoveAllListeners();
+        cancelButton.onClick.RemoveAllListeners();
     }
 }

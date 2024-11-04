@@ -22,6 +22,9 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     Vector3Int prevPosition;
     BoundsInt prevArea;
     TileBase[] prevBase;
+    
+    BoundsInt beforeMoveArea;
+    Vector3 beforeMovePos;
 
     
     #region MonoBehavior
@@ -39,6 +42,11 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     {
         tempBuilding = building;
         prevArea = building.buildingArea;
+        beforeMoveArea = building.buildingArea;
+        beforeMovePos = building.transform.position;
+        
+        HorizontalUIHolder.Instance.confirmButton.onClick.AddListener(Confirm);
+        HorizontalUIHolder.Instance.cancelButton.onClick.AddListener(CancelMove);
         
         OpenBuildingMode();
         TileFollowBuilding();
@@ -47,7 +55,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         CameraSystem.Instance.SetupFollow(tempBuilding.transform);
     }
 
-    public void SetupBuild(/*MovableBuilding building*/)
+    public void SetupBuild()
     {
         if (!tempBuilding) return;
         if (EventSystem.current.IsPointerOverGameObject()) return;
@@ -64,14 +72,22 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         TileFollowBuilding();
     }
 
-    public void CancelBuild()
+    void CancelBuild()
     {
         ClearArea();
         Destroy(tempBuilding.gameObject);
         CloseBuildingMode();
     }
+    
+    void CancelMove()
+    {
+        tempBuilding.buildingArea = beforeMoveArea;
+        tempBuilding.transform.position = beforeMovePos;
+        ClearArea();
+        CloseBuildingMode();
+    }
 
-    public void ConfirmBuild()
+    void Confirm()
     {
         if (!tempBuilding.Placeable()) return;
         
@@ -129,6 +145,8 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         
         TileFollowBuilding();
         
+        HorizontalUIHolder.Instance.confirmButton.onClick.AddListener(Confirm);
+        HorizontalUIHolder.Instance.cancelButton.onClick.AddListener(CancelBuild);
         CameraSystem.Instance.SetupFollow(tempBuilding.transform);
     }
 

@@ -11,7 +11,6 @@ public abstract class ProductionBuilding : MovableBuilding
     protected abstract IEnumerator ProcessingProduct(TimeSpan timeLeft = default);
     protected abstract void OnSkipProcessingProduct();
     protected abstract void OnCompleteProcessingProduct();
-
 }
 
 public enum ProductionBuildingState
