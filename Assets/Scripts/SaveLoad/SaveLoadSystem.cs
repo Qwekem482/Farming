@@ -17,15 +17,18 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     //Actually not start here, just AddListener to receive data to save (to SaveData object)
     public void StartingSystem()
     {
-        EventManager.Instance.AddListener<SaveFactoryDataEvent>(saveData.AddFactoryData);
-        EventManager.Instance.AddListener<SaveFieldDataEvent>(saveData.AddFieldData);
-        EventManager.Instance.AddListener<SaveDecorDataEvent>(saveData.AddDecorationData);
-        EventManager.Instance.AddListener<SufficientCapacityEvent>(saveData.ModifyStorageData);
-        EventManager.Instance.AddListener<SufficientItemsEvent>(saveData.ModifyStorageData);
-        EventManager.Instance.AddListener<SaveStorageCapacityEvent>(saveData.UpdateStorageCapacity);
-        EventManager.Instance.AddListener<SaveCurrencyEvent>(saveData.UpdateCurrency);
-        EventManager.Instance.AddListener<SaveOrderEvent>(saveData.UpdateOrder);
-        EventManager.Instance.AddListener<SaveExpEvent>(saveData.UpdateExp);
+        EventManager instance = EventManager.Instance;
+        instance.AddListener<SaveProcessBuildingEvent>(saveData.AddProcessingBuildingData);
+        instance.AddListener<RemoveSaveProcessBuildingEvent>(saveData.RemoveProcessBuildingData);
+        instance.AddListener<SaveFactoryDataEvent>(saveData.AddFactoryData);
+        instance.AddListener<SaveFieldDataEvent>(saveData.AddFieldData);
+        instance.AddListener<SaveBuildingDataEvent>(saveData.AddDecorationData);
+        instance.AddListener<SufficientCapacityEvent>(saveData.ModifyStorageCapacityData);
+        instance.AddListener<SufficientItemsEvent>(saveData.ModifyStorageData);
+        instance.AddListener<SaveStorageCapacityEvent>(saveData.UpdateStorageCapacity);
+        instance.AddListener<SaveCurrencyEvent>(saveData.UpdateCurrency);
+        instance.AddListener<SaveOrderEvent>(saveData.UpdateOrder);
+        instance.AddListener<SaveExpEvent>(saveData.UpdateExp);
     }
 
     #region LoadSave
@@ -37,6 +40,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
         
         LoadCurrency();
         LoadLevel();
+        LoadProcessBuilding();
         LoadFactoryData();
         LoadFieldData();
         LoadDecorData();
@@ -52,6 +56,14 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
     void LoadLevel()
     {
         LevelSystem.Instance.Load(saveData.exp, saveData.level);
+    }
+
+    void LoadProcessBuilding()
+    {
+        foreach(SavedProcessBuildingData savedData in saveData.processBuilding.Values)
+        {
+            CreateProcessBuilding(savedData);
+        }
     }
 
     void LoadFactoryData()
@@ -111,6 +123,22 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
 
     #region LoadBuilding
 
+    void CreateProcessBuilding(SavedProcessBuildingData data)
+    {
+        BuildingData buildingData = ResourceManager.Instance.buildingData[data.buildingDataID];
+        GameObject emptyBuilding = CreateBuildingGameObject(
+            buildingData.buildingName,
+            data.position,
+            data.area,
+            buildingData.sprite);
+
+        BuildableBuilding building = emptyBuilding.AddComponent<BuildableBuilding>();
+        building.Init(buildingData, data.area, data.buildingID);
+        emptyBuilding.GetComponent<SpriteRenderer>().material = ResourceManager.Instance.grayscale;
+        if(data.completedTime <= DateTime.Now) building.Load(default);
+        else building.Load(data.completedTime - DateTime.Now);
+    }
+
     void CreateFactory(SavedFactoryData data)
     {
         BuildingData buildingData = ResourceManager.Instance.buildingData[data.buildingDataID];
@@ -121,7 +149,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             buildingData.sprite);
         
         Factory emptyFactory = emptyBuilding.AddComponent<Factory>();
-        emptyFactory.Init(buildingData, data.area);
+        emptyFactory.Init(buildingData, data.area, data.buildingID);
         emptyFactory.queueCapacity = data.queueCapacity;
         
         Queue<ProductData>[] productDataQueue = InitializeProductionQueue
@@ -144,7 +172,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             buildingData.sprite);
 
         Field emptyField = emptyBuilding.AddComponent<Field>();
-        emptyField.Init(buildingData, data.area);
+        emptyField.Init(buildingData, data.area, data.buildingID);
 
         TimeSpan difference = default;
         if (data.processingData != null && data.processingData.completedDateTime > DateTime.Now) 
@@ -167,7 +195,7 @@ public class SaveLoadSystem : SingletonMonoBehavior<SaveLoadSystem>, IGameSystem
             buildingData.sprite);
         
         Decoration decoration = emptyBuilding.AddComponent<Decoration>();
-        decoration.Init(buildingData, data.area);
+        decoration.Init(buildingData, data.area, data.buildingID);
     }
 
     GameObject CreateBuildingGameObject(string objectName, Vector3 position, BoundsInt area, Sprite sprite)

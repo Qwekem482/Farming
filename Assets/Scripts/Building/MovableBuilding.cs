@@ -29,11 +29,13 @@ public class MovableBuilding : MonoBehaviour
     bool isMouseDown;
     float mouseDownTime;
 
-    public virtual void Init(BuildingData data, BoundsInt area)
+    public virtual void Init(BuildingData data, BoundsInt area, string id = default)
     {
         buildingData = data;
         buildingArea = area;
         buildingName = buildingData.buildingName;
+        if (id == default) uniqueID = SaveData.GenerateUniqueID();
+        else uniqueID = id;
     }
 
     public bool Placeable()

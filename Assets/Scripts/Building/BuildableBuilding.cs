@@ -11,18 +11,38 @@ public class BuildableBuilding : MovableBuilding
     TimePeriod buildingPeriod;
     readonly static int GREYSCALE = Shader.PropertyToID("_Greyscale");
 
-    public override void Init(BuildingData data, BoundsInt area)
+    public override void Init(BuildingData data, BoundsInt area, string id = default)
     {
-        base.Init(data, area);
+        base.Init(data, area, id);
         buildingPeriod = data.constructionTime;
     }
     
     public override void Place()
     {
         base.Place();
-        Timer.CreateTimer(gameObject, buildingName, buildingPeriod, OnCompleteConstruction);
-        gameObject.TryGetComponent(out timer);
+        timer = Timer.CreateTimer(gameObject, buildingName, buildingPeriod, OnCompleteConstruction);
+        Save();
         StartCoroutine(ChangeSpriteColor(0, 1));
+    }
+
+    void Save()
+    {
+        Debug.Log("At Save:" + uniqueID);
+        EventManager.Instance.QueueEvent(new SaveProcessBuildingEvent
+            (uniqueID, buildingData.id, transform.position,
+                buildingArea, timer.finishTime));
+    }
+
+    public void Load(TimeSpan timeLeft)
+    {
+        if (timeLeft == default)
+        {
+            OnCompleteConstruction();
+            return;
+        }
+        timer = Timer.CreateTimer(gameObject, buildingName, buildingPeriod, OnCompleteConstruction, timeLeft: timeLeft);
+        StartCoroutine(ChangeSpriteColor(0, 1));
+        IsPlaced = true;
     }
     
     protected override void OnMouseUp()
@@ -51,7 +71,7 @@ public class BuildableBuilding : MovableBuilding
     void OnCompleteConstruction()
     {
         StartCoroutine(ChangeSpriteColor(1, 0));
-        
+        EventManager.Instance.QueueEvent(new RemoveSaveProcessBuildingEvent(uniqueID));
         switch (buildingData.buildingType)
         {
             case BuildingType.Factory:
@@ -59,11 +79,12 @@ public class BuildableBuilding : MovableBuilding
                 break;
             case BuildingType.Decors:
                 Decoration building = gameObject.AddComponent<Decoration>();
-                building.Init(buildingData, buildingArea);
+                building.Init(buildingData, buildingArea, uniqueID);
                 break;
         }
-       
+
         enabled = false;
+        Destroy(this, 1.5f);
     }
 
     void AssignFactory(ProductionBuildingData factoryData)
@@ -71,11 +92,11 @@ public class BuildableBuilding : MovableBuilding
         if (factoryData.type == ProductionBuildingType.Field)
         {
             Field field = gameObject.AddComponent<Field>();
-            field.Init(buildingData, buildingArea);
+            field.Init(buildingData, buildingArea, uniqueID);
             return;
         }
         
         Factory tempFactory = gameObject.AddComponent<Factory>();
-        tempFactory.Init(buildingData, buildingArea);
+        tempFactory.Init(buildingData, buildingArea, uniqueID);
     }
 }

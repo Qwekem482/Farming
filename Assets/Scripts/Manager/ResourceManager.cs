@@ -17,6 +17,7 @@ public class ResourceManager : SingletonMonoBehavior<ResourceManager>
     public List<LevelData> levelData;
     public Sprite silverSprite;
     public Sprite goldSprite;
+    public Material grayscale;
 
     [CanBeNull]
     public ProductionOutputData TranslateToProductData(string id)

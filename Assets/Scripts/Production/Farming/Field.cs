@@ -32,20 +32,19 @@ public class Field : ProductionBuilding
         spriteRenderer = GetComponent<SpriteRenderer>();
         cropData = null;
     }
-    
-    public override void Init(BuildingData data, BoundsInt area)
+
+    public override void Init(BuildingData data, BoundsInt area, string id = default)
     {
-        base.Init(data, area);
+        base.Init(data, area, id);
         IsPlaced = true;
         freeSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-        uniqueID = SaveData.GenerateUniqueID();
         SaveState();
     }
 
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
-        if (EventSystem.current.IsPointerOverGameObject()
+        if (EventSystem.current.IsPointerOverGameObject(0)
             || BuildingSystem.Instance.isBuildingMode) return;
 
         gameObject.GetComponent<SpriteRenderer>().DOColor(
@@ -95,7 +94,7 @@ public class Field : ProductionBuilding
             DateTime completedDateTime;
             
             if(timer == null) completedDateTime = DateTime.Now;
-            else completedDateTime = DateTime.Now + TimeSpan.FromSeconds(timer.TimeLeft);
+            else completedDateTime = timer.finishTime;
             
             EventManager.Instance.QueueEvent(new SaveFieldDataEvent(
                 uniqueID, buildingData.id, transform.position,

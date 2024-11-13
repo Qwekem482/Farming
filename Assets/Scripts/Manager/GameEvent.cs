@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,11 +122,8 @@ public class SaveBuildingDataEvent : GameEvent
     protected string buildingDataID;
     protected Vector3 position;
     public BoundsInt area;
-}
 
-public class SaveDecorDataEvent : SaveBuildingDataEvent
-{
-    public SaveDecorDataEvent(string buildingID, string buildingDataID, Vector3 position, BoundsInt area)
+    public SaveBuildingDataEvent(string buildingID, string buildingDataID, Vector3 position, BoundsInt area)
     {
         this.buildingID = buildingID;
         this.buildingDataID = buildingDataID;
@@ -133,11 +131,44 @@ public class SaveDecorDataEvent : SaveBuildingDataEvent
         this.area = area;
     }
 
+    public SaveBuildingDataEvent()
+    {
+    }
     
-    public SavedBuildingData CreateSavedFactoryData()
+    public SavedBuildingData CreateSavedBuildingData()
     {
         return new SavedBuildingData(buildingID, buildingDataID, position, 
             area);
+    }
+}
+
+public class SaveProcessBuildingEvent : SaveBuildingDataEvent
+{
+    readonly DateTime completeTime;
+
+    public SaveProcessBuildingEvent(string buildingID, string buildingDataID, 
+        Vector3 position, BoundsInt area, DateTime completeTime)
+    {
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
+        this.position = position;
+        this.area = area;
+        this.completeTime = completeTime;
+    }
+    
+    public SavedProcessBuildingData CreateSavedProcessBuildingData()
+    {
+        return new SavedProcessBuildingData(buildingID, buildingDataID, position, 
+            area, completeTime);
+    }
+}
+
+public class RemoveSaveProcessBuildingEvent : GameEvent
+{
+    public readonly string buildingID;
+    public RemoveSaveProcessBuildingEvent(string buildingID)
+    {
+        this.buildingID = buildingID;
     }
 }
 

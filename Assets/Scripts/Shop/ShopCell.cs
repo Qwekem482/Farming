@@ -71,7 +71,7 @@ public class ShopCell : RegularCell
 
     void AllowBuy()
     {
-        BuildingSystem.Instance.InstantiateConstruction(itemData.building);
+        BuildingSystem.Instance.InstantiateConstruction(itemData.building, itemData.price, itemData.currencyType);
         ShopSystem.Instance.CloseShop();
     }
 

@@ -35,11 +35,10 @@ public class Factory : ProductionBuilding
         completeQueue = new List<ProductData>();
     }
     
-    public override void Init(BuildingData data, BoundsInt area)
+    public override void Init(BuildingData data, BoundsInt area, string id = default)
     {
-        base.Init(data, area);
+        base.Init(data, area, id);
         IsPlaced = true;
-        uniqueID = SaveData.GenerateUniqueID();
         SaveState();
     }
     

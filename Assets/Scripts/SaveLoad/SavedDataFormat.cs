@@ -26,6 +26,22 @@ public class SavedBuildingData
 }
 
 [Serializable]
+public class SavedProcessBuildingData : SavedBuildingData
+{
+    public DateTime completedTime;
+    
+    public SavedProcessBuildingData(string buildingID, string buildingDataID, Vector3 position, 
+        BoundsInt area, DateTime completedTime)
+    {
+        this.buildingID = buildingID;
+        this.buildingDataID = buildingDataID;
+        this.position = position;
+        this.area = area;
+        this.completedTime = completedTime;
+    }
+}
+
+[Serializable]
 public class SavedFactoryData : SavedBuildingData
 {
     public int queueCapacity;

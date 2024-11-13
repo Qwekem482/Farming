@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
     public string TimerName { get; private set; }
     bool IsRunning { get; set; }
     DateTime startTime;
-    DateTime finishTime;
+    public DateTime finishTime;
     public TimeSpan duration;
     public UnityEvent onComplete;
     public UnityEvent onSkip;

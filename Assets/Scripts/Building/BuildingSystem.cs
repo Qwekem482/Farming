@@ -14,7 +14,6 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
     [SerializedDictionary("Type", "Tile Sample")]
     [SerializeField] SerializedDictionary<TileType, TileBase> tileBases;
     
-    public Material grayscale;
     public bool isBuildingMode;
     [SerializeField] Transform buildingParent;
     
@@ -72,10 +71,11 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         TileFollowBuilding();
     }
 
-    void CancelBuild()
+    void CancelBuild(int price, CurrencyType type)
     {
         ClearArea();
         Destroy(tempBuilding.gameObject);
+        EventManager.Instance.QueueEvent(new CurrencyChangeEvent(price, type));
         CloseBuildingMode();
     }
     
@@ -119,7 +119,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
 
     #region Placement
 
-    public void InstantiateConstruction(BuildingData data)
+    public void InstantiateConstruction(BuildingData data, int price, CurrencyType type)
     {
         OpenBuildingMode();
 
@@ -135,7 +135,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
 
         SpriteRenderer sRenderer = emptyBuilding.AddComponent<SpriteRenderer>();
         sRenderer.sprite = data.sprite;
-        sRenderer.material = grayscale;
+        sRenderer.material = ResourceManager.Instance.grayscale;
         sRenderer.sortingOrder = 1;
         sRenderer.color = new Color(255, 255, 255, 0.5f);
         
@@ -146,7 +146,7 @@ public class BuildingSystem : SingletonMonoBehavior<BuildingSystem>, IGameSystem
         TileFollowBuilding();
         
         HorizontalUIHolder.Instance.confirmButton.onClick.AddListener(Confirm);
-        HorizontalUIHolder.Instance.cancelButton.onClick.AddListener(CancelBuild);
+        HorizontalUIHolder.Instance.cancelButton.onClick.AddListener(() => CancelBuild(price, type));
         CameraSystem.Instance.SetupFollow(tempBuilding.transform);
     }
 

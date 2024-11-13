@@ -92,16 +92,15 @@ public class CameraSystem : SingletonMonoBehavior<CameraSystem>
                 break;
         }
     }
-
     void FollowOperation()
     {
         Vector3 objectPosition = mainCam.WorldToViewportPoint
             (followObjectTransform.position + objectBounds.max);
 
-        if (objectPosition.x <= 0.15f ||
-            objectPosition.x >= 1f ||
-            objectPosition.y <= 0.35f ||
-            objectPosition.y > 1.1f)
+        if (objectPosition.x <= 0.1f ||
+            objectPosition.x >= 0.8f ||
+            objectPosition.y <= 0.1f ||
+            objectPosition.y >= 0.65f)
         {
             Vector3 position = mainCam.ScreenToWorldPoint(followObjectTransform.position);
             mainCam.transform.position += position - prevPosition;

@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "Crop", menuName = "CustomObject/Collectibles/Crop")]
 public class CropData : ProductionOutputData
 {
-    [NonSerialized] public int inputPrice;
+    public int inputPrice;
     public Sprite processingSprite;
     public Sprite completeSprite;
     

@@ -19,17 +19,17 @@ public class Decoration : MovableBuilding
         }
     }
     
-    public override void Init(BuildingData data, BoundsInt area)
+    public override void Init(BuildingData data, BoundsInt area, string id = default)
     {
-        base.Init(data, area);
-        uniqueID = SaveData.GenerateUniqueID();
+        base.Init(data, area, id);
+        IsPlaced = true;
         SaveState();
     }
     
     protected override void SaveState()
     {
         EventManager.Instance.QueueEvent(
-            new SaveDecorDataEvent(uniqueID, buildingData.id, 
+            new SaveBuildingDataEvent(uniqueID, buildingData.id, 
                     transform.position, buildingArea));
     }
     

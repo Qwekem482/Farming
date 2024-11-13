@@ -12,9 +12,9 @@ public class EventManager : MonoBehaviour {
     public delegate void EventDelegate<in T> (T e) where T : GameEvent;
     delegate void EventDelegate (GameEvent e);
 
-    readonly Dictionary<Type, EventDelegate> delegates = new Dictionary<Type, EventDelegate>();
-    readonly Dictionary<Delegate, EventDelegate> delegateDictionary = new Dictionary<Delegate, EventDelegate>();
-    readonly Dictionary<Delegate, Delegate> onceLookups = new Dictionary<Delegate, Delegate>();
+    readonly Dictionary<Delegate, Delegate> lookups = new Dictionary<Delegate, Delegate>();
+    readonly Dictionary<Type, EventDelegate> del = new Dictionary<Type, EventDelegate>();
+    readonly Dictionary<Delegate, EventDelegate> delDict = new Dictionary<Delegate, EventDelegate>();
     
     public static EventManager Instance {
         get {
@@ -26,45 +26,45 @@ public class EventManager : MonoBehaviour {
     }
 
     EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : GameEvent {
-        if (delegateDictionary.ContainsKey(del))
+        if (delDict.ContainsKey(del))
             return null;
         
-        EventDelegate internalDelegate = e => del((T)e);
-        delegateDictionary[del] = internalDelegate;
+        EventDelegate inDelegate = e => del((T)e);
+        delDict[del] = inDelegate;
 
-        if (delegates.TryGetValue(typeof(T), out EventDelegate tempDel)) {
-            delegates[typeof(T)] = tempDel + internalDelegate; 
-        } else delegates[typeof(T)] = internalDelegate;
+        if (this.del.TryGetValue(typeof(T), out EventDelegate tempDel)) {
+            this.del[typeof(T)] = tempDel + inDelegate; 
+        } else this.del[typeof(T)] = inDelegate;
 
-        return internalDelegate;
+        return inDelegate;
     }
 
-    public void AddListener<T> (EventDelegate<T> del) where T : GameEvent {
-        AddDelegate(del);
+    public void AddListener<T> (EventDelegate<T> inputDel) where T : GameEvent {
+        AddDelegate(inputDel);
     }
 
-    public void AddListenerOnce<T> (EventDelegate<T> del) where T : GameEvent {
-        EventDelegate result = AddDelegate(del);
+    public void AddListenerOnce<T> (EventDelegate<T> inputDel) where T : GameEvent {
+        EventDelegate result = AddDelegate(inputDel);
 
-        if(result != null) onceLookups[result] = del;
+        if(result != null) lookups[result] = inputDel;
     }
 
-    public void RemoveListener<T> (EventDelegate<T> del) where T : GameEvent
+    public void RemoveListener<T> (EventDelegate<T> inputDel) where T : GameEvent
     {
-        if (!delegateDictionary.TryGetValue(del, out EventDelegate internalDelegate)) return;
-        if (delegates.TryGetValue(typeof(T), out EventDelegate tempDel)){
-            tempDel -= internalDelegate;
-            if (tempDel == null) delegates.Remove(typeof(T));
-            else delegates[typeof(T)] = tempDel;
+        if (!delDict.TryGetValue(inputDel, out EventDelegate inDelegate)) return;
+        if (del.TryGetValue(typeof(T), out EventDelegate tempDel)){
+            tempDel -= inDelegate;
+            if (tempDel == null) del.Remove(typeof(T));
+            else del[typeof(T)] = tempDel;
         }
 
-        delegateDictionary.Remove(del);
+        delDict.Remove(inputDel);
     }
 
     void RemoveAll(){
-        delegates.Clear();
-        delegateDictionary.Clear();
-        onceLookups.Clear();
+        del.Clear();
+        delDict.Clear();
+        lookups.Clear();
     }
 
     /*public bool HasListener<T> (EventDelegate<T> del) where T : GameEvent {
@@ -72,29 +72,28 @@ public class EventManager : MonoBehaviour {
     }*/
 
     void TriggerEvent (GameEvent e) {
-        if (delegates.TryGetValue(e.GetType(), out EventDelegate del)) {
-            del.Invoke(e);
+        if (del.TryGetValue(e.GetType(), out EventDelegate newdel)) {
+            newdel.Invoke(e);
 
             // remove listeners which should only be called once
-            foreach(Delegate @delegate in delegates[e.GetType()].GetInvocationList())
+            foreach(Delegate delInDict in del[e.GetType()].GetInvocationList())
             {
-                EventDelegate k = (EventDelegate)@delegate;
-                if (!onceLookups.ContainsKey(k)) continue;
-                delegates[e.GetType()] -= k;
+                EventDelegate key = (EventDelegate)delInDict;
+                if (!lookups.ContainsKey(key)) continue;
+                del[e.GetType()] -= key;
 
-                if(delegates[e.GetType()] == null) delegates.Remove(e.GetType());
+                if(del[e.GetType()] == null) del.Remove(e.GetType());
 
-                delegateDictionary.Remove(onceLookups[k]);
-                onceLookups.Remove(k);
+                delDict.Remove(lookups[key]);
+                lookups.Remove(key);
             }
         } else {
-            Debug.LogWarning("Event: " + e.GetType() + " has no listeners");
+            Debug.LogWarning("Event: " + e.GetType() + " has 0 listeners");
         }
     }
     
     public bool QueueEvent(GameEvent evt) {
-        if (!delegates.ContainsKey(evt.GetType())) {
-            //Debug.LogWarning("EventManager: QueueEvent failed due to no listeners for event: " + evt.GetType());
+        if (!del.ContainsKey(evt.GetType())) {
             return false;
         }
 
@@ -110,8 +109,8 @@ public class EventManager : MonoBehaviour {
                     return;
             }
 
-            GameEvent evt = mEventQueue.Dequeue() as GameEvent;
-            TriggerEvent(evt);
+            GameEvent ev = mEventQueue.Dequeue() as GameEvent;
+            TriggerEvent(ev);
 
             if (limitQueueProcessing)
                 timer += Time.deltaTime;

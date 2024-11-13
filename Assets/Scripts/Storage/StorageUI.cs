@@ -101,6 +101,6 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         buyUpgrade.SetActive(state);
         storageView.gameObject.SetActive(state);
 
-        changeViewLabel.text = state ? "Storage" : "Upgrade";
+        changeViewLabel.text = state ? "Kho" : "Nâng cấp";
     }
 }
