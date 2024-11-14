@@ -1,8 +1,6 @@
-
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-// ReSharper disable All
 
 public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
 {

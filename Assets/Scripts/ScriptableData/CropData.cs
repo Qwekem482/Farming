@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Crop", menuName = "CustomObject/Collectibles/Crop")]
 public class CropData : ProductionOutputData

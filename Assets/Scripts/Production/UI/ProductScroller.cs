@@ -1,12 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using AYellowpaper.SerializedCollections;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnlimitedScrollUI;
 
 public class ProductScroller : SingletonMonoBehavior<ProductScroller>

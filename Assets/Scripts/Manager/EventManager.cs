@@ -19,7 +19,7 @@ public class EventManager : MonoBehaviour {
     public static EventManager Instance {
         get {
             if (sInstance == null) {
-                sInstance = FindObjectOfType (typeof(EventManager)) as EventManager;
+                sInstance = FindFirstObjectByType<EventManager>();
             }
             return sInstance;
         }

@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnlimitedScrollUI;
 
-//Component
 public class StorageUI : SingletonMonoBehavior<StorageUI>
 {
     [SerializeField] TextMeshProUGUI capacityText;

@@ -1,7 +1,6 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 [CreateAssetMenu(fileName = "Product", menuName = "CustomObject/Product")]
 public class ProductData : ProductionOutputData

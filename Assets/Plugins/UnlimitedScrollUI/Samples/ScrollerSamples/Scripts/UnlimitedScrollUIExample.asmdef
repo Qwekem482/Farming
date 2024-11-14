@@ -1,16 +1,3 @@
-{
-    "name": "UnlimitedScrollUIExample",
-    "rootNamespace": "UnlimitedScrollUI.Example",
-    "references": [
-        "GUID:bff71ff7b04310744876309f7ce34829"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7f88a9da0cafde850e24a6af537bd37f588d79e69ec095306235e895773e4c7a
+size 450

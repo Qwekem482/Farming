@@ -3,7 +3,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-// ReSharper disable All
 
 public class OrderUI : SingletonMonoBehavior<OrderUI>
 {

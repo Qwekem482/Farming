@@ -1,6 +1,3 @@
-﻿## 1.5.0
-- API change: delete `iCell.OnGenerated` and add `onGenerate` action callback to `IUnlimitedScroller.Generate`
-  so that its easier to pass data to cell.
-
-## 1.4.0
-- Add jump to cell API to all scrollers
+version https://git-lfs.github.com/spec/v1
+oid sha256:29b337dff830be0ce70454cefe2ba6b9ed88120a8e14d23d9b1ab7a2f78b92d7
+size 220
