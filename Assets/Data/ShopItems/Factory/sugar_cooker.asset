@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sugar_cooker
   m_EditorClassIdentifier: 
   itemName: "N\u1EA5u \u0110\u01B0\u1EDDng"
-  price: 750
+  price: 500
   level: 3
   currencyType: 0
   icon: {fileID: 21300000, guid: 7c04b8597c9842d45bbe6bd94c2dc313, type: 3}

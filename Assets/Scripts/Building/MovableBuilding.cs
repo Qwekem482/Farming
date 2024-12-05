@@ -70,6 +70,7 @@ public class MovableBuilding : MonoBehaviour
 
     protected virtual void OnMouseDown()
     {
+        if (UICurtain.Instance.gameObject.activeSelf) return;
         isMouseDown = true;
         mouseDownTime = Time.time;
     }

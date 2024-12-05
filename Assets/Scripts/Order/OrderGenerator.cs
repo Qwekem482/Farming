@@ -33,8 +33,6 @@ public class OrderGenerator
             totalCurrencyReward += GenerateRewardValue(outputValue, SILVER_MIN_WEIGHT, SILVER_MAX_WEIGHT);
             requestItems.Add(collectible, new Item(collectible, amount));
         }
-        
-        
 
         return setResetTime ?
             new Order(requestItems.Values.ToArray(),

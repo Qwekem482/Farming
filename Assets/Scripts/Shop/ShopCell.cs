@@ -11,6 +11,8 @@ public class ShopCell : RegularCell
     [SerializeField] Image icon;
     [SerializeField] Image unit;
     [SerializeField] TextMeshProUGUI price;
+    [SerializeField] Image levelLock;
+    [SerializeField] TextMeshProUGUI levelKey;
     
     bool isGem;
     bool isUnlocked;
@@ -27,12 +29,7 @@ public class ShopCell : RegularCell
         {
             isUnlocked = value;
             thisButton.interactable = value;
-            
-            Color cellColor = value ? Color.white : Color.gray;
-            itemName.color = cellColor;
-            icon.color = cellColor;
-            unit.color = cellColor;
-            price.color = cellColor;
+            levelLock.gameObject.SetActive(!isUnlocked);
         }
     }
 
@@ -54,7 +51,8 @@ public class ShopCell : RegularCell
         unit.sprite = !isGem ?
             ResourceManager.Instance.silverSprite :
             ResourceManager.Instance.goldSprite;
-        
+
+        levelKey.text = shopItem.level.ToString();
         IsUnlocked = LevelSystem.Instance.currentLevel >= shopItem.level;
     }
 

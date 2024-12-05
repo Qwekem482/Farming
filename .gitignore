@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 #IDEA folder
 .idea/
+
+#utmp
+./utmp

@@ -64,7 +64,7 @@ public static class LocalSaveSystem
         {
             string content = !string.IsNullOrEmpty(File.ReadAllText(FilePath)) ?
                 File.ReadAllText(FilePath) :
-                "{\n  \"storageCapacity\": 50,\n  \"storageLevel\": 1,\n  \"exp\": 0,\n  \"level\": 1,\n  \"gold\": 10,\n  \"silver\": 500,\n}";
+                "{\n  \"storageCapacity\": 50,\n  \"storageLevel\": 1,\n  \"exp\": 0,\n  \"level\": 1,\n  \"gold\": 9999,\n  \"silver\": 99999,\n}";
             
             T data = JsonConvert.DeserializeObject<T>(content, new JsonSerializerSettings
             {

@@ -7,10 +7,10 @@ public class ProductInfoCell : RegularCell
 {
     [SerializeField] protected TextMeshProUGUI processTime;
     [SerializeField] protected Image productIcon;
-    [SerializeField] protected Image clockIcon;
-    [SerializeField] protected Image background;
+    [SerializeField] Image levelLock;
+    [SerializeField] protected TextMeshProUGUI levelKey;
 
-    protected bool isUnlocked;
+    bool isUnlocked;
 
     public bool IsUnlocked
     {
@@ -19,20 +19,11 @@ public class ProductInfoCell : RegularCell
             return isUnlocked;
         }
 
-        set
+        protected set
         {
             isUnlocked = value;
-            ChangeCellState(value);
+            levelLock.gameObject.SetActive(!value);
         }
     }
-
-    protected virtual void ChangeCellState(bool state)
-    {
-        Color cellColor = state ? Color.white : Color.gray;
-
-        processTime.color = cellColor;
-        productIcon.color = cellColor;
-        clockIcon.color = cellColor;
-        background.color = cellColor;
-    }
+    
 }

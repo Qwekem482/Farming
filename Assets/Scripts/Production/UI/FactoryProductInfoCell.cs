@@ -26,21 +26,10 @@ public class FactoryProductInfoCell : ProductInfoCell
         }
 
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
+        levelKey.text = data.level.ToString();
         IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
         
         ProductUI product = productIcon.gameObject.AddComponent<ProductUI>();
         product.Init(canvas, data, currentFactory, this);
-    }
-    
-    protected override void ChangeCellState(bool state)
-    {
-        base.ChangeCellState(state);
-        Color cellColor = state ? Color.white : Color.gray;
-
-        foreach(KeyValuePair<Image,TextMeshProUGUI> material in materials)
-        {
-            material.Key.color = cellColor;
-            material.Value.color = cellColor;
-        }
     }
 }

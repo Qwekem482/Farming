@@ -26,5 +26,5 @@ MonoBehaviour:
   buildingType: 1
   type: 1
   productData:
-  - {fileID: 11400000, guid: f7df3960679fd2e4ea5fb0b6bb584a1d, type: 2}
   - {fileID: 11400000, guid: e634b459039017d41a2a046badf15985, type: 2}
+  - {fileID: 11400000, guid: f7df3960679fd2e4ea5fb0b6bb584a1d, type: 2}

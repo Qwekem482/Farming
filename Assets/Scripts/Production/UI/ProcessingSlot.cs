@@ -23,6 +23,6 @@ public class ProcessingSlot : MonoBehaviour
     {
         productData = null;
         icon.sprite = null;
-        icon.color = Color.white;
+        icon.color = Color.clear;
     }
 }

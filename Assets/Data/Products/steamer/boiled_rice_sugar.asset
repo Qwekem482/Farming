@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productID: P1
   product: {fileID: 11400000, guid: dba6bc1d9dcf27b4c82afe3e34f72fc6, type: 2}
-  level: 4
+  level: 3
   processingTime:
     days: 0
     hours: 0
     minutes: 10
     seconds: 0
-  outputValue: 37
+  outputValue: 36
   materials:
   - collectible: {fileID: 11400000, guid: c3f276a9d40c74c43a44c2c5f26a3d79, type: 2}
     amount: 2

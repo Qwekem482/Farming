@@ -45,7 +45,8 @@ public class Factory : ProductionBuilding
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
-        if (EventSystem.current.IsPointerOverGameObject()
+        if (UICurtain.Instance.gameObject.activeSelf
+            || EventSystem.current.IsPointerOverGameObject()
             || BuildingSystem.Instance.isBuildingMode) return;
 
         gameObject.GetComponent<SpriteRenderer>().DOColor(

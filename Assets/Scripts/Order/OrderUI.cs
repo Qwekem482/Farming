@@ -84,14 +84,14 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
         {
             if (i >= requirements.Length)
             {
-                requestAmountTexts[i].gameObject.SetActive(false);
-                requestItemImages[i].gameObject.SetActive(false);
+                requestAmountTexts[i].transform.parent.gameObject.SetActive(false);
+                requestItemImages[i].transform.parent.gameObject.SetActive(false);
                 requestItemImages[i].preserveAspect = true;
                 continue;
             }
 
-            requestAmountTexts[i].gameObject.SetActive(true);
-            requestItemImages[i].gameObject.SetActive(true);
+            requestAmountTexts[i].transform.parent.gameObject.SetActive(true);
+            requestItemImages[i].transform.parent.gameObject.SetActive(true);
             requestItemImages[i].sprite = requirements[i].collectible.icon;
             
             requestAmountTexts[i].text = StorageSystem.Instance.GetStoreAmount(requirements[i].collectible)
@@ -104,7 +104,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     {
         int activeChild = 0;
         foreach(Transform child in content) if (child.gameObject.activeSelf) activeChild++;
-        Vector2 newSize = new Vector2(content.sizeDelta.x, activeChild * 165 + 20);
+        Vector2 newSize = new Vector2(content.sizeDelta.x, activeChild * 250 + (activeChild - 1) * 15);
         content.sizeDelta = newSize;
     }
     

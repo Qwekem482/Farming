@@ -12,10 +12,11 @@ public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
 
     public void StartingSystem()
     {
-        foreach(ProductionOutputData data in ResourceManager.Instance.productData.Values)
+        SetAvailableCollectible();
+        EventManager.Instance.AddListener<LevelUpEvent>(_ =>
         {
-            if(LevelSystem.Instance.currentLevel >= data.level) availableCollectibles.Add(data.product);
-        }
+            SetAvailableCollectible();
+        });
         
         for (int i = 0; i < 9; i++)
         {
@@ -38,6 +39,14 @@ public class OrderSystem : SingletonMonoBehavior<OrderSystem>, IGameSystem
     {
         CreateNewOrder(index, true);
         Debug.Log("CompletedCancel");
+    }
+
+    void SetAvailableCollectible()
+    {
+        foreach(ProductionOutputData data in ResourceManager.Instance.productData.Values)
+        {
+            if(LevelSystem.Instance.currentLevel >= data.level) availableCollectibles.Add(data.product);
+        }
     }
 
     public void DeliveryOrder(int index)

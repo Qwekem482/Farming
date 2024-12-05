@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: hay
   m_EditorClassIdentifier: 
   id: B1
-  buildingName: "\u0110\u1ED1ng Rom"
+  buildingName: "\u0110\u1ED1ng R\u01A1m"
   sprite: {fileID: 21300000, guid: e5311c3dd0b701a48a74f92ac0df3199, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}
@@ -22,5 +22,5 @@ MonoBehaviour:
     days: 0
     hours: 0
     minutes: 0
-    seconds: 10
+    seconds: 30
   buildingType: 3

@@ -10,6 +10,7 @@ public class FieldProductInfoCell : ProductInfoCell
     {
         price.text = data.inputPrice.ToString();
         processTime.text = data.processingTime.ConvertToStringWithoutDay();
+        levelKey.text = data.level.ToString();
         IsUnlocked = LevelSystem.Instance.currentLevel >= data.level;
         
         CropUI crop = productIcon.gameObject.AddComponent<CropUI>();

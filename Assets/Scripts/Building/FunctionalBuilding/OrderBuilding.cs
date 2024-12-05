@@ -7,7 +7,8 @@ public class OrderBuilding : FunctionalBuilding
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
-        if (EventSystem.current.IsPointerOverGameObject(0)
+        if (UICurtain.Instance.gameObject.activeSelf
+            || EventSystem.current.IsPointerOverGameObject(0)
             || BuildingSystem.Instance.isBuildingMode) return;
         
         AudioManager.Instance.PlayEffectClip(0);
