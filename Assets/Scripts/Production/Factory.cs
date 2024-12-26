@@ -171,8 +171,8 @@ public class Factory : ProductionBuilding
             ProductData productData = processingQueue.Peek();
 
             WaitForSecondsRealtime processingTime = timeLeft == default ? 
-                new WaitForSecondsRealtime(productData.processingTime.ToSecond()) :
-                new WaitForSecondsRealtime((float) timeLeft.TotalSeconds);
+                new WaitForSecondsRealtime(productData.processingTime.ToSecond()) : //Case new product
+                new WaitForSecondsRealtime((float) timeLeft.TotalSeconds); //Case product from save with time
             
             timer = Timer.CreateTimer(gameObject, productData.product.itemName, 
                 productData.processingTime, null, OnSkipProcessingProduct, timeLeft);

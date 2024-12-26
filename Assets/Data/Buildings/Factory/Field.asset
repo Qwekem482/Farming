@@ -21,8 +21,8 @@ MonoBehaviour:
   constructionTime:
     days: 0
     hours: 0
-    minutes: 1
-    seconds: 0
+    minutes: 0
+    seconds: 10
   buildingType: 1
   type: 2
   productData:

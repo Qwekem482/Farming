@@ -47,7 +47,7 @@ public static class LocalSaveSystem
              {
                  ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
              }));
-             Debug.Log("Write Save");
+             Debug.Log("Write Save: " + FilePath);
              return true;
         }
         catch (Exception e)
@@ -64,7 +64,7 @@ public static class LocalSaveSystem
         {
             string content = !string.IsNullOrEmpty(File.ReadAllText(FilePath)) ?
                 File.ReadAllText(FilePath) :
-                "{\n  \"storageCapacity\": 50,\n  \"storageLevel\": 1,\n  \"exp\": 0,\n  \"level\": 1,\n  \"gold\": 9999,\n  \"silver\": 99999,\n}";
+                "{\n  \"storageCapacity\": 50,\n  \"storageLevel\": 1,\n  \"exp\": 0,\n  \"level\": 1,\n  \"gold\": 999,\n  \"silver\": 9999,\n}";
             
             T data = JsonConvert.DeserializeObject<T>(content, new JsonSerializerSettings
             {

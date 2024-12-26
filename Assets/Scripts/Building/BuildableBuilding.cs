@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildableBuilding : MovableBuilding
 {
@@ -45,6 +46,9 @@ public class BuildableBuilding : MovableBuilding
     protected override void OnMouseUp()
     {
         base.OnMouseUp();
+        if (UICurtain.Instance.gameObject.activeSelf
+            || EventSystem.current.IsPointerOverGameObject(0)
+            || BuildingSystem.Instance.isBuildingMode) return;
         if (timer != null && IsPlaced)
         {
             TimerUI.Instance.ShowTimer(gameObject);

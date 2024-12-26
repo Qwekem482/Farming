@@ -50,7 +50,7 @@ public class OrderGenerator
     {
         int index = Random.Range(0, collectibles.Count - 1);
         return collectibles[index];
-    }
+    }   
 
     int GetRandomAmount()
     {
@@ -59,8 +59,7 @@ public class OrderGenerator
 
     int GenerateRewardValue(float outputValue, float minWeight, float maxWeight)
     {
-        int returnValue = (int)(Random.Range(minWeight, maxWeight) * outputValue);
-        return returnValue <= 0 ? 1 : returnValue;
+        return (int)(Random.Range(minWeight, maxWeight) * outputValue);
     }
 
     float CalcOutputValue(Collectible collectible, int amount)

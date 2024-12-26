@@ -18,9 +18,9 @@ MonoBehaviour:
   processingTime:
     days: 0
     hours: 0
-    minutes: 1
-    seconds: 0
-  outputValue: 5
+    minutes: 0
+    seconds: 10
+  outputValue: 3
   materials:
   - collectible: {fileID: 11400000, guid: b6360c6e05b39a54c81163e0303fee12, type: 2}
     amount: 1

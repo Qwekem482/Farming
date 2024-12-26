@@ -11,6 +11,7 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     [SerializeField] TextMeshProUGUI[] requestAmountTexts = new TextMeshProUGUI[4];
     [SerializeField] Button cancelOrderButton;
     [SerializeField] Button deliveryOrderButton;
+    [SerializeField] TextMeshProUGUI deliveryButtonText;
     [SerializeField] RectTransform content;
 
     void Start()
@@ -66,7 +67,17 @@ public class OrderUI : SingletonMonoBehavior<OrderUI>
     void OnClickDeliveryButton(int index)
     {
         deliveryOrderButton.onClick.RemoveAllListeners();
-        deliveryOrderButton.interactable = OrderSystem.Instance.orders[index].CanBeDelivery();
+        
+        if (OrderSystem.Instance.orders[index].CanBeDelivery())
+        {
+            deliveryOrderButton.interactable = true;
+            deliveryButtonText.color = Color.black;
+        } else
+        {
+            deliveryOrderButton.interactable = false;
+            deliveryButtonText.color = new Color(0, 0, 0, 0.5f);
+        }
+        
         deliveryOrderButton.onClick.AddListener(() =>
         {
             OrderSystem.Instance.DeliveryOrder(index);

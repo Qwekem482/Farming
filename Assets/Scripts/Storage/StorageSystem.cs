@@ -5,12 +5,12 @@ using UnityEngine;
 public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
 {
     readonly Dictionary<Collectible, int> allItems = new Dictionary<Collectible, int>();
-    Dictionary<Collectible, int> existingItems = new Dictionary<Collectible, int>();
+    public Dictionary<Collectible, int> existingItems = new Dictionary<Collectible, int>();
     
     public Collectible[] upgradeTools = new Collectible[3];
     
-    int maxCapacity = 50;
-    int currentCapacity = 0;
+    public int maxCapacity = 50;
+    public int currentCapacity = 0;
     int level;
     
     #region MonoBehavior
@@ -25,7 +25,7 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
 
     public void StartingSystem()
     {
-        StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
+        StorageUI.Instance.LoadStoringData();
         StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1)));
     }
     
@@ -125,7 +125,6 @@ public class StorageSystem : SingletonMonoBehavior<StorageSystem>, IGameSystem
         allItems[info.item.collectible] += info.item.amount;
         currentCapacity += info.item.amount;
         existingItems = GetExistingItem();
-        StorageUI.Instance.LoadStoringData(currentCapacity, maxCapacity, existingItems);
         StorageUI.Instance.LoadUpgradeData(Item.CreateArrayItem(upgradeTools, (level + 1))); //For resetting display amount
     }
     

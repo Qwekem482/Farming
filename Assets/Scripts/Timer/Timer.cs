@@ -38,7 +38,7 @@ public class Timer : MonoBehaviour
     void FixedUpdate()
     {
         if (!IsRunning) return;
-        if (TimeLeft > 0)
+        if (TimeLeft > 1)
         {
             TimeLeft -= Time.deltaTime;
             SkipPrice = TimeLeft switch

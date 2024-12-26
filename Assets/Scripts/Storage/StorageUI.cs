@@ -42,8 +42,10 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
 
     public void OpenStorageUI()
     {
+        Debug.Log("Open");
         UICurtain.Instance.AddListener(CloseStorageUI, false);
         gameObject.SetActive(true);
+        LoadStoringData();
         gameObject.transform.DOScale(1, 0.2f)
             .SetEase(Ease.OutBack);
     }
@@ -56,13 +58,13 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
             .SetEase(Ease.InBack);
     }
 
-    public void LoadStoringData(int currentCap, int maxCap, Dictionary<Collectible, int> items)
+    public void LoadStoringData()
     {
-        capacityText.text = currentCap + "/" + maxCap;
-        capacitySlider.maxValue = maxCap;
-        capacitySlider.value = currentCap;
+        capacityText.text = StorageSystem.Instance.currentCapacity + "/" + StorageSystem.Instance.maxCapacity;
+        capacitySlider.maxValue = StorageSystem.Instance.maxCapacity;
+        capacitySlider.value = StorageSystem.Instance.currentCapacity;
         
-        if (items.Count > 0) Generate(items);
+        Generate(StorageSystem.Instance.existingItems);
     }
 
     public void LoadUpgradeData(Item[] tools)
@@ -79,16 +81,19 @@ public class StorageUI : SingletonMonoBehavior<StorageUI>
         }
 
         lackText.text = (lackAmount * 10).ToString();
+        capacityText.text = StorageSystem.Instance.currentCapacity + "/" + StorageSystem.Instance.maxCapacity;
     }
 
     void Generate(Dictionary<Collectible, int> itemList)
     {
         scroller.ClearALlCells();
+        Debug.Log("Generate");
         scroller.Generate(itemCell, itemList.Count, (index, iCell) =>
         {
             StorageCell storageCell = iCell as StorageCell;
             if(storageCell != null) storageCell.AssignData
                 (itemList.ElementAt(index).Key, itemList.ElementAt(index).Value);
+            Debug.Log(itemList.ElementAt(index).Key + ": " + itemList.ElementAt(index).Value);
         });
     }
 

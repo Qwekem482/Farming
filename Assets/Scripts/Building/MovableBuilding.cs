@@ -77,7 +77,7 @@ public class MovableBuilding : MonoBehaviour
 
     protected void OnMouseDrag()
     {
-        if (GetType() != typeof(BuildableBuilding) && isMouseDown && Time.time - mouseDownTime >= 2)
+        if (GetType() != typeof(BuildableBuilding) && isMouseDown && Time.time - mouseDownTime >= 1f)
         {
             MoveBuilding();
             isMouseDown = false;
